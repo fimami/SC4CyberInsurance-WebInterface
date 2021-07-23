@@ -1,0 +1,67 @@
+
+GET http://127.0.0.1:5001/calculatePremium/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+
+
+###
+
+GET http://127.0.0.1:5001/createContract/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/paySecurity/1
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+//customer has new software and wants to check the new premium
+GET http://127.0.0.1:5001/calculatePremium/ContractNew.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+//customer proposes a the new conditions
+GET http://127.0.0.1:5001/proposeToUpdateContract/ContractNew.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer checks if new proposal is available
+GET http://127.0.0.1:5000/isNewProposalAvailable
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+// insurer checks the proposal, which is written into the text.txt file
+GET http://127.0.0.1:5000/checkProposal/28efea7c29681c8dbc7e78f5144aef064ed2f5238c93ea552558d4382e8419df/test.txt
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer agrees with the new conditions
+GET http://127.0.0.1:5000/agreeToUpdateContract
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###

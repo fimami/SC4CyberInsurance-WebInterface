@@ -1,0 +1,56 @@
+
+GET http://127.0.0.1:5001/calculatePremium/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/createContract/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+
+GET http://127.0.0.1:5001/paySecurity/1
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+// customer reports a damage
+GET http://127.0.0.1:5001/reportDamage/12.07.2021/3200/1/DDOS/LogFileAttack
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer checks if new damages are availble
+GET http://127.0.0.1:5000/getAllDamages/New
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer checks the log file of the new available damage
+GET http://127.0.0.1:5000/getLogFileContent/a9970466e052a50270062cb22fbeafc9502e05675635f80a5e11d6fc00cf25fa
+Accept: */*
+Cache-Control: no-cache
+###
+
+
+GET http://127.0.0.1:5000/acceptDamage/2/5
+Accept: */*
+Cache-Control: no-cache
+
+###

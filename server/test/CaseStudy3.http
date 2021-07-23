@@ -1,0 +1,65 @@
+
+GET http://127.0.0.1:5001/calculatePremium/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/createContract/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/paySecurity/1
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+// customer reports a damage
+GET http://127.0.0.1:5001/reportDamage/12.07.2021/3200/1/DDOS/LogFileAttack2
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer checks if new damages are availble
+GET http://127.0.0.1:5000/getAllDamages/New
+Accept: */*
+Cache-Control: no-cache
+
+###
+// insurer checks the log file of the new available damage
+GET http://127.0.0.1:5000/getLogFileContent/44a0c74a9b8dca07132bab2f86488e339f82256acc1339aea376d07b3228974f
+Accept: */*
+Cache-Control: no-cache
+###
+// insurer declines the damage with the given reason and creates a counter offer
+GET http://127.0.0.1:5000/declineDamage/1/Third party damage is not covered./1280
+Accept: */*
+Cache-Control: no-cache
+
+###
+// customer checks if some damages were declined
+GET http://127.0.0.1:5001/getAllDamages/UnderInvestigation
+Accept: */*
+Cache-Control: no-cache
+
+###
+// customer accepts the counter offer
+GET http://127.0.0.1:5001/acceptCounterOffer/1
+Accept: */*
+Cache-Control: no-cache
+
+###

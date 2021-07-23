@@ -1,0 +1,37 @@
+// customer checks the premium with different conditions
+GET http://127.0.0.1:5001/calculatePremium/ContractNew.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+// customer checks the premium with different conditions
+GET http://127.0.0.1:5001/calculatePremium/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/createContract/Contract.json
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/paySecurity/1
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://127.0.0.1:5001/payPremium/2
+Accept: */*
+Cache-Control: no-cache
+
+###

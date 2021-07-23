@@ -1,0 +1,229 @@
+{
+	"business_information": {
+		"companyName": "TestAG",
+		"type": "AG",
+		"sector": "Electronic Store",
+		"address": {
+			"streetAddress": "Examplestreet 1",
+			"city": "Zurich",
+			"state": "ZH",
+			"postalCode": 8000
+		},
+		"contact": [
+			{
+				"type": "phone",
+				"number": "123456789"
+			},
+			{
+				"type": "mail",
+				"number": "abc.de@testAG.ch"
+			}
+		]
+	},
+	"contract_constraints": {
+		"startDate": "01.01.2021",
+		"duration": 3,
+		"endDate": "31.12.2023",
+		"paymentFrequencyPerYear": 2,
+		"cancellation": {
+			"allowed": true,
+			"penaltyInPercent": 50
+		}
+	},
+	"company_conditions": {
+		"yearly_revenue": 2500000,
+		"revenue": 0.2,
+		"basedOnYear": 2019,
+		"numberOfEmployees": 10
+	},
+	"company_security": {
+		"risk_assessment_metrics": [{
+				"name": "SECONOMY",
+				"result": "low/medium/high"
+			},
+			{
+				"name": "Known vulnerabilities",
+				"result": "medium"
+			},
+			{
+				"name": "Level of cybersecurity education",
+				"result": "low"
+			}
+		],
+		"attacks_history": [{
+				"type": "DDoS",
+				"date": "15/01/2019",
+				"time_to_recovery": "4 hours",
+				"details": "None",
+				"mitigated": true
+			},
+			{
+				"type": "DDoS",
+				"date": "09/12/2019",
+				"time_to_recovery": "15 hours",
+				"details": "Mirai Botnet",
+				"mitigated": false
+			},
+			{
+				"type": "Ransomware",
+				"date": "09/01/2020",
+				"time_to_recovery": "26 days",
+				"details": "WannaCry",
+				"mitigated": false
+			},
+			{
+				"type": "Malware",
+				"date": "12/07/2020",
+				"time_to_recovery": "2 days",
+				"details": "Family XYZ",
+				"mitigated": true
+			}
+		],
+		"security_software": [{
+				"name": "Kaspersky",
+				"type": "antivirus"
+			},
+			{
+				"name": "Dynatrace",
+				"type": "monitoring"
+			},
+			{
+				"name": "AWS Firewall Manager",
+				"type": "firewall manager"
+			}
+		],
+		"security_training": [{
+				"name": "ABCD security certificate",
+				"type": "pentest",
+				"date": "15/02/2020",
+				"provider": "International CyberSecurity Institute"
+			},
+			{
+				"name": "ZYX security certificate",
+				"type": "education of employees",
+				"date": "26/04/2020",
+				"provider": "International CyberSecurity Institute"
+			}
+		]
+	},
+	"company_infrastructure": {
+		"number_connected_devices": 50,
+		"number_systems": 2,
+		"technologies": [{
+				"type": "operating system",
+				"name": "windows",
+				"version": "XP",
+				"updates": false
+			},
+			{
+				"type": "core software",
+				"name": "Docker",
+				"version": "19.03.8",
+				"updates": false
+			}
+		],
+		"critical_data": "3 TB",
+		"critical_services": [
+			"data privacy",
+			"marketplace",
+			"payment system"
+		]
+	},
+	"contract_coverage": [{
+			"name": "DDoS",
+			"coverage": [{
+					"name": "business Interruption",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "delivery failure",
+					"coverage_ratio": 10
+				},
+				{
+					"name": "third person damage",
+					"coverage_ratio": 50,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "data protection/privacy law violation",
+					"coverage_ratio": "NaN"
+				},
+				{
+					"name": "cyber extortion",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				}
+			]
+		},
+		{
+			"name": "data breach",
+			"coverage": [{
+					"name": "business interuption",
+					"coverage_ratio": "NaN"
+				},
+				{
+					"name": "delivery failure",
+					"coverage_ratio": 50,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "third person damage",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "data protection/privacy law violation",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "cyber extortion",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				}
+			]
+		},
+		{
+			"name": "social engineering",
+			"coverage": [{
+					"name": "business disruption",
+					"coverage_ratio": 50,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "delivery failure",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "third person damage",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "data protection/privacy law violation",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				},
+				{
+					"name": "cyber extortion",
+					"coverage_ratio": 100,
+					"deductible": 1000,
+					"max_indemnification": 300000
+				}
+			]
+		}
+	]
+}
