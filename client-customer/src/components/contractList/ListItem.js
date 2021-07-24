@@ -55,9 +55,9 @@ function ListItem(props) {
       </button>
       {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
       {/* {props.useContractHash === '"' + jsonHash + '"' && */}
-      {props.showContractIsUsed && (
+      {/* {props.showContractIsUsed && (
         <div style={{ fontSize: "10px" }}>{props.useContractMessage}</div>
-      )}
+      )} */}
     </>
   );
 }

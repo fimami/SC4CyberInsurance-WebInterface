@@ -24,7 +24,7 @@ function WebInterface() {
 
   const [showDamageReport, setShowDamageReport] = useState(false);
 
-  const [showDamageIsSelected, setShowDamageIsSelected] = useState(false);
+  // const [showDamageIsSelected, setShowDamageIsSelected] = useState(false);
 
   const [showCounterOffer, setShowCounterOffer] = useState(false);
 
@@ -57,7 +57,7 @@ function WebInterface() {
       .then((res) => {
         // console.log(res);
         setNewDamageReports(res.data);
-        console.log(newDamageReports);
+        // console.log(newDamageReports);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -70,7 +70,7 @@ function WebInterface() {
   }, []);
 
   useEffect(() => {
-    if (availableContracts.length) {
+    if (availableContracts.length && Array.isArray(availableContracts)) {
       getNewDamagesOfHash();
     }
   }, [availableContracts]);
@@ -98,7 +98,7 @@ function WebInterface() {
   }
 
   function openForm() {
-    if(availableContracts.length) {
+    if (availableContracts.length) {
       alert("There can be one contract at max.");
       return;
     }
@@ -147,8 +147,8 @@ function WebInterface() {
         // setIsFormOpen={setIsFormOpen}
         // showDamageReport={showDamageReport}
         newDamageReports={newDamageReports}
-        showDamageIsSelected={showDamageIsSelected}
-        setShowDamageIsSelected={setShowDamageIsSelected}
+        // showDamageIsSelected={showDamageIsSelected}
+        // setShowDamageIsSelected={setShowDamageIsSelected}
         // setShowDamageReport={setShowDamageReport}
         openReportOverview={openReportOverview}
         setSelectedReport={setSelectedReport}
@@ -182,8 +182,8 @@ function WebInterface() {
         // changeUsedContract={changeUsedContract}
         // formButtonNotVisible={formButtonNotVisible}
         // useContractHash={useContractHash}
-        showContractIsUsed={showContractIsUsed}
-        setShowContractIsUsed={setShowContractIsUsed}
+        // showContractIsUsed={showContractIsUsed}
+        // setShowContractIsUsed={setShowContractIsUsed}
         openContractInfo={openContractInfo}
       />
       {/* <div>{useContractHash}</div> */}

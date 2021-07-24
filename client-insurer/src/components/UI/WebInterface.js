@@ -42,7 +42,7 @@ function WebInterface() {
 
   const getAvailableContracts = () => {
     axios
-      .get(`${url}/getAvailableContracts3`)
+      .get(`${url}/getAvailableContracts2`)
       .then((response) => {
         // console.log(response);
         setAvailableContracts(response.data);
@@ -60,7 +60,11 @@ function WebInterface() {
       })
       .then((res) => {
         // console.log(res);
-        setNewDamageReports(res.data);
+        
+        //TODO: check the following -->
+        if (res.data.length) {
+          setNewDamageReports(res.data);
+        }
         // console.log(newDamageReports);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -70,11 +74,11 @@ function WebInterface() {
     setInterval(() => {
       getAvailableContracts();
       // console.log(availableContracts);
-    }, 5001);
+    }, 6000);
   }, []);
 
   useEffect(() => {
-    if (availableContracts.length) {
+    if (availableContracts.length && Array.isArray(availableContracts)) {
       getNewDamagesOfHash();
     }
   }, [availableContracts]);

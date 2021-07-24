@@ -30,8 +30,8 @@ function ActiveContracts(props) {
           // changeUsedContract={props.changeUsedContract}
           // formButtonNotVisible={props.formButtonNotVisible}
           // useContractHash={props.useContractHash}
-          showContractIsUsed={props.showContractIsUsed}
-          setShowContractIsUsed={props.setShowContractIsUsed}
+          // showContractIsUsed={props.showContractIsUsed}
+          // setShowContractIsUsed={props.setShowContractIsUsed}
           openContractInfo={props.openContractInfo}
         />
       </Card>

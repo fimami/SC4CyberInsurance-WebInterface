@@ -1,0 +1,15 @@
+label {
+  font-weight: bold;
+}
+
+.wrapperInfo {
+  margin: auto;
+}
+
+.info {
+  float: left;
+}
+
+.update {
+  float: right;
+}

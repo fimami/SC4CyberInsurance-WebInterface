@@ -1,6 +1,8 @@
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import UpdateOverview from "./UpdateOverview";
+import styles from "./ContractInformationOverview.module.css";
 
 function ContractInformationOverview(props) {
   const [contractInformation, setContractInformation] = useState({
@@ -219,7 +221,10 @@ function ContractInformationOverview(props) {
           Contract Address: {props.selectedContract.contractAddress}
         </div>
         <br />
-        <div>
+        <div className={styles.info}>
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Business Information
+          </div>
           <label id="companyName">Company Name: </label>
           <span>{contractInformation.business_information.companyName}</span>
           <br />
@@ -249,7 +254,6 @@ function ContractInformationOverview(props) {
           </span>
 
           <br />
-          <br />
           {contractInformation.business_information.contact.map(
             (contact, i) => (
               <div key={i}>
@@ -264,15 +268,15 @@ function ContractInformationOverview(props) {
                 <span>
                   {contractInformation.business_information.contact[i].number}
                 </span>
-
-                <br />
-
                 <br />
               </div>
             )
           )}
-
           <br />
+          <br />
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Contract Constraints
+          </div>
           <label>Start Date: </label>
           <span>{contractInformation.contract_constraints.startDate}</span>
 
@@ -282,6 +286,7 @@ function ContractInformationOverview(props) {
           <span>{contractInformation.contract_constraints.endDate}</span>
 
           <br />
+          <br />
           <label>Payment Freq. per Year: </label>
           <span>
             {contractInformation.contract_constraints.paymentFrequencyPerYear}
@@ -289,8 +294,13 @@ function ContractInformationOverview(props) {
 
           <br />
           <label>Cancellation Allowed? </label>
-          <span>{contractInformation.contract_constraints.cancellation.allowed.toString()}</span>
-          
+          <span>
+            {contractInformation.contract_constraints.cancellation.allowed.toString() ===
+            "true"
+              ? "Yes"
+              : "No"}
+          </span>
+
           <br />
           <label>Penalty in % (only when cancellation allowed): </label>
           <span>
@@ -302,7 +312,9 @@ function ContractInformationOverview(props) {
 
           <br />
           <br />
-          <br />
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Company Conditions
+          </div>
           <label>Yearly Revenue: </label>
           <span>{contractInformation.company_conditions.yearly_revenue}</span>
 
@@ -322,10 +334,12 @@ function ContractInformationOverview(props) {
 
           <br />
           <br />
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Company Security
+          </div>
           {contractInformation.company_security.risk_assessment_metrics.map(
             (metric, i) => (
               <div key={i}>
-                <br />
                 <label>Risk Assessment Metric Name: </label>
                 <span>
                   {
@@ -342,12 +356,12 @@ function ContractInformationOverview(props) {
                       .risk_assessment_metrics[i].result
                   }
                 </span>
+                <br />
+                <br />
               </div>
             )
           )}
 
-          <br />
-          <br />
           {contractInformation.company_security.attacks_history.map(
             (attack, i) => (
               <div key={i}>
@@ -383,15 +397,18 @@ function ContractInformationOverview(props) {
 
                 <br />
                 <label>Attack mitigated? </label>
-                <span>{contractInformation.company_security.attacks_history[i].mitigated.toString()}</span>
-                
+                <span>
+                  {contractInformation.company_security.attacks_history[
+                    i
+                  ].mitigated.toString() === "true"
+                    ? "Yes"
+                    : "No"}
+                </span>
               </div>
             )
           )}
           <br />
 
-          <br />
-          <br />
           {contractInformation.company_security.security_software.map(
             (software, i) => (
               <div key={i}>
@@ -414,13 +431,10 @@ function ContractInformationOverview(props) {
                 </span>
 
                 <br />
-
-                <br />
               </div>
             )
           )}
 
-          <br />
           <br />
           {contractInformation.company_security.security_training.map(
             (training, i) => (
@@ -467,7 +481,9 @@ function ContractInformationOverview(props) {
 
           <br />
           <br />
-          <br />
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Company Infrastructure
+          </div>
           <label>Number of connected devices: </label>
           <span>
             {
@@ -482,11 +498,9 @@ function ContractInformationOverview(props) {
             {contractInformation.company_infrastructure.number_systems}
           </span>
 
-          <br />
           {contractInformation.company_infrastructure.technologies.map(
             (tech, i) => (
               <div key={i}>
-                <br />
                 <br />
                 <label>Technology Type: </label>
                 <span>
@@ -516,15 +530,15 @@ function ContractInformationOverview(props) {
 
                 <br />
                 <label>Latest updates installed: </label>
-                <span>{contractInformation.company_infrastructure.technologies[i].updates.toString()}</span>
-                <br />
-
-                <br />
+                <span>
+                  {contractInformation.company_infrastructure.technologies[
+                    i
+                  ].updates.toString()}
+                </span>
               </div>
             )
           )}
 
-          <br />
           <br />
           <br />
           <label>Critical Data Amount: </label>
@@ -550,10 +564,10 @@ function ContractInformationOverview(props) {
               </div>
             )
           )}
-
           <br />
-          <br />
-          <br />
+          <div style={{ fontSize: "20px", textDecoration: "underline" }}>
+            Contract Coverage
+          </div>
           {contractInformation.contract_coverage.map((c1, i) => (
             <div
               key={i}
@@ -605,12 +619,9 @@ function ContractInformationOverview(props) {
                   </span>
 
                   <br />
+                  <br />
                 </div>
               ))}
-
-              <br />
-              <br />
-              <br />
             </div>
           ))}
           <br />
@@ -618,6 +629,16 @@ function ContractInformationOverview(props) {
 
           <br />
         </div>
+        {props.selectedUpdateHash && props.selectedUpdateHash !== 0 ? (
+          <div className={styles.update}>
+            <UpdateOverview
+              selectedUpdateHash={props.selectedUpdateHash}
+              contractInformation={contractInformation}
+            />
+          </div>
+        ) : (
+          "No Update proposed."
+        )}
       </div>
       <div>
         Security: {currentSecurity}{" "}

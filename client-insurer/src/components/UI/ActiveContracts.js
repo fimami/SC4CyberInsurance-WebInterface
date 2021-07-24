@@ -22,21 +22,23 @@ function ActiveContracts(props) {
         }}
       >
         <h2>Active Contracts</h2>
-        <ContractList
-          availableContracts={props.availableContracts}
-          // onSelect={props.onSelect}
-          // onChange={props.onChange}
-          // showContractInfo={props.showContractInfo}
-          // changeUsedContract={props.changeUsedContract}
-          // formButtonNotVisible={props.formButtonNotVisible}
-          // useContractHash={props.useContractHash}
-          // showContractIsUsed={props.showContractIsUsed}
-          // setShowContractIsUsed={props.setShowContractIsUsed}
-          openContractInfo={props.openContractInfo}
-          // setUsedContractHash={props.setUsedContractHash}
-          setSelectedContract={props.setSelectedContract}
-          setSelectedUpdateHash={props.setSelectedUpdateHash}
-        />
+        {Array.isArray(props.availableContracts) && (
+          <ContractList
+            availableContracts={props.availableContracts}
+            // onSelect={props.onSelect}
+            // onChange={props.onChange}
+            // showContractInfo={props.showContractInfo}
+            // changeUsedContract={props.changeUsedContract}
+            // formButtonNotVisible={props.formButtonNotVisible}
+            // useContractHash={props.useContractHash}
+            // showContractIsUsed={props.showContractIsUsed}
+            // setShowContractIsUsed={props.setShowContractIsUsed}
+            openContractInfo={props.openContractInfo}
+            // setUsedContractHash={props.setUsedContractHash}
+            setSelectedContract={props.setSelectedContract}
+            setSelectedUpdateHash={props.setSelectedUpdateHash}
+          />
+        )}
       </Card>
     </div>
   );

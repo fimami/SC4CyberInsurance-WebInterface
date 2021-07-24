@@ -5,7 +5,7 @@ import ListItem from "./ListItem";
 function ContractList(props) {
   // const [resetCounter, setResetCounter] = useState(0);
   // const [showUseContract, setShowUseContract] = useState(false);
-  const [useContractMessage, setUseContractMessage] = useState("");
+  // const [useContractMessage, setUseContractMessage] = useState("");
 
   // function handleContractInfoChange() {
   //   props.onSelect();
@@ -51,9 +51,9 @@ function ContractList(props) {
       .then((response) => {
         console.log(jsonHash);
         console.log(response);
-        setUseContractMessage(response.data);
+        // setUseContractMessage(response.data);
         // handleContractInfoChange();
-        props.setShowContractIsUsed(true);
+        // props.setShowContractIsUsed(true);
         // props.changeUsedContract(jsonHash.toString());
         // props.formButtonNotVisible();
         // setShowUseContract(true);
@@ -72,10 +72,10 @@ function ContractList(props) {
           contractAddress={props.availableContracts[0].contractAddress}
           // useContractHash={props.useContractHash}
           // setUseContractHash={props.setUseContractHash}
-          useContractMessage={useContractMessage}
+          // useContractMessage={useContractMessage}
           // showContractInfo={props.showContractInfo}
           // resetCounter={resetCounter}
-          showContractIsUsed={props.showContractIsUsed}
+          // showContractIsUsed={props.showContractIsUsed}
           openContractInfo={props.openContractInfo}
         />
       )}

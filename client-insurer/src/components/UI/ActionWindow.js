@@ -5,10 +5,10 @@ import ReportOverview from "../damageReport/ReportOverview";
 import ContractInformationOverview from "../informationOverview/ContractInformationOverview";
 
 function ActionWindow(props) {
-  function clickReportDamage() {
-    props.setShowReportForm(true);
-    props.setShowContractInfo(!props.showContractInfo);
-  }
+  // function clickReportDamage() {
+  //   props.setShowReportForm(true);
+  //   props.setShowContractInfo(!props.showContractInfo);
+  // }
 
   //close Form button on Report Form;
   function closeReportForm() {
@@ -47,7 +47,7 @@ function ActionWindow(props) {
               availableContracts={props.availableContracts}
               // useContractHash={props.useContractHash}
               setShowReportForm={props.setShowReportForm}
-              clickReportDamage={clickReportDamage}
+              // clickReportDamage={clickReportDamage}
               closeInfoOrReport={props.closeInfoOrReport}
               selectedContract={props.selectedContract}
               selectedUpdateHash={props.selectedUpdateHash}

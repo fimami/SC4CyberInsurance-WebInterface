@@ -121,6 +121,7 @@ def getAvailableContracts():
     return message
 
 ####################################
+###TODO: Debuggin necessary, problem after "checkProposal"
 @app.route('/getAvailableContracts2')
 def getAvailableContracts2():
     try:
@@ -152,25 +153,25 @@ def getAvailableContracts2():
         print(contract_json)
     return contract_json
 
-def get_list_of_dict(keys, list_of_tuples):
-    list_of_dict = [dict(zip(keys, values)) for values in list_of_tuples]
-    return list_of_dict
+# def get_list_of_dict(keys, list_of_tuples):
+#     list_of_dict = [dict(zip(keys, values)) for values in list_of_tuples]
+#     return list_of_dict
 
 ####################################
-@app.route('/getAvailableContracts3')
-def getAvailableContracts3():
-    try:
-        tuples = get_all_contracts_in_db2(getConnection())
-        keys = ("companyName", "jsonHash")
-        contract_list = get_list_of_dict(keys, tuples)
-        for item in contract_list:
-            contract_address = get_contract_address_with_hash(getConnection(), item['jsonHash'])
-            item.update({'contractAddress':str(contract_address)})
-        contract_dict = json.dumps(contract_list)
-    except Exception as e:
-        contract_dict = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
-        print(contract_dict)
-    return contract_dict
+# @app.route('/getAvailableContracts3')
+# def getAvailableContracts3():
+#     try:
+#         tuples = get_all_contracts_in_db2(getConnection())
+#         keys = ("companyName", "jsonHash")
+#         contract_list = get_list_of_dict(keys, tuples)
+#         for item in contract_list:
+#             contract_address = get_contract_address_with_hash(getConnection(), item['jsonHash'])
+#             item.update({'contractAddress':str(contract_address)})
+#         contract_dict = json.dumps(contract_list)
+#     except Exception as e:
+#         contract_dict = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
+#         print(contract_dict)
+#     return contract_dict
 
 def validate_new_conditions(newJsonContent, oldJsonContent):
     #do not need to compare hash and premium
@@ -237,13 +238,13 @@ def proposeToUpdateContract2():
             insert_contract_information(getConnection(), newHash, address, abi)
             insert_json_file_content(getConnection(), newContract, newHash)
             message = 'Contract was proposed to be updated. The new premium would be ' + str(premium) \
-                  + ' swiss francs.'
+                  + ' euro.'
             print(message)
         else:
             message = 'Error: Contract constraints are fixed and can not be changed.'
             print(message)
     except Exception as e:
-        message = "There is already a proposal available."
+        message = transform_error_message(e)
         print(message)
     return message
 
@@ -467,6 +468,7 @@ def isNewProposalAvailable():
     setProposalDict(proposal_dict)
     return message
 
+#####TODO: not used:
 ####################################
 @app.route('/checkForNewProposal')
 def checkForNewProposal():
@@ -490,6 +492,7 @@ def checkForNewProposal():
     setProposalDict(proposal_dict)
     return message
 
+#######instead of isNewProposalAvailable()
 ##################################################
 @app.route('/getNewProposalByHash', methods=['POST'])
 def getNewProposalByHash():
@@ -545,8 +548,11 @@ def checkProposal(hash, fileName):
         write_file(fileName, content)
         message = message + " And into file " + fileName + "."
     current_hash = getProposalDict().get(hash)
+
+    ####the following two are already triggered with useContract2() in the frontend
     setHash(current_hash)
     setSc(get_smart_contract_accessor(getConnection(), current_hash))
+
     return message
 
 

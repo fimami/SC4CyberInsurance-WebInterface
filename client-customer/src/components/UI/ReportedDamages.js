@@ -10,7 +10,7 @@ function ReportedDamages(props) {
           paddingLeft: "1vmax",
           paddingRight: "1vmax",
           overflowY: "scroll",
-          height: "45vh",
+          height: "40vh",
         }}
       >
         <h2>Reported Damages</h2>

@@ -44,7 +44,7 @@
 .wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 140px;
+  grid-auto-rows: auto;
   gap: 20px;
 }
 
@@ -86,7 +86,7 @@
 .counteroffers {
   /* border: 2px solid #000 !important;
   border-radius: 2px; */
-  grid-row-start: 3;
+  grid-row-start: 4;
   grid-row-end: 5;
   grid-column-start: 1;
   grid-column-end: 1;

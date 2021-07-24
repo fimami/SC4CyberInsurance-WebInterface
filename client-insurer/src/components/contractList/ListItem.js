@@ -84,6 +84,7 @@ function ListItem(props) {
   // };
 
   //TODO: change the following function (read WARNING)!
+  //TODO: maybe remove the setInterval() ?
   useEffect(() => {
     setInterval(() => {
       // setCompanyName(props.companyName);
