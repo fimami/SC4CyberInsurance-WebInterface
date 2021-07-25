@@ -3,6 +3,7 @@ import InputCIForm from "../contractCreation/InputCIForm";
 import ContractOverview from "../informationOverview/ContractOverview";
 import ReportForm from "../damageReport/ReportForm";
 import ReportOverview from "../damageReport/ReportOverview";
+import UpdateOverview from "../informationOverview/UpdateOverview";
 
 function ActionWindow(props) {
   function clickReportDamage() {
@@ -38,20 +39,28 @@ function ActionWindow(props) {
             <InputCIForm />
           </div>
         )}
-        {props.showContractInfo && !props.showFormButton && (
-          <div>
-            <ContractOverview
-              // existingContractInfo={props.existingContractInfo}
-              // setExistingContractInfo={props.setExistingContractInfo}
-              // changeOverview={props.changeOverview}
-              availableContracts={props.availableContracts}
-              // useContractHash={props.useContractHash}
-              setShowReportForm={props.setShowReportForm}
-              clickReportDamage={clickReportDamage}
-              closeInfoOrReport={props.closeInfoOrReport}
-            />
-          </div>
-        )}
+        {props.showContractInfo &&
+          !props.showFormButton &&
+          !props.showUpdateContent && (
+            <div>
+              <ContractOverview
+                // existingContractInfo={props.existingContractInfo}
+                // setExistingContractInfo={props.setExistingContractInfo}
+                // changeOverview={props.changeOverview}
+                availableContracts={props.availableContracts}
+                // useContractHash={props.useContractHash}
+                setShowReportForm={props.setShowReportForm}
+                clickReportDamage={clickReportDamage}
+                closeInfoOrReport={props.closeInfoOrReport}
+                selectedContract={props.selectedContract}
+              />
+            </div>
+          )}
+        {!props.showContractInfo &&
+          !props.showFormButton &&
+          props.showUpdateContent && (
+            <UpdateOverview selectedContract={props.selectedContract} closeInfoOrReport={props.closeInfoOrReport}/>
+          )}
         {!props.showContractInfo && props.showReportForm && (
           <ReportForm closeReportForm={closeReportForm} />
         )}

@@ -251,8 +251,16 @@ def proposeToUpdateContract2():
 @app.route('/agreeToUpdateContract')
 def agreeToUpdateContract():
     try:
+        old_hash = getHash()
         new_hash = getSc().functions.getHashOfProposal().call()
-        update_file_hash(getConnection(), getHash(), new_hash )
+        update_file_hash(getConnection(), old_hash, new_hash )
+        # customerUpdateMessage = requests.get('http://localhost:5001/updateFileHash/' + old_hash + "/" + new_hash).content.decode('UTF-8')
+        oldContractDeletion = requests.get('http://localhost:5001/deleteOldContract/' + old_hash).content.decode('UTF-8')
+        print(oldContractDeletion)
+        remove_old_content_after_update(getConnection(), old_hash)
+        content = requests.get('http://localhost:5001' +
+                           '/getContentOfProposal/' + new_hash).content.decode('UTF-8')
+        insert_json_file_content(getConnection(), content, new_hash)
         setHash(new_hash)
         getSc().functions.agreeToUpdateContract().transact({'from': getUserAddress()})
         message = 'Contract was updated.'
@@ -264,9 +272,13 @@ def agreeToUpdateContract():
 def declineToUpdateContract():
     try:
         getSc().functions.declineToUpdateContract().transact({'from': getUserAddress()})
-        message = 'Contract was not updated.'
+        ################The two lines here are new--->
+        new_hash = proposal_dict['new_hash']
+        message = requests.get('http://localhost:5001/deleteUpdateContract/' + new_hash).content.decode('UTF-8')
+        # message = 'Contract was not updated.'
     except Exception as e:
         message = transform_error_message(e)
+        print(message)
     return message
 
 def resolveStatus(status):
@@ -316,6 +328,31 @@ def getAllDamages(status):
         message = transform_error_message(e)
     return message
 
+###################################################
+@app.route('/getAllNewDamages')
+def getAllNewDamages():
+    try: 
+        damageList = []
+        hashs = get_all_hashs_in_db(getConnection())
+        for hash in hashs:
+            sc = get_smart_contract_accessor(getConnection(), hash[0])
+            damages = sc.functions.getAllReportedDamagesWithStatus(0).call()
+            for damage in damages:
+                dateAsTimestamp = damage[0]
+                if dateAsTimestamp != 0:
+                    logfile_hash = damage[5]
+                    date = convertTimestampToDateString(dateAsTimestamp)
+                    jsonHash = hash[0]
+                    amount = damage[1]
+                    status = 0
+                    id = damage[3]
+                    attackType = damage[4]
+                    damageList.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        message = json.dumps(damageList)
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 @app.route('/getDamagesOfCurrentContract/<status>')
 def getDamagesOfCurrentContract(status):
     try:
@@ -356,14 +393,14 @@ def getNewDamagesOfHash():
     return message
 
 #########################################
-@app.route('/getLogfileContent', methods=['POST'])
-def getLogfileContent():
-    try:
-        logfile_hash = request.get_json()
-        logfile_content = str(get_log_data(getConnection(), logfile_hash))
-    except Exception as e:
-        logfile_content = transform_error_message(e)
-    return logfile_content
+# @app.route('/getLogfileContent', methods=['POST'])
+# def getLogfileContent():
+#     try:
+#         logfile_hash = request.get_json()
+#         logfile_content = str(get_log_data(getConnection(), logfile_hash))
+#     except Exception as e:
+#         logfile_content = transform_error_message(e)
+#     return logfile_content
 
 #########################################
 @app.route('/getHash')
@@ -498,7 +535,8 @@ def checkForNewProposal():
 def getNewProposalByHash():
     try:
         jsonHash = request.get_json()
-        proposal_dict = {}
+        proposal_dict = getProposalDict()
+        proposal_dict.clear()
         message = "No update is available."
         try:
             sc = get_smart_contract_accessor(getConnection(), jsonHash)
@@ -512,6 +550,7 @@ def getNewProposalByHash():
     except Exception as e:
         proposal_dict.update({'new_hash':0, 'message':str(transform_error_message(e))})
         print(proposal_dict)
+    setProposalDict(proposal_dict)
     return proposal_dict
 
 

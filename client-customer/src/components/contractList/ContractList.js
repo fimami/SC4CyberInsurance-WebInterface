@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useState } from "react";
+// import axios from "axios";
+// import { useState } from "react";
 import ListItem from "./ListItem";
 
 function ContractList(props) {
@@ -15,7 +15,7 @@ function ContractList(props) {
   //   props.onChange(value);
   // }
 
-  const url = "http://127.0.0.1:5001";
+  // const url = "http://127.0.0.1:5001";
 
   // const getAvailableContracts = () => {
   //   axios
@@ -39,46 +39,55 @@ function ContractList(props) {
   //   console.log(props.availableContracts);
   // }
 
-  function useContract() {
-    const jsonHash = JSON.stringify(props.availableContracts[0].jsonHash);
+  // function useContract() {
+  //   const jsonHash = JSON.stringify(props.availableContracts[0].jsonHash);
 
-    axios
-      .post(`${url}/useContract2`, jsonHash, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log(jsonHash);
-        console.log(response);
-        // setUseContractMessage(response.data);
-        // handleContractInfoChange();
-        // props.setShowContractIsUsed(true);
-        // props.changeUsedContract(jsonHash.toString());
-        // props.formButtonNotVisible();
-        // setShowUseContract(true);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  }
+  //   axios
+  //     .post(`${url}/useContract2`, jsonHash, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(jsonHash);
+  //       console.log(response);
+  //       // setUseContractMessage(response.data);
+  //       // handleContractInfoChange();
+  //       // props.setShowContractIsUsed(true);
+  //       // props.changeUsedContract(jsonHash.toString());
+  //       // props.formButtonNotVisible();
+  //       // setShowUseContract(true);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // }
 
   return (
     <div style={{ margin: "10px" }}>
       {/* <button onClick={resetList}>Reload List</button> */}
-      {props.availableContracts.length > 0 && (
-        <ListItem
-          onClick={useContract}
-          companyName={props.availableContracts[0].companyName}
-          jsonHash={props.availableContracts[0].jsonHash}
-          contractAddress={props.availableContracts[0].contractAddress}
-          // useContractHash={props.useContractHash}
-          // setUseContractHash={props.setUseContractHash}
-          // useContractMessage={useContractMessage}
-          // showContractInfo={props.showContractInfo}
-          // resetCounter={resetCounter}
-          // showContractIsUsed={props.showContractIsUsed}
-          openContractInfo={props.openContractInfo}
-        />
-      )}
+      {props.availableContracts.map((contract, i) => (
+        <div key={i}>
+          <ListItem
+            // onClick={useContract}
+            companyName={props.availableContracts[i].companyName}
+            jsonHash={props.availableContracts[i].jsonHash}
+            contractAddress={props.availableContracts[i].contractAddress}
+            // useContractHash={props.useContractHash}
+            // setUseContractHash={props.setUseContractHash}
+            // useContractMessage={useContractMessage}
+            // showContractInfo={props.showContractInfo}
+            // resetCounter={resetCounter}
+            // showContractIsUsed={props.showContractIsUsed}
+            openContractInfo={props.openContractInfo}
+            // setUsedContractHash={props.setUsedContractHash}
+            // setSelectedContract={props.setSelectedContract}
+            // setSelectedUpdateHash={props.setSelectedUpdateHash}
+            setSelectedContract={props.setSelectedContract}
+            setProposalHashList={props.setProposalHashList}
+            proposalHashList={props.proposalHashList}
+            openUpdateContent={props.openUpdateContent}
+          />
+        </div>
+      ))}
 
       {/* The following map function is maybe only for insurer!-->
       {props.availableContracts.map((item) => (

@@ -76,6 +76,16 @@ def getJsonContent(jsonFile):
 def getCustomerAddress():
     return getUserAddress()
 
+############################################
+@app.route('/updateFileHash/<old_hash>/<new_hash>')
+def updateFileHash(old_hash, new_hash):
+    try:
+        update_file_hash(getConnection(), old_hash, new_hash)
+        message = "The File hash was updated successfully."
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 @app.route('/paySecurity/<ether>')
 def paySecurity(ether):
     if getSc() == 0:
@@ -183,6 +193,16 @@ def getLogContent(hashOfLog):
         message = transform_error_message(e)
     return message
 
+##########################################
+@app.route('/getLogContent2', methods=['POST'])
+def getLogContent2():
+    try:
+        hashOfLog = request.get_json()
+        message = get_log_data(getConnection(), hashOfLog)
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 
 @app.route('/acceptCounterOffer/<id>')
 def acceptCounterOffer(id):
@@ -211,6 +231,28 @@ def resolveDispute(id):
         message = transform_error_message(e)
     return message
 
+########################################
+@app.route('/deleteUpdateContract/<new_hash>')
+def deleteUpdateContract(new_hash):
+    try:
+        remove_contract_from_db_with_hash(getConnection(), new_hash)
+        message = "The update request was deleted successfully."
+    except Exception as e:
+        message = transform_error_message(e)
+        print(message)
+    return message
+
+#######################################
+@app.route('/deleteOldContract/<old_hash>')
+def deleteOldContract(old_hash):
+    try:
+        remove_contract_from_db_with_hash(getConnection(), old_hash)
+        message = "The old contract was deleted."
+        print(message)
+    except Exception as e:
+        message = transform_error_message(e)
+        print(message)
+    return message
 
 if __name__=='__main__':
     app.run(port=5001, debug=True)

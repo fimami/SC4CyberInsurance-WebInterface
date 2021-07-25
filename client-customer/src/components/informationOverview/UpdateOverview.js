@@ -97,10 +97,10 @@ function UpdateOverview(props) {
 
   const [updateMessage, setUpdateMessage] = useState("");
 
-  const url = "http://127.0.0.1:5000";
+  const url = "http://127.0.0.1:5001";
 
   const checkProposal = () => {
-    const jsonHash = JSON.stringify(props.selectedUpdateHash);
+    const jsonHash = JSON.stringify(props.selectedContract.jsonHash);
     console.log(jsonHash);
 
     axios
@@ -116,32 +116,14 @@ function UpdateOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  const agreeToUpdateContract = () => {
-    axios
-      .get(`${url}/agreeToUpdateContract`)
-      .then((response) => {
-        console.log(response.data);
-        setUpdateMessage(response.data);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
-
-  const declineToUpdateContract = () => {
-    axios
-      .get(`${url}/declineToUpdateContract`)
-      .then((response) => {
-        console.log(response.data);
-        setUpdateMessage(response.data);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
-
   useEffect(() => {
     checkProposal();
   }, []);
 
   return (
     <div>
+      <button onClick={props.closeInfoOrReport}>Close Overview</button>
+      <br />
       <div>
         <div style={{ fontSize: "20px", textDecoration: "underline" }}>
           Business Information
@@ -477,25 +459,6 @@ function UpdateOverview(props) {
           </div>
         ))}
       </div>
-      {updateMessage}
-      <span>
-        <button
-          onClick={agreeToUpdateContract}
-          style={{
-            marginRight: "5vmax",
-            backgroundColor: "green",
-            color: "white",
-          }}
-        >
-          Accept Update Request
-        </button>
-        <button
-          onClick={declineToUpdateContract}
-          style={{ backgroundColor: "red", color: "white" }}
-        >
-          Decline Update Request
-        </button>
-      </span>
     </div>
   );
 }

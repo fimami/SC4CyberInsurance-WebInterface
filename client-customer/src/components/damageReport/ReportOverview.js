@@ -9,7 +9,7 @@ function ReportOverview(props) {
     const url = "http://127.0.0.1:5001";
 
     axios
-      .post(`${url}/getLogfileContent`, logfileHash, {
+      .post(`${url}/getLogContent2`, logfileHash, {
         headers: {
           "Content-Type": "application/json",
         },

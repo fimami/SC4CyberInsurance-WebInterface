@@ -633,7 +633,7 @@ function ContractInformationOverview(props) {
           <div className={styles.update}>
             <UpdateOverview
               selectedUpdateHash={props.selectedUpdateHash}
-              contractInformation={contractInformation}
+              
             />
           </div>
         ) : (

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReportItem from "./ReportItem";
 
 function ReportList(props) {
-  const [useReportMessage, setUseReportMessage] = useState("");
+  // const [useReportMessage, setUseReportMessage] = useState("");
 
   if (!props.newDamageReports.length) {
     return null;
@@ -22,7 +22,7 @@ function ReportList(props) {
             showDamageIsSelected={props.showDamageIsSelected}
             companyName={props.availableContracts[0].companyName}
             jsonHash={props.availableContracts[0].jsonHash}
-            useReportMessage={useReportMessage}
+            // useReportMessage={useReportMessage}
             openReportOverview={props.openReportOverview}
             setSelectedReport={props.setSelectedReport}
           />

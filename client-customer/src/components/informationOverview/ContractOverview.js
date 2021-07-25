@@ -140,7 +140,7 @@ function ContractOverview(props) {
   };
 
   const getContractInformation = () => {
-    const jsonHashString = JSON.stringify(props.availableContracts[0].jsonHash);
+    const jsonHashString = JSON.stringify(props.selectedContract.jsonHash);
     console.log(jsonHashString);
 
     axios
@@ -293,11 +293,11 @@ function ContractOverview(props) {
         </button>
         <div style={{ color: "green" }}>
           Contract Hash:{" "}
-          {props.availableContracts[0].jsonHash}
+          {props.selectedContract.jsonHash}
         </div>
         <div style={{color: "red"}}>
           Contract Address:{" "}
-          {props.availableContracts[0].contractAddress}
+          {props.selectedContract.contractAddress}
         </div>
         <br />
         <UpdateForm

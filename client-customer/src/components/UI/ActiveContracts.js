@@ -33,6 +33,10 @@ function ActiveContracts(props) {
           // showContractIsUsed={props.showContractIsUsed}
           // setShowContractIsUsed={props.setShowContractIsUsed}
           openContractInfo={props.openContractInfo}
+          setSelectedContract={props.setSelectedContract}
+          setProposalHashList={props.setProposalHashList}
+          proposalHashList={props.proposalHashList}
+          openUpdateContent={props.openUpdateContent}
         />
       </Card>
     </div>

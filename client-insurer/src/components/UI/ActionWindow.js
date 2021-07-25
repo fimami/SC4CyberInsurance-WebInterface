@@ -60,7 +60,7 @@ function ActionWindow(props) {
         {props.showDamageReport && (
           <div>
             <ReportOverview
-              // availableContracts={props.availableContracts}
+              availableContracts={props.availableContracts}
               closeInfoOrReport={props.closeInfoOrReport}
               selectedReport={props.selectedReport}
             />

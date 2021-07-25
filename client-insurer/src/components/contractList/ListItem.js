@@ -71,7 +71,7 @@ function ListItem(props) {
         },
       })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         setProposalDict(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -90,7 +90,7 @@ function ListItem(props) {
       // setCompanyName(props.companyName);
       // setJsonHash(props.jsonHash);
       getNewProposalByHash();
-    }, 4001);
+    }, 10000);
   }, []);
 
   return (

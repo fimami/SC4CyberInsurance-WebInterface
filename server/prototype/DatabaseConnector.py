@@ -216,3 +216,10 @@ def remove_contract_from_db_with_hash(conn, file_hash):
     c.execute("DELETE FROM CoverageInformation WHERE json_hash = :hash",{'hash': file_hash})
     c.execute("DELETE FROM DeployInformation WHERE json_hash = :hash",{'hash': file_hash})
     conn.commit()
+
+################################################
+def remove_old_content_after_update(conn, old_hash):
+    c = conn.cursor()
+    c.execute("DELETE FROM JsonContent WHERE json_hash = :hash",{'hash': old_hash})
+    c.execute("DELETE FROM CoverageInformation WHERE json_hash = :hash",{'hash': old_hash})
+    conn.commit()

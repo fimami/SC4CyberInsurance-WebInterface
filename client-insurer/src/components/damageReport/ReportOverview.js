@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 
 function ReportOverview(props) {
   const [logfileContent, setLogfileContent] = useState("");
+
+  const url = "http://127.0.0.1:5000";
+
   const getLogfileContent = () => {
     const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
-
-    const url = "http://127.0.0.1:5000";
+    console.log(logfileHash);
 
     axios
-      .post(`${url}/getLogfileContent`, logfileHash, {
+      .post(`${url}/getLogFileContent2`, logfileHash, {
         headers: {
           "Content-Type": "application/json",
         },

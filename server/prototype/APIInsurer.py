@@ -117,6 +117,17 @@ def getLogFileContent(logFileHash):
         message = transform_error_message(e)
     return message
 
+###############################################
+@app.route('/getLogFileContent2', methods=['POST'])
+def getLogFileContent2():
+    try:
+        logfilehash = request.get_json()
+        print(logfilehash)
+        logfilecontent = requests.get('http://localhost:5001/getLogContent/' + logfilehash).content.decode('UTF-8')
+    except Exception as e:
+        logfilecontent = transform_error_message(e)
+    return logfilecontent
+
 if __name__=='__main__':
     app.run(port=5000, debug=True)
 

@@ -1,6 +1,3 @@
-import axios from "axios";
-import { useState } from "react";
-
 function ReportItem(props) {
   // const [logfileContent, setLogfileContent] = useState("");
 

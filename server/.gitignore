@@ -2,7 +2,9 @@
 
 .vscode
 
-prototype\__pycache__
+server/prototype/__pycache__/
+
+prototype\__pycache__\
 
 venv
 

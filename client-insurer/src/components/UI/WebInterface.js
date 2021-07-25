@@ -45,36 +45,62 @@ function WebInterface() {
       .get(`${url}/getAvailableContracts2`)
       .then((response) => {
         // console.log(response);
-        setAvailableContracts(response.data);
+        if (response.data.length) {
+          setAvailableContracts(response.data);
+        }
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
 
   const getNewDamagesOfHash = () => {
-    const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
-    axios
-      .post(`${url}/getNewDamagesOfHash`, jsonHash, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        // console.log(res);
-        
-        //TODO: check the following -->
-        if (res.data.length) {
-          setNewDamageReports(res.data);
-        }
-        // console.log(newDamageReports);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
+    const listOfAllHashes = [];
+    for (var i = 0; i < availableContracts.length; i++) {
+      listOfAllHashes.push(availableContracts[i].jsonHash);
+    }
+    console.log(listOfAllHashes);
+    if (listOfAllHashes.length) {
+      listOfAllHashes.map((hash) => {
+        const jsonHash = JSON.stringify(hash);
+        axios
+          .post(`${url}/getNewDamagesOfHash`, jsonHash, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            console.log(res.data); //NoneType Object is not suscriptable
+            setNewDamageReports(res.data);
+            console.log(newDamageReports);
+          })
+          .catch((error) => console.error(`Error: ${error}`));
+      });
+    } else {
+      setNewDamageReports([]);
+    }
+    //   const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
+    //   axios
+    //     .post(`${url}/getNewDamagesOfHash`, jsonHash, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       // console.log(res);
+
+    //       //TODO: check the following -->
+    //       if (res.data.length) {
+    //         setNewDamageReports(res.data);
+    //       }
+    //       // console.log(newDamageReports);
+    //     })
+    //     .catch((error) => console.error(`Error: ${error}`));
   };
 
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
       // console.log(availableContracts);
-    }, 6000);
+    }, 10000);
   }, []);
 
   useEffect(() => {

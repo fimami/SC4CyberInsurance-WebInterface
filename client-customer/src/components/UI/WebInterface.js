@@ -9,11 +9,17 @@ function WebInterface() {
   //sets if the contract information is shown
   const [showContractInfo, setShowContractInfo] = useState(false);
 
+  const [showUpdateContent, setShowUpdateContent] = useState(false);
+
   const [availableContracts, setAvailableContracts] = useState([]);
 
   const [newDamageReports, setNewDamageReports] = useState([]);
 
   const [selectedReport, setSelectedReport] = useState({});
+
+  const [selectedContract, setSelectedContract] = useState({});
+
+  const [proposalHashList, setProposalHashList] = useState([]);
 
   // const [useContractHash, setUseContractHash] = useState("");
 
@@ -46,6 +52,19 @@ function WebInterface() {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
+  const getAllNewDamages = () => {
+    axios
+      .get(`${url}/getAllNewDamages`)
+      .then((res) => {
+        console.log(res);
+        if (Array.isArray(res.data)) {
+          setNewDamageReports(res.data);
+        }
+        // console.log(newDamageReports);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
   const getNewDamagesOfHash = () => {
     const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
     axios
@@ -66,12 +85,12 @@ function WebInterface() {
     setInterval(() => {
       getAvailableContracts();
       // console.log(availableContracts);
-    }, 5000);
+    }, 10000);
   }, []);
 
   useEffect(() => {
     if (availableContracts.length && Array.isArray(availableContracts)) {
-      getNewDamagesOfHash();
+      getAllNewDamages();
     }
   }, [availableContracts]);
 
@@ -105,6 +124,17 @@ function WebInterface() {
     setIsFormOpen(true);
   }
 
+  function openUpdateContent() {
+    setShowContractInfo(false);
+    setIsFormOpen(false);
+    setShowDamageReport(false);
+    setShowCounterOffer(false);
+    setShowFormButton(false);
+    setShowContractIsUsed(true);
+    setShowReportForm(false);
+    setShowUpdateContent(true);
+  }
+
   // function formButtonNotVisible() {
   //   setShowFormButton(false);
   // }
@@ -128,6 +158,7 @@ function WebInterface() {
     setShowFormButton(false);
     setShowContractIsUsed(true);
     setShowReportForm(false);
+    setShowUpdateContent(false);
   }
 
   function closeInfoOrReport() {
@@ -138,6 +169,7 @@ function WebInterface() {
     setShowFormButton(true);
     setShowContractIsUsed(false);
     setShowReportForm(false);
+    setShowUpdateContent(false);
   }
 
   return (
@@ -173,6 +205,8 @@ function WebInterface() {
         closeInfoOrReport={closeInfoOrReport}
         newDamageReports={newDamageReports}
         selectedReport={selectedReport}
+        selectedContract={selectedContract}
+        showUpdateContent={showUpdateContent}
       />
       <ActiveContracts
         // onSelect={handleContractInfoChange}
@@ -185,6 +219,10 @@ function WebInterface() {
         // showContractIsUsed={showContractIsUsed}
         // setShowContractIsUsed={setShowContractIsUsed}
         openContractInfo={openContractInfo}
+        setSelectedContract={setSelectedContract}
+        setProposalHashList={setProposalHashList}
+        proposalHashList={proposalHashList}
+        openUpdateContent={openUpdateContent}
       />
       {/* <div>{useContractHash}</div> */}
       {/* <div>{JSON.stringify(availableContracts)}</div> */}
