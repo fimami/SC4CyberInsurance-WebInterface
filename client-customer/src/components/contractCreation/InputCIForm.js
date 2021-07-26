@@ -229,8 +229,8 @@ function InputCIForm() {
     ],
   });
 
-  const [premiumResponse, setPremiumResponse] = useState("");
-  const [showPremium, setShowPremium] = useState(false);
+  // const [premiumResponse, setPremiumResponse] = useState("");
+  // const [showPremium, setShowPremium] = useState(false);
 
   const [showCreated, setShowCreated] = useState(false);
   const [createdResponse, setCreatedResponse] = useState("");
@@ -518,7 +518,7 @@ function InputCIForm() {
     const json_content = JSON.stringify(contractInformation);
     console.log(json_content);
     axios
-      .post("http://127.0.0.1:5001/createContract2", json_content, {
+      .post("http://127.0.0.1:5001/createPendingContract", json_content, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -529,27 +529,27 @@ function InputCIForm() {
         setShowCreated(true);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
-  const calculatePremium = (e) => {
-    const json_content = JSON.stringify(contractInformation);
-    axios
-      .post("http://127.0.0.1:5001/calculatePremium2", json_content, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setPremiumResponse(res.data);
-        setShowPremium(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const calculatePremium = (e) => {
+  //   const json_content = JSON.stringify(contractInformation);
+  //   axios
+  //     .post("http://127.0.0.1:5001/calculatePremium2", json_content, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setPremiumResponse(res.data);
+  //       setShowPremium(true);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <div>
@@ -1257,12 +1257,12 @@ function InputCIForm() {
       <br />
       <div style={{ margin: "2px" }}>{showCreated && createdResponse}</div>
       <button style={{ marginRight: "5rem" }} type="button" onClick={submit}>
-        Submit
+        Send Contract Request
       </button>
-      <div style={{ margin: "2px" }}>{showPremium && premiumResponse}</div>
+      {/* <div style={{ margin: "2px" }}>{showPremium && premiumResponse}</div>
       <button type="button" onClick={calculatePremium}>
         Calculate Premium
-      </button>
+      </button> */}
     </div>
   );
 }

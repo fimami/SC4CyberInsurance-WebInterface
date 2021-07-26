@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ActionWindow from "./ActionWindow";
 import ActiveContracts from "./ActiveContracts";
 import Counteroffers from "./Counteroffers";
+import PendingContracts from "./PendingContracts";
 import ReportedDamages from "./ReportedDamages";
 
 function WebInterface() {
@@ -11,7 +12,11 @@ function WebInterface() {
 
   const [showUpdateContent, setShowUpdateContent] = useState(false);
 
+  const [showPendingInfo, setShowPendingInfo] = useState(false);
+
   const [availableContracts, setAvailableContracts] = useState([]);
+
+  const [pendingContracts, setPendingContracts] = useState([]);
 
   const [newDamageReports, setNewDamageReports] = useState([]);
 
@@ -34,6 +39,8 @@ function WebInterface() {
 
   const [showCounterOffer, setShowCounterOffer] = useState(false);
 
+  const [selectedPendingContract, setSelectedPendingContract] = useState({});
+
   //
   const [showContractIsUsed, setShowContractIsUsed] = useState(false);
 
@@ -48,6 +55,16 @@ function WebInterface() {
       .then((response) => {
         // console.log(response);
         setAvailableContracts(response.data);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
+  const getPendingContracts = () => {
+    axios
+      .get(`${url}/getPendingContracts`)
+      .then((res) => {
+        console.log(res);
+        setPendingContracts(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -84,6 +101,7 @@ function WebInterface() {
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
+      getPendingContracts();
       // console.log(availableContracts);
     }, 10000);
   }, []);
@@ -133,6 +151,7 @@ function WebInterface() {
     setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowUpdateContent(true);
+    setShowPendingInfo(false);
   }
 
   // function formButtonNotVisible() {
@@ -148,6 +167,7 @@ function WebInterface() {
     setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowCounterOffer(false);
+    setShowPendingInfo(false);
   }
 
   function openContractInfo() {
@@ -159,6 +179,7 @@ function WebInterface() {
     setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowUpdateContent(false);
+    setShowPendingInfo(false);
   }
 
   function closeInfoOrReport() {
@@ -170,6 +191,19 @@ function WebInterface() {
     setShowContractIsUsed(false);
     setShowReportForm(false);
     setShowUpdateContent(false);
+    setShowPendingInfo(false);
+  }
+
+  function openPendingInfo() {
+    setShowContractInfo(false);
+    setIsFormOpen(false);
+    setShowDamageReport(false);
+    setShowCounterOffer(false);
+    setShowFormButton(false);
+    setShowContractIsUsed(false);
+    setShowReportForm(false);
+    setShowUpdateContent(false);
+    setShowPendingInfo(true);
   }
 
   return (
@@ -224,6 +258,11 @@ function WebInterface() {
         setProposalHashList={setProposalHashList}
         proposalHashList={proposalHashList}
         openUpdateContent={openUpdateContent}
+      />
+      <PendingContracts
+        pendingContracts={pendingContracts}
+        openPendingInfo={openPendingInfo}
+        setSelectedPendingContract={setSelectedPendingContract}
       />
       {/* <div>{useContractHash}</div> */}
       {/* <div>{JSON.stringify(availableContracts)}</div> */}

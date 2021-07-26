@@ -113,6 +113,13 @@ def get_all_requests_in_db(conn):
     allPendingContracts = c.fetchall()
     return allPendingContracts
 
+######################################
+def get_request_content_with_hash(conn, hash):
+    c = conn.cursor()
+    c.execute("SELECT json_content FROM PendingContracts WHERE json_hash= :hash", {'hash': hash})
+    tuple = c.fetchone()
+    return tuple[0]
+
 def get_coverages_of_contract_with_hash(conn, file_hash):
     c = conn.cursor()
     c.execute("SELECT customer_name, cost, attack, coverage_ratio, own_risk, max_indemnification"

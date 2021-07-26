@@ -68,6 +68,20 @@ def createContract2():
         response = str(e)
     return response
 
+#########################################TODO: CHECK THIS
+@app.route('/createPendingContract', methods=['POST'])
+def createPendingContract():
+    try:
+        rawdata = request.data
+        requestData = request.get_json()
+        json_content = json.dumps(requestData, indent=8)
+        json_hash = get_hash_of_string(json_content)
+        response = requests.post(url='http://localhost:5000/storePendingContract', data=rawdata).content.decode('UTF-8')
+        insert_pending_json_file_content(getConnection(), json_content, json_hash)
+    except Exception as e:
+        response = str(e)
+    return response
+
 @app.route('/getJsonContent/<jsonFile>')
 def getJsonContent(jsonFile):
     return read_file(jsonFile)

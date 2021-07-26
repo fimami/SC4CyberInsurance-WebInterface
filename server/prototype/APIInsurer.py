@@ -75,6 +75,20 @@ def deployContract2():
         print("message: " + message)
     return message
 
+##############################################TODO: CHECK THIS
+@app.route('/storePendingContract', methods=['POST'])
+def storePendingContract():
+    try:
+        rawdata = request.data
+        json1 = rawdata.decode('utf8')
+        json_dict = json.loads(json1)
+        json_content = json.dumps(json_dict, indent=8)
+        json_hash = get_hash_of_string(json_content)
+        insert_pending_json_file_content(getConnection(), json_content, json_hash)
+        message = "Pending contract was stored on relevant databases."
+    except Exception as e:
+        message = "Error appeared during: " + str(e)
+    return message
 
 @app.route('/getContractAddress/<jsonHash>')
 def getContractAddress(jsonHash):

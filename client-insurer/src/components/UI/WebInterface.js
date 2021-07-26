@@ -12,6 +12,12 @@ function WebInterface() {
 
   const [availableContracts, setAvailableContracts] = useState([]);
 
+  const [showPendingInfo, setShowPendingInfo] = useState(false);
+
+  const [pendingContracts, setPendingContracts] = useState([]);
+
+  const [selectedPendingContract, setSelectedPendingContract] = useState({});
+
   const [newDamageReports, setNewDamageReports] = useState([]);
 
   const [selectedReport, setSelectedReport] = useState({});
@@ -50,6 +56,16 @@ function WebInterface() {
         if (response.data.length) {
           setAvailableContracts(response.data);
         }
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
+  const getPendingContracts = () => {
+    axios
+      .get(`${url}/getPendingContracts`)
+      .then((res) => {
+        console.log(res);
+        setPendingContracts(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -101,6 +117,7 @@ function WebInterface() {
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
+      getPendingContracts();
       // console.log(availableContracts);
     }, 10000);
   }, []);
@@ -154,6 +171,7 @@ function WebInterface() {
     // setShowContractIsUsed(true);
     // setShowReportForm(false);
     setShowCounterOffer(false);
+    setShowPendingInfo(false);
   }
 
   function openContractInfo() {
@@ -164,6 +182,7 @@ function WebInterface() {
     // setShowFormButton(false);
     // setShowContractIsUsed(true);
     // setShowReportForm(false);
+    setShowPendingInfo(false);
   }
 
   function closeInfoOrReport() {
@@ -174,6 +193,14 @@ function WebInterface() {
     // setShowFormButton(true);
     // setShowContractIsUsed(false);
     // setShowReportForm(false);
+    setShowPendingInfo(false);
+  }
+
+  function openPendingInfo() {
+    setShowContractInfo(false);
+    setShowDamageReport(false);
+    setShowCounterOffer(false);
+    setShowPendingInfo(true);
   }
 
   return (
@@ -229,8 +256,10 @@ function WebInterface() {
         setSelectedUpdateHash={setSelectedUpdateHash}
         selectedReport={selectedReport}
       />
-      <PendingContracts
-
+      <PendingContracts 
+        pendingContracts={pendingContracts}
+        openPendingInfo={openPendingInfo}
+        setSelectedPendingContract={setSelectedPendingContract}
       />
       {/* <div>{useContractHash}</div> */}
       {/* <div>{JSON.stringify(availableContracts)}</div> */}

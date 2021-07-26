@@ -21,6 +21,32 @@ insurer = w3.eth.accounts[0]
 customer = w3.eth.accounts[1]
 
 ####################################
+@app.route('/getPendingContracts')
+def getPendingContracts():
+    try:
+        tuples = get_all_requests_in_db(getConnection())
+        request_list = []
+        for tuple in tuples:
+            json_tuple = json.loads(tuple[1])
+            companyName = json_tuple['business_information']['companyName']
+            request_list.append({'companyName':str(companyName), 'jsonHash':str(tuple[0])})
+        request_list_json = json.dumps(request_list)
+    except Exception as e:
+        request_list_json = "Error appeared during processing: \n" + str(e)
+    return request_list_json
+
+#####################################
+@app.route('/getPendingContractInformation', methods=['POST'])
+def getPendingContractInformation():
+    try:
+        jsonHash = request.get_json()
+        message = get_request_content_with_hash(getConnection(), jsonHash)
+    except Exception as e:
+        message = "Error appeared during processing: \n" + str(e)
+        print("message: " + message)
+    return message
+
+####################################
 @app.route('/getContractInformation', methods=['POST'])
 def getContractInformation():
     try:

@@ -107,6 +107,24 @@
   grid-column-start: 4;
   grid-column-end: 4;
   grid-row-start: 1;
+  grid-row-end: 3;
+  position: relative;
+  /* overflow-y: scroll;
+  background: rgb(243, 243, 243);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26); */
+  /* border-radius: 10px; */
+  margin: 5px;
+  padding-left: 1vmax;
+  padding-right: 1vmax;
+  /* width: 400px; */
+}
+
+.pending-contracts {
+  /* border: 2px solid #000 !important;
+  border-radius: 2px; */
+  grid-column-start: 4;
+  grid-column-end: 4;
+  grid-row-start: 4;
   grid-row-end: 5;
   position: relative;
   /* overflow-y: scroll;
