@@ -17,7 +17,7 @@ function ActiveContracts(props) {
           paddingLeft: "1vmax",
           paddingRight: "1vmax",
           overflowY: "scroll",
-          height: "90vh",
+          height: "44vh",
           overflowX: "hidden",
         }}
       >
@@ -37,6 +37,7 @@ function ActiveContracts(props) {
             // setUsedContractHash={props.setUsedContractHash}
             setSelectedContract={props.setSelectedContract}
             setSelectedUpdateHash={props.setSelectedUpdateHash}
+            selectedReport={props.selectedReport}
           />
         )}
       </Card>

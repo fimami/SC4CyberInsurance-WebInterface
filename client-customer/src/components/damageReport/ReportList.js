@@ -25,6 +25,7 @@ function ReportList(props) {
             // useReportMessage={useReportMessage}
             openReportOverview={props.openReportOverview}
             setSelectedReport={props.setSelectedReport}
+            proposalHashList={props.proposalHashList}
           />
         </div>
       ))}

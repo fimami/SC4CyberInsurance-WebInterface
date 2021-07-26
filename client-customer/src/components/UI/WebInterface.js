@@ -184,6 +184,7 @@ function WebInterface() {
         // setShowDamageReport={setShowDamageReport}
         openReportOverview={openReportOverview}
         setSelectedReport={setSelectedReport}
+        proposalHashList={proposalHashList}
       />
       <Counteroffers />
       <ActionWindow

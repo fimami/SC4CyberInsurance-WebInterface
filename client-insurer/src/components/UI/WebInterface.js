@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ActionWindow from "./ActionWindow";
 import ActiveContracts from "./ActiveContracts";
 import Counteroffers from "./Counteroffers";
+import PendingContracts from "./PendingContracts";
 import ReportedDamages from "./ReportedDamages";
 
 function WebInterface() {
@@ -44,7 +45,8 @@ function WebInterface() {
     axios
       .get(`${url}/getAvailableContracts2`)
       .then((response) => {
-        // console.log(response);
+        setAvailableContracts([]);
+        console.log(response);
         if (response.data.length) {
           setAvailableContracts(response.data);
         }
@@ -209,6 +211,7 @@ function WebInterface() {
         selectedReport={selectedReport}
         selectedContract={selectedContract}
         selectedUpdateHash={selectedUpdateHash}
+        setSelectedReport={setSelectedReport}
       />
       <ActiveContracts
         // onSelect={handleContractInfoChange}
@@ -224,6 +227,10 @@ function WebInterface() {
         // setUsedContractHash={setUsedContractHash}
         setSelectedContract={setSelectedContract}
         setSelectedUpdateHash={setSelectedUpdateHash}
+        selectedReport={selectedReport}
+      />
+      <PendingContracts
+
       />
       {/* <div>{useContractHash}</div> */}
       {/* <div>{JSON.stringify(availableContracts)}</div> */}

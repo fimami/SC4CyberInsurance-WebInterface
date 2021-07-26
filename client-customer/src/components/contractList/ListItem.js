@@ -50,7 +50,7 @@ function ListItem(props) {
     axios
       .get(`${url}/checkForNewProposal`)
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setUpdateStatus(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -87,10 +87,10 @@ function ListItem(props) {
 
   //TODO: change the following function (read WARNING)!
   useEffect(() => {
-    setInterval(() => {
-      checkForNewProposal();
-      getNewProposalByHash();
-    }, 10000);
+    // setInterval(() => {
+    checkForNewProposal();
+    getNewProposalByHash();
+    // }, 10000);
   }, []);
 
   if (props.proposalHashList.includes(props.jsonHash)) {
@@ -115,29 +115,29 @@ function ListItem(props) {
       )} */}
       </>
     );
+  } else {
+    return (
+      <>
+        <button
+          style={{ marginTop: "30px", padding: "20px" }}
+          onClick={useContract}
+        >
+          <div>Company Name: {props.companyName}</div>
+          <br />
+          <br />
+          <div>{updateStatus}</div>
+          {/* <div>{'"' + jsonHash.toString() + '"'}</div>
+          <div>{props.useContractHash.toString()}</div>
+          <div>{props.showContractInfo.toString()}</div> */}
+        </button>
+        {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
+        {/* {props.useContractHash === '"' + jsonHash + '"' && */}
+        {/* {props.showContractIsUsed && (
+          <div style={{ fontSize: "10px" }}>{props.useContractMessage}</div>
+        )} */}
+      </>
+    );
   }
-
-  return (
-    <>
-      <button
-        style={{ marginTop: "30px", padding: "20px" }}
-        onClick={useContract}
-      >
-        <div>Company Name: {props.companyName}</div>
-        <br />
-        <br />
-        <div>{updateStatus}</div>
-        {/* <div>{'"' + jsonHash.toString() + '"'}</div>
-        <div>{props.useContractHash.toString()}</div>
-        <div>{props.showContractInfo.toString()}</div> */}
-      </button>
-      {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
-      {/* {props.useContractHash === '"' + jsonHash + '"' && */}
-      {/* {props.showContractIsUsed && (
-        <div style={{ fontSize: "10px" }}>{props.useContractMessage}</div>
-      )} */}
-    </>
-  );
 }
 
 export default ListItem;

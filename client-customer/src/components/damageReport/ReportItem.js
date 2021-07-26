@@ -29,21 +29,24 @@ function ReportItem(props) {
       // logfileContent: logfileContent,
     });
   }
-
-  return (
-    <>
-      <button
-        onClick={openReportSelectHash}
-        style={{ padding: "10px", marginBottom: "10px", textAlign: "left" }}
-      >
-        <div>Company: {props.companyName}</div>
-        <div>Amount (EUR): {props.amount}</div>
-        <div>Status: New</div>
-      </button>
-      <br />
-      <br />
-    </>
-  );
+  if (props.proposalHashList.includes(props.contractHash)) {
+    return null;
+  } else {
+    return (
+      <>
+        <button
+          onClick={openReportSelectHash}
+          style={{ padding: "10px", marginBottom: "10px", textAlign: "left" }}
+        >
+          <div>Company: {props.companyName}</div>
+          <div>Amount (EUR): {props.amount}</div>
+          <div>Status: New</div>
+        </button>
+        <br />
+        <br />
+      </>
+    );
+  }
 }
 
 export default ReportItem;

@@ -22,6 +22,11 @@ function ReportOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
+  function closeReport() {
+    props.closeInfoOrReport();
+    props.setSelectedReport({});
+  }
+
   useEffect(() => {
     getLogfileContent();
   }, []);
@@ -30,7 +35,7 @@ function ReportOverview(props) {
     <div>
       <button
         style={{ marginBottom: "15px" }}
-        onClick={props.closeInfoOrReport}
+        onClick={closeReport}
       >
         Close Report Overview
       </button>

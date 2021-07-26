@@ -86,19 +86,16 @@ function ListItem(props) {
   //TODO: change the following function (read WARNING)!
   //TODO: maybe remove the setInterval() ?
   useEffect(() => {
-    setInterval(() => {
-      // setCompanyName(props.companyName);
-      // setJsonHash(props.jsonHash);
-      getNewProposalByHash();
-    }, 10000);
+    // setInterval(() => {
+    // setCompanyName(props.companyName);
+    // setJsonHash(props.jsonHash);
+    getNewProposalByHash();
+    // }, 10000);
   }, []);
 
   return (
     <>
-      <button
-        style={{ marginTop: "30px", padding: "20px" }}
-        onClick={useContract}
-      >
+      <button style={{ padding: "20px" }} onClick={useContract}>
         <div>Company Name: {props.companyName}</div>
         <br />
         <br />
@@ -112,6 +109,9 @@ function ListItem(props) {
         <div>{props.useContractHash.toString()}</div>
         <div>{props.showContractInfo.toString()}</div> */}
       </button>
+      {props.selectedReport.contractHash == props.jsonHash && (
+        <div style={{ fontSize: "10px" }}>This contract was selected.</div>
+      )}
       {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
       {/* {props.useContractHash === '"' + jsonHash + '"' && */}
       {/* {props.showContractIsUsed && (

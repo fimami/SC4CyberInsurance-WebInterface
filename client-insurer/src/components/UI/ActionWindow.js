@@ -63,6 +63,7 @@ function ActionWindow(props) {
               availableContracts={props.availableContracts}
               closeInfoOrReport={props.closeInfoOrReport}
               selectedReport={props.selectedReport}
+              setSelectedReport={props.setSelectedReport}
             />
           </div>
         )}

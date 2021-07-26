@@ -22,6 +22,7 @@ function ReportedDamages(props) {
           setShowDamageIsSelected={props.setShowDamageIsSelected}
           newDamageReports={props.newDamageReports}
           setSelectedReport={props.setSelectedReport}
+          proposalHashList={props.proposalHashList}
         />
       </Card>
     </div>

@@ -24,8 +24,8 @@ function ReportList(props) {
             logfileHash={props.newDamageReports[i].logfileHash}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             showDamageIsSelected={props.showDamageIsSelected}
-            companyName={props.availableContracts[0].companyName}
-            jsonHash={props.availableContracts[0].jsonHash}
+            // companyName={props.availableContracts[0].companyName}
+            // jsonHash={props.availableContracts[0].jsonHash}
             // useReportMessage={useReportMessage}
             openReportOverview={props.openReportOverview}
             setSelectedReport={props.setSelectedReport}

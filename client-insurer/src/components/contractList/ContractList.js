@@ -85,6 +85,7 @@ function ContractList(props) {
           // setUsedContractHash={props.setUsedContractHash}
           setSelectedContract={props.setSelectedContract}
           setSelectedUpdateHash={props.setSelectedUpdateHash}
+          selectedReport={props.selectedReport}
         />
         </div>
       ))}

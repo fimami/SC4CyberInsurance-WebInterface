@@ -111,7 +111,10 @@ function UpdateOverview(props) {
       })
       .then((response) => {
         console.log(response.data);
-        setUpdateContent(response.data);
+        const fetchedData = response.data;
+        if (typeof fetchedData === "object" && fetchedData !== null) {
+          setUpdateContent(response.data);
+        }
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
