@@ -82,6 +82,19 @@ def createPendingContract():
         response = str(e)
     return response
 
+#########################################################
+@app.route('/deletePendingContract/<jsonHash>')
+def deletePendingContract2(jsonHash):
+    try:
+        # rawdata = request.data
+        # jsonHash1 = rawdata.decode('utf8')
+        # jsonHash = jsonHash1.replace('"', '')
+        delete_pending_json_with_hash(getConnection(), jsonHash)
+        message = "Pending Contract was deleted."
+    except Exception as e:
+        message = str(e)
+    return message
+
 @app.route('/getJsonContent/<jsonFile>')
 def getJsonContent(jsonFile):
     return read_file(jsonFile)

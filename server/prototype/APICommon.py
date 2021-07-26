@@ -118,7 +118,7 @@ def calculatePremium2():
     json_content = json.dumps(data, indent=8)
     premium_pre = calculate_premium(json_content)
     premium = round(premium_pre)
-    return "The Premium of this contract would be: " + str(premium) + " euro per period."
+    return str(premium)
 
 @app.route('/getCoverage')
 @app.route('/getCoverage/<jsonHash>')

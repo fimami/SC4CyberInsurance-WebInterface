@@ -239,6 +239,8 @@ function WebInterface() {
         selectedContract={selectedContract}
         selectedUpdateHash={selectedUpdateHash}
         setSelectedReport={setSelectedReport}
+        showPendingInfo={showPendingInfo}
+        selectedPendingContract={selectedPendingContract}
       />
       <ActiveContracts
         // onSelect={handleContractInfoChange}

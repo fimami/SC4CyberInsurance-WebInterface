@@ -230,3 +230,9 @@ def remove_old_content_after_update(conn, old_hash):
     c.execute("DELETE FROM JsonContent WHERE json_hash = :hash",{'hash': old_hash})
     c.execute("DELETE FROM CoverageInformation WHERE json_hash = :hash",{'hash': old_hash})
     conn.commit()
+
+################################################
+def delete_pending_json_with_hash(conn, hash):
+    c = conn.cursor()
+    c.execute("DELETE FROM PendingContracts WHERE json_hash = :hash",{'hash': hash})
+    conn.commit()

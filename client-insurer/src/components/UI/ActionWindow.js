@@ -3,6 +3,7 @@ import { Card } from "@material-ui/core";
 import ReportForm from "../damageReport/ReportForm";
 import ReportOverview from "../damageReport/ReportOverview";
 import ContractInformationOverview from "../informationOverview/ContractInformationOverview";
+import PendingOverview from "../pendingRequests/PendingOverview";
 
 function ActionWindow(props) {
   // function clickReportDamage() {
@@ -66,6 +67,12 @@ function ActionWindow(props) {
               setSelectedReport={props.setSelectedReport}
             />
           </div>
+        )}
+        {props.showPendingInfo && (
+          <PendingOverview 
+            selectedPendingContract={props.selectedPendingContract}
+            closeInfoOrReport={props.closeInfoOrReport}
+          />
         )}
       </Card>
     </div>

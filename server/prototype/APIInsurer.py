@@ -75,7 +75,7 @@ def deployContract2():
         print("message: " + message)
     return message
 
-##############################################TODO: CHECK THIS
+##############################################TODO: CHECK THIS (NOT THE WAY TO GO)
 @app.route('/storePendingContract', methods=['POST'])
 def storePendingContract():
     try:
@@ -89,6 +89,21 @@ def storePendingContract():
     except Exception as e:
         message = "Error appeared during: " + str(e)
     return message
+
+##############################################
+@app.route('/deletePendingContract', methods=['POST'])
+def deletePendingContract():
+    try:
+        rawdata = request.data
+        jsonHash1 = rawdata.decode('utf8')
+        jsonHash = jsonHash1.replace('"', '')
+        print(jsonHash)
+        message = requests.get(url='http://localhost:5001/deletePendingContract/' + jsonHash).content.decode('UTF-8')
+        delete_pending_json_with_hash(getConnection(), jsonHash)
+    except Exception as e:
+        message = str(e)
+    return message
+
 
 @app.route('/getContractAddress/<jsonHash>')
 def getContractAddress(jsonHash):

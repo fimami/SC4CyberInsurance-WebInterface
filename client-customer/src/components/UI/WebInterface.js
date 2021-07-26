@@ -136,7 +136,7 @@ function WebInterface() {
 
   function openForm() {
     if (availableContracts.length) {
-      alert("There can be one contract at max.");
+      alert("There can be one contract at max. Please contact the insurer.");
       return;
     }
     setIsFormOpen(true);
@@ -242,6 +242,8 @@ function WebInterface() {
         selectedReport={selectedReport}
         selectedContract={selectedContract}
         showUpdateContent={showUpdateContent}
+        showPendingInfo={showPendingInfo}
+        selectedPendingContract={selectedPendingContract}
       />
       <ActiveContracts
         // onSelect={handleContractInfoChange}

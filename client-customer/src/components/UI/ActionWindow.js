@@ -4,6 +4,7 @@ import ContractOverview from "../informationOverview/ContractOverview";
 import ReportForm from "../damageReport/ReportForm";
 import ReportOverview from "../damageReport/ReportOverview";
 import UpdateOverview from "../informationOverview/UpdateOverview";
+import PendingOverview from "../pendingRequests/PendingOverview";
 
 function ActionWindow(props) {
   function clickReportDamage() {
@@ -59,7 +60,10 @@ function ActionWindow(props) {
         {!props.showContractInfo &&
           !props.showFormButton &&
           props.showUpdateContent && (
-            <UpdateOverview selectedContract={props.selectedContract} closeInfoOrReport={props.closeInfoOrReport}/>
+            <UpdateOverview
+              selectedContract={props.selectedContract}
+              closeInfoOrReport={props.closeInfoOrReport}
+            />
           )}
         {!props.showContractInfo && props.showReportForm && (
           <ReportForm closeReportForm={closeReportForm} />
@@ -72,6 +76,12 @@ function ActionWindow(props) {
               selectedReport={props.selectedReport}
             />
           </div>
+        )}
+        {props.showPendingInfo && (
+          <PendingOverview
+            selectedPendingContract={props.selectedPendingContract}
+            closeInfoOrReport={props.closeInfoOrReport}
+          />
         )}
       </Card>
     </div>
