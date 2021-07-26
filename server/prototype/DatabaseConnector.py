@@ -50,16 +50,18 @@ def create_contract_databases_if_not_exist(conn):
     c.execute("""
                     CREATE TABLE IF NOT EXISTS PendingContracts (
                         json_hash text,
-                        json_content text
+                        json_content text,
+                        status_pending text,
+                        premium_pending integer
                     )
                 """)
     conn.commit()
     
 ########################
-def insert_pending_json_file_content(conn, json_content_as_string, json_hash):
+def insert_pending_json_file_content(conn, json_content_as_string, json_hash, status, premium):
     c = conn.cursor()
-    c.execute("INSERT INTO PendingContracts VALUES (:hash, :content)",
-              {'hash': json_hash, 'content': json_content_as_string})
+    c.execute("INSERT INTO PendingContracts VALUES (:hash, :content, :status, :premium)",
+              {'hash': json_hash, 'content': json_content_as_string, 'status': status, 'premium': premium})
     conn.commit()
 
 def insert_json_file_content(conn, json_content_as_string, json_hash):
@@ -109,7 +111,7 @@ def insert_contract_information(conn, json_hash, contract_address, contract_abi)
 #####################################
 def get_all_requests_in_db(conn):
     c = conn.cursor()
-    c.execute("SELECT DISTINCT json_hash, json_content FROM PendingContracts")
+    c.execute("SELECT DISTINCT json_hash, json_content, status_pending, premium_pending FROM PendingContracts")
     allPendingContracts = c.fetchall()
     return allPendingContracts
 
@@ -215,6 +217,13 @@ def update_file_hash(conn, old_hash, new_hash):
     c = conn.cursor()
     c.execute("UPDATE DeployInformation SET json_hash = :newHash WHERE json_hash = :oldHash",
               {'newHash': new_hash, 'oldHash': old_hash})
+    conn.commit()
+
+######################################################
+def update_pending_contract(conn, jsonHash, status, premium):
+    c = conn.cursor()
+    c.execute("UPDATE PendingContracts SET status_pending = :status, premium_pending = :premium WHERE json_hash = :jsonHash",
+                {'status': status, 'premium': premium, 'jsonHash': jsonHash})
     conn.commit()
 
 def remove_contract_from_db_with_hash(conn, file_hash):

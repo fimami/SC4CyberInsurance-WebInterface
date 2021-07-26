@@ -76,10 +76,14 @@ def createPendingContract():
         requestData = request.get_json()
         json_content = json.dumps(requestData, indent=8)
         json_hash = get_hash_of_string(json_content)
+        status = "New"
+        premium = 0
         response = requests.post(url='http://localhost:5000/storePendingContract', data=rawdata).content.decode('UTF-8')
-        insert_pending_json_file_content(getConnection(), json_content, json_hash)
+        print(response)
+        insert_pending_json_file_content(getConnection(), json_content, json_hash, status, premium)
     except Exception as e:
         response = str(e)
+        print(response)
     return response
 
 #########################################################

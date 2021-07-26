@@ -541,6 +541,12 @@ function PendingOverview(props) {
           <br />
         </div>
       </div>
+      {props.selectedPendingContract.status === "New" && (
+        <div>Premium needs to be calculated by the insurer...</div>
+      )}
+      {props.selectedPendingContract.status === "Accepted" && (
+        <div>Calculated Premium: {props.selectedPendingContract.premium}</div>
+      )}
     </div>
   );
 }

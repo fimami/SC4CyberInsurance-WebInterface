@@ -3,6 +3,8 @@ function PendingItem(props) {
     props.setSelectedPendingContract({
       companyName: props.companyName,
       jsonHash: props.jsonHash,
+      status: props.status,
+      premium: props.premium,
     });
     props.openPendingInfo();
   }
@@ -11,6 +13,7 @@ function PendingItem(props) {
     <>
       <button style={{ padding: "15px" }} onClick={clickPendingContract}>
         <div>Company Name: {props.companyName}</div>
+        <div>Status: {props.status}</div>
       </button>
     </>
   );

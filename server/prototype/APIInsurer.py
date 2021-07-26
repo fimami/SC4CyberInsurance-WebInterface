@@ -75,7 +75,7 @@ def deployContract2():
         print("message: " + message)
     return message
 
-##############################################TODO: CHECK THIS (NOT THE WAY TO GO)
+##############################################TODO: CHECK THIS
 @app.route('/storePendingContract', methods=['POST'])
 def storePendingContract():
     try:
@@ -84,7 +84,9 @@ def storePendingContract():
         json_dict = json.loads(json1)
         json_content = json.dumps(json_dict, indent=8)
         json_hash = get_hash_of_string(json_content)
-        insert_pending_json_file_content(getConnection(), json_content, json_hash)
+        status = "New"
+        premium = 0
+        insert_pending_json_file_content(getConnection(), json_content, json_hash, status, premium)
         message = "Pending contract was stored on relevant databases."
     except Exception as e:
         message = "Error appeared during: " + str(e)
@@ -103,6 +105,22 @@ def deletePendingContract():
     except Exception as e:
         message = str(e)
     return message
+
+##############################################
+@app.route('/acceptPendingContract', methods=['POST'])
+def acceptPendingContract():
+    try:
+        new_json = request.get_json()
+        jsonHash = new_json['jsonHash']
+        print(jsonHash)
+        print(type(jsonHash))
+        status = new_json['status']
+        premium = new_json['premium']
+        print(premium)
+        update_pending_contract(getConnection(), jsonHash, status, premium)
+    except Exception as e:
+        new_json = "Error appeared during: " + str(e)
+    return new_json
 
 
 @app.route('/getContractAddress/<jsonHash>')

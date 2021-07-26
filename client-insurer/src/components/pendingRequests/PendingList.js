@@ -8,6 +8,8 @@ function PendingList(props) {
           <PendingItem
             companyName={props.pendingContracts[i].companyName}
             jsonHash={props.pendingContracts[i].jsonHash}
+            status={props.pendingContracts[i].status}
+            premium={props.pendingContracts[i].premium}
             openPendingInfo={props.openPendingInfo}
             setSelectedPendingContract={props.setSelectedPendingContract}
           />

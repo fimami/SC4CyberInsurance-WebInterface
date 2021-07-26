@@ -129,10 +129,32 @@ function PendingOverview(props) {
         console.log(res.data);
         setPremiumResponse(res.data);
         setShowPremiumResponse(true);
+        props.setSelectedPendingContract({
+          companyName: props.selectedPendingContract.companyName,
+          jsonHash: props.selectedPendingContract.jsonHash,
+          status: "Accepted",
+          premium: res.data,
+        });
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const acceptRequest = (e) => {
+    const pendingContract = JSON.stringify(props.selectedPendingContract);
+    console.log(pendingContract);
+
+    axios
+      .post(`${url}/acceptPendingContract`, pendingContract, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
   };
 
   const cancelRequest = (e) => {
@@ -579,11 +601,25 @@ function PendingOverview(props) {
       {showPremiumResponse && (
         <div>The premium would be {premiumResponse} euro.</div>
       )}
-      <button onClick={calculatePremium}>Calculate Premium</button>
+      {props.selectedPendingContract.premium != 0 && (
+        <div>
+          The calculated Premium is {props.selectedPendingContract.premium}{" "}
+          euro.
+        </div>
+      )}
+      {/* {props.selectedPendingContract.status === "Accepted" && (
+        <div>Waiting to be accepted by the Customer...</div>
+      )} */}
+      {props.selectedPendingContract.premium == 0 && (
+        <button onClick={calculatePremium}>Calculate Premium</button>
+      )}
+
       <br />
       <br />
       <button onClick={cancelRequest}>Cancel Request</button>
-      {/* <button onClick={acceptRequest}>Accept Request</button> */}
+      {props.selectedPendingContract.premium == 0 && (
+        <button onClick={acceptRequest}>Accept Request</button>
+      )}
     </div>
   );
 }

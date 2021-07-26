@@ -29,7 +29,7 @@ def getPendingContracts():
         for tuple in tuples:
             json_tuple = json.loads(tuple[1])
             companyName = json_tuple['business_information']['companyName']
-            request_list.append({'companyName':str(companyName), 'jsonHash':str(tuple[0])})
+            request_list.append({'companyName':str(companyName), 'jsonHash':str(tuple[0]), 'status':str(tuple[2]), 'premium':tuple[3]})
         request_list_json = json.dumps(request_list)
     except Exception as e:
         request_list_json = "Error appeared during processing: \n" + str(e)

@@ -72,6 +72,7 @@ function ActionWindow(props) {
           <PendingOverview 
             selectedPendingContract={props.selectedPendingContract}
             closeInfoOrReport={props.closeInfoOrReport}
+            setSelectedPendingContract={props.setSelectedPendingContract}
           />
         )}
       </Card>
