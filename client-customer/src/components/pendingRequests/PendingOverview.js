@@ -97,6 +97,7 @@ function PendingOverview(props) {
 
   const [premiumResponse, setPremiumResponse] = useState("");
   const [showPremiumResponse, setShowPremiumResponse] = useState(false);
+  const [createdMessage, setCreatedMessage] = useState("");
 
   const url = "http://127.0.0.1:5001";
 
@@ -115,6 +116,31 @@ function PendingOverview(props) {
         setPendingInformation(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
+  };
+
+  const createContract = (e) => {
+    if (props.selectedPendingContract.status === "Accepted") {
+      const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
+      console.log(jsonHash);
+      axios
+        .post(`${url}/createContract3`, jsonHash, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setCreatedMessage(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          setCreatedMessage(error);
+        });
+    } else {
+      setCreatedMessage(
+        "The request needs to be processed by the insurer. If you have any questions, please contact your insurer."
+      );
+    }
   };
 
   useEffect(() => {
@@ -541,11 +567,17 @@ function PendingOverview(props) {
           <br />
         </div>
       </div>
+      {createdMessage}
       {props.selectedPendingContract.status === "New" && (
         <div>Premium needs to be calculated by the insurer...</div>
       )}
       {props.selectedPendingContract.status === "Accepted" && (
-        <div>Calculated Premium: {props.selectedPendingContract.premium}</div>
+        <div>
+          <div>Calculated Premium: {props.selectedPendingContract.premium}</div>
+          <br />
+          <br />
+          <button onClick={createContract}>Create Contract</button>
+        </div>
       )}
     </div>
   );

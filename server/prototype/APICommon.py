@@ -39,7 +39,9 @@ def getPendingContracts():
 @app.route('/getPendingContractInformation', methods=['POST'])
 def getPendingContractInformation():
     try:
-        jsonHash = request.get_json()
+        rawdata = request.data
+        json1 = rawdata.decode('utf8')
+        jsonHash = json1.replace('"', '')
         message = get_request_content_with_hash(getConnection(), jsonHash)
     except Exception as e:
         message = "Error appeared during processing: \n" + str(e)

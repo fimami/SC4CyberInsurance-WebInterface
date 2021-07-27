@@ -66,7 +66,36 @@ def createContract2():
     # print(response)
     except Exception as e:
         response = str(e)
+        print(str(e))
     return response
+
+####################################
+@app.route('/createContract3', methods=['POST'])
+def createContract3():
+    try:
+        rawdata = request.data
+        pendingHash = request.get_json()
+        infoCustomer = get_request_content_with_hash(getConnection(), pendingHash)
+        infoInsurer = requests.post(url='http://localhost:5000/getPendingContractInformation', data=rawdata).content.decode('UTF-8')
+        if (infoCustomer == infoInsurer):
+            response = requests.post(url='http://localhost:5000/deployContract2', data=infoCustomer).content.decode('UTF-8')
+            contract_address = requests.get('http://localhost:5000/getContractAddress/' + pendingHash).content.decode('UTF-8')
+            contract_abi = requests.get('http://localhost:5000/getContractABI/' + pendingHash).content.decode('UTF-8')
+
+            insert_contract_information(getConnection(), pendingHash, contract_address, contract_abi)
+            insert_json_file_content(getConnection(), infoCustomer, pendingHash)
+
+            sc = get_smart_contract_accessor(getConnection(), pendingHash)
+            setSc(sc)
+            setHash(pendingHash)
+            response2 = requests.post('http://localhost:5000/deletePendingContract', data=rawdata).content.decode('UTF-8')
+        else:
+            response = "The pending contract json files are not equal."
+            response2 = ""
+    except Exception as e:
+        response = "Error appeared during: " + str(e)
+        response2 = ""
+    return response + " " + response2
 
 #########################################TODO: CHECK THIS
 @app.route('/createPendingContract', methods=['POST'])
@@ -83,6 +112,27 @@ def createPendingContract():
         insert_pending_json_file_content(getConnection(), json_content, json_hash, status, premium)
     except Exception as e:
         response = str(e)
+        print(response)
+    return response
+
+#########################################################
+@app.route('/updatePendingContract', methods=['POST'])
+def updatePendingContract():
+    try:
+        rawdata = request.data
+        json1 = rawdata.decode('utf8')
+        new_json = json.loads(json1)
+        
+        jsonHash = new_json['jsonHash']
+        print(jsonHash)
+        print(type(jsonHash))
+        status = new_json['status']
+        premium = new_json['premium']
+        print(premium)
+        update_pending_contract(getConnection(), jsonHash, status, premium)
+        response = "The pending contracts were updated."
+    except Exception as e:
+        response = "Error appeared during: " + str(e)
         print(response)
     return response
 
@@ -224,6 +274,7 @@ def getLogContent(hashOfLog):
         message = transform_error_message(e)
     return message
 
+#TODO: check if used --->
 ##########################################
 @app.route('/getLogContent2', methods=['POST'])
 def getLogContent2():

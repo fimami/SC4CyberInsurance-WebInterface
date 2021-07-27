@@ -110,6 +110,7 @@ def deletePendingContract():
 @app.route('/acceptPendingContract', methods=['POST'])
 def acceptPendingContract():
     try:
+        rawdata = request.data
         new_json = request.get_json()
         jsonHash = new_json['jsonHash']
         print(jsonHash)
@@ -117,10 +118,11 @@ def acceptPendingContract():
         status = new_json['status']
         premium = new_json['premium']
         print(premium)
+        response = requests.post(url='http://localhost:5001/updatePendingContract', data=rawdata).content.decode('UTF-8')
         update_pending_contract(getConnection(), jsonHash, status, premium)
     except Exception as e:
-        new_json = "Error appeared during: " + str(e)
-    return new_json
+        response = "Error appeared during: " + str(e)
+    return response
 
 
 @app.route('/getContractAddress/<jsonHash>')

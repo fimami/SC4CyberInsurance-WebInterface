@@ -14,6 +14,7 @@ function PendingItem(props) {
       <button style={{ padding: "15px" }} onClick={clickPendingContract}>
         <div>Company Name: {props.companyName}</div>
         <div>Status: {props.status}</div>
+        {props.premium != 0 && <div>Premium: {props.premium}</div>}
       </button>
     </>
   );

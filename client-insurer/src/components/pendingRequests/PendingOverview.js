@@ -617,9 +617,8 @@ function PendingOverview(props) {
       <br />
       <br />
       <button onClick={cancelRequest}>Cancel Request</button>
-      {props.selectedPendingContract.premium == 0 && (
-        <button onClick={acceptRequest}>Accept Request</button>
-      )}
+
+      <button onClick={acceptRequest}>Accept Request</button>
     </div>
   );
 }
