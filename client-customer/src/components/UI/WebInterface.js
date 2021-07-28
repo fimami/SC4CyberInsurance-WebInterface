@@ -53,8 +53,11 @@ function WebInterface() {
     axios
       .get(`${url}/getAvailableContracts2`)
       .then((response) => {
-        // console.log(response);
-        setAvailableContracts(response.data);
+        setAvailableContracts([]);
+        console.log(response);
+        if (response.data.length) {
+          setAvailableContracts(response.data);
+        }
       })
       .catch((error) => console.error(`Error: ${error}`));
   };

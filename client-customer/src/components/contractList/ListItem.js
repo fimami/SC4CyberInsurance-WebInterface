@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 
 function ListItem(props) {
   const [updateStatus, setUpdateStatus] = useState("");
+  const [proposalDict, setProposalDict] = useState({});
+  const [isUpdate, setIsUpdate] = useState(false);
   // const [isSelected, setIsSelected] = useState(false);
 
   // function companyNameChangeHandler(event) {
@@ -27,7 +29,7 @@ function ListItem(props) {
       .then((response) => {
         console.log(jsonHash);
         console.log(response);
-        // console.log(proposalDict.new_hash);
+        console.log(proposalDict.new_hash);
         // setUseContractMessage("This contract is selected.");
         props.setSelectedContract({
           companyName: props.companyName,
@@ -66,15 +68,20 @@ function ListItem(props) {
         },
       })
       .then((res) => {
-        props.setProposalHashList([]);
-        // console.log(res.data.new_hash);
-        if (res.data.new_hash !== 0) {
-          const newhash = res.data.new_hash;
-          props.setProposalHashList([newhash]);
-        }
+        console.log(res.data);
+        const newhash = res.data.new_hash;
+        props.setProposalHashList([newhash]);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
+
+  function checkIfIsUpdate() {
+    if (props.proposalHashList.includes(props.jsonHash)) {
+      setIsUpdate(true);
+    } else {
+      setIsUpdate(false);
+    }
+  }
 
   function openUpdateOverview() {
     props.setSelectedContract({
@@ -90,12 +97,13 @@ function ListItem(props) {
     // setInterval(() => {
     checkForNewProposal();
     getNewProposalByHash();
+    checkIfIsUpdate();
     // }, 10000);
   }, []);
 
-  if (props.proposalHashList.includes(props.jsonHash)) {
-    return (
-      <>
+  return (
+    <>
+      {isUpdate && (
         <button
           style={{ marginTop: "30px", padding: "20px" }}
           onClick={openUpdateOverview}
@@ -104,20 +112,9 @@ function ListItem(props) {
           <br />
           <br />
           <div style={{ color: "red" }}>Updated Form</div>
-          {/* <div>{'"' + jsonHash.toString() + '"'}</div>
-        <div>{props.useContractHash.toString()}</div>
-        <div>{props.showContractInfo.toString()}</div> */}
         </button>
-        {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
-        {/* {props.useContractHash === '"' + jsonHash + '"' && */}
-        {/* {props.showContractIsUsed && (
-        <div style={{ fontSize: "10px" }}>{props.useContractMessage}</div>
-      )} */}
-      </>
-    );
-  } else {
-    return (
-      <>
+      )}
+      {!isUpdate && (
         <button
           style={{ marginTop: "30px", padding: "20px" }}
           onClick={useContract}
@@ -130,14 +127,9 @@ function ListItem(props) {
           <div>{props.useContractHash.toString()}</div>
           <div>{props.showContractInfo.toString()}</div> */}
         </button>
-        {/*TODO: change the following, so it is just shown that this contract was selected (without using useContractHash) */}
-        {/* {props.useContractHash === '"' + jsonHash + '"' && */}
-        {/* {props.showContractIsUsed && (
-          <div style={{ fontSize: "10px" }}>{props.useContractMessage}</div>
-        )} */}
-      </>
-    );
-  }
+      )}
+    </>
+  );
 }
 
 export default ListItem;

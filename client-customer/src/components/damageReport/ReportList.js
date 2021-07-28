@@ -17,6 +17,7 @@ function ReportList(props) {
             damageDate={props.newDamageReports[i].date}
             attackType={props.newDamageReports[i].attackType}
             amount={props.newDamageReports[i].amount}
+            damageId={props.newDamageReports[i].id}
             logfileHash={props.newDamageReports[i].logfileHash}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             showDamageIsSelected={props.showDamageIsSelected}

@@ -26,6 +26,7 @@ function ReportItem(props) {
       attackType: props.attackType,
       amount: props.amount,
       logfileHash: props.logfileHash,
+      id: props.damageId,
       // logfileContent: logfileContent,
     });
   }
@@ -38,6 +39,7 @@ function ReportItem(props) {
       >
         <div>Company: {props.companyName}</div>
         <div>Amount (EUR): {props.amount}</div>
+        <div>ID: {props.damageId}</div>
         <div>Status: New</div>
       </button>
       <br />

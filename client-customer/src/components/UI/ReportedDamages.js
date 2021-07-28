@@ -14,16 +14,18 @@ function ReportedDamages(props) {
         }}
       >
         <h2>Reported Damages</h2>
-        <ReportList
-          openReportOverview={props.openReportOverview}
-          availableContracts={props.availableContracts}
-          // showDamageReport={props.showDamageReport}
-          showDamageIsSelected={props.showDamageIsSelected}
-          setShowDamageIsSelected={props.setShowDamageIsSelected}
-          newDamageReports={props.newDamageReports}
-          setSelectedReport={props.setSelectedReport}
-          proposalHashList={props.proposalHashList}
-        />
+        {Array.isArray(props.availableContracts) && props.availableContracts.length && (
+          <ReportList
+            openReportOverview={props.openReportOverview}
+            availableContracts={props.availableContracts}
+            // showDamageReport={props.showDamageReport}
+            showDamageIsSelected={props.showDamageIsSelected}
+            setShowDamageIsSelected={props.setShowDamageIsSelected}
+            newDamageReports={props.newDamageReports}
+            setSelectedReport={props.setSelectedReport}
+            proposalHashList={props.proposalHashList}
+          />
+        )}
       </Card>
     </div>
   );

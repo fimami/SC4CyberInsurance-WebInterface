@@ -598,9 +598,9 @@ function PendingOverview(props) {
           <br />
         </div>
       </div>
-      {showPremiumResponse && (
+      {/* {showPremiumResponse && (
         <div>The premium would be {premiumResponse} euro.</div>
-      )}
+      )} */}
       {props.selectedPendingContract.premium != 0 && (
         <div>
           The calculated Premium is {props.selectedPendingContract.premium}{" "}

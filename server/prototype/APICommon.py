@@ -292,8 +292,10 @@ def agreeToUpdateContract():
         setHash(new_hash)
         getSc().functions.agreeToUpdateContract().transact({'from': getUserAddress()})
         message = 'Contract was updated.'
+        print(message)
     except Exception as e:
         message = transform_error_message(e)
+        print(message)
     return message
 
 @app.route('/declineToUpdateContract')
@@ -538,23 +540,26 @@ def isNewProposalAvailable():
 @app.route('/checkForNewProposal')
 def checkForNewProposal():
     try:
-        proposal_dict = getProposalDict()
-        proposal_dict.clear()
+        # proposal_dict = getProposalDict()
+        # proposal_dict.clear()
         hashs = get_all_hashs_in_db(getConnection())
         message = "No update is available."
+        proposal_list = []
         for hash in hashs:
             try:
                 sc = get_smart_contract_accessor(getConnection(), hash[0])
                 if sc.functions.isNewProposalAvailable().call():
                     new_hash = sc.functions.getHashOfProposal().call()
-                    proposal_dict.update({new_hash:hash[0]})
+                    proposal_list.append({new_hash:hash[0]})
                     message = "Update is available."
+                    print(message)
             except:
                 print("No accessor available.")
+        proposal_list_json = json.dumps(proposal_list)
     except Exception as e:
         message = transform_error_message(e)
         print(message)
-    setProposalDict(proposal_dict)
+    # setProposalDict(proposal_dict)
     return message
 
 #######instead of isNewProposalAvailable()

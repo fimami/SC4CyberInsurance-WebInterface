@@ -137,6 +137,16 @@
   /* width: 400px; */
 }
 
-input {
+/* input {
   padding: 5px 10px;
+} */
+
+.wideInput {
+  text-align: left;
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0.4em;
+  padding-right: 0.4em;
+  width: 400px;
+  height: 200px;
 }
