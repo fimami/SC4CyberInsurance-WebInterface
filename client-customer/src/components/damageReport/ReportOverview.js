@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 
 function ReportOverview(props) {
   const [logfileContent, setLogfileContent] = useState("");
-  const getLogfileContent = () => {
-    const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
 
-    const url = "http://127.0.0.1:5001";
+  const url = "http://127.0.0.1:5001";
+  const getLogfileContentAndHash = () => {
+    const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
+    const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
     axios
       .post(`${url}/getLogContent2`, logfileHash, {
@@ -18,10 +19,37 @@ function ReportOverview(props) {
         setLogfileContent(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
+
+    axios
+      .post(`${url}/useContract2`, jsonHash, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
   };
 
+  // function useContract() {
+  //   const jsonHash = JSON.stringify(props.selectedReport.contractHash);
+
+  //   axios
+  //     .post(`${url}/useContract2`, jsonHash, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // }
+
   useEffect(() => {
-    getLogfileContent();
+    getLogfileContentAndHash();
+    // useContract();
   }, []);
 
   return (
@@ -52,11 +80,11 @@ function ReportOverview(props) {
           padding: "5px",
         }}
       >
-        <div style={{fontWeight: "bold"}}>Logfile Content: </div>
+        <div style={{ fontWeight: "bold" }}>Logfile Content: </div>
         <br />
         <div>{logfileContent}</div>
       </div>
-      <br/>
+      <br />
       <div>STATUS: Pending...</div>
     </div>
   );

@@ -143,6 +143,23 @@ def acceptDamage(id, ether):
         message = transform_error_message(e)
     return message
 
+##############################################################
+@app.route('/acceptDamage2', methods=['POST'])
+def acceptDamage2():
+    try:
+        jsonData = request.get_json()
+        damageId = jsonData['id']
+        amount = jsonData['amount']
+        exchange_rate = getSc().functions.getExchangeRate().call()
+        ether = round(amount / exchange_rate)
+        print(ether)
+        print(type(ether))
+        getSc().functions.acceptDamage(damageId).transact({'from': insurer,'value': w3.toWei(ether, "ether")})
+        message = 'Damage was successfully accepted.'
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 @app.route('/declineDamage/<id>/<reason>/<counterOffer>', defaults={'ether':0.0})
 @app.route('/declineDamage/<id>/<reason>/<counterOffer>/<ether>')
 def declineDamage(id, reason, counterOffer, ether):

@@ -8,9 +8,10 @@ function ReportOverview(props) {
 
   const url = "http://127.0.0.1:5000";
 
-  const getLogfileContent = () => {
+  const getLogfileContentAndHash = () => {
     const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
     console.log(logfileHash);
+    const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
     axios
       .post(`${url}/getLogFileContent2`, logfileHash, {
@@ -22,6 +23,17 @@ function ReportOverview(props) {
         setLogfileContent(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
+
+    axios
+      .post(`${url}/useContract2`, jsonHash, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
   };
 
   const acceptDamage = (e) => {
@@ -30,6 +42,18 @@ function ReportOverview(props) {
       amount: props.selectedReport.amount,
     });
     console.log(idAndAmount);
+
+    axios
+      .post(`${url}/acceptDamage2`, idAndAmount, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        alert(res.data);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
   };
 
   const sendCounteroffer = (e) => {
@@ -50,6 +74,21 @@ function ReportOverview(props) {
     console.log(idAmountAndReason);
   };
 
+  // const useContract = () => {
+  //   const jsonHash = JSON.stringify(props.selectedReport.contractHash);
+
+  //   axios
+  //     .post(`${url}/useContract2`, jsonHash, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // };
+
   function handleCounterofferAmount(e) {
     setCounterofferAmount(e.target.value);
   }
@@ -64,7 +103,8 @@ function ReportOverview(props) {
   }
 
   useEffect(() => {
-    getLogfileContent();
+    // useContract();
+    getLogfileContentAndHash();
   }, []);
 
   return (
@@ -109,7 +149,7 @@ function ReportOverview(props) {
         </button>
         <br />
         <hr />
-        <div>Counteroffer Amount:</div>
+        <div>Counteroffer Amount (EUR):</div>
         <input
           onChange={handleCounterofferAmount}
           type="number"
