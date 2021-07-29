@@ -5,7 +5,7 @@ function ReportList(props) {
   // const [useReportMessage, setUseReportMessage] = useState("");
 
   if (!props.newDamageReports.length) {
-    return null;
+    return <div>No Damage Claims</div>;
   }
 
   // function getInformationByHash() {
@@ -14,15 +14,18 @@ function ReportList(props) {
 
   return (
     <div style={{ margin: "10px" }}>
-      {props.newDamageReports.map((report, i) => (
+      {props.selectedList.map((report, i) => (
         <div key={i}>
           <ReportItem
-            contractHash={props.newDamageReports[i].contractHash}
-            damageDate={props.newDamageReports[i].date}
-            attackType={props.newDamageReports[i].attackType}
-            amount={props.newDamageReports[i].amount}
-            damageId={props.newDamageReports[i].id}
-            logfileHash={props.newDamageReports[i].logfileHash}
+            contractHash={props.selectedList[i].contractHash}
+            damageStatus={props.selectedList[i].status}
+            damageDate={props.selectedList[i].date}
+            attackType={props.selectedList[i].attackType}
+            amount={props.selectedList[i].amount}
+            damageId={props.selectedList[i].id}
+            logfileHash={props.selectedList[i].logfileHash}
+            declineReason={props.selectedList[i].declineReason}
+            counteroffer={props.selectedList[i].counteroffer}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             showDamageIsSelected={props.showDamageIsSelected}
             // companyName={props.availableContracts[0].companyName}

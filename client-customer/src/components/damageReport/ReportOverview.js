@@ -32,6 +32,22 @@ function ReportOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
+  const cancelDamage = (e) => {
+    const jsonId = JSON.stringify(props.selectedReport.id);
+
+    axios
+      .post(`${url}/cancelDamage`, jsonId, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        alert(res.data);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  };
+
   // function useContract() {
   //   const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
@@ -86,6 +102,8 @@ function ReportOverview(props) {
       </div>
       <br />
       <div>STATUS: Pending...</div>
+      <br />
+      <button onClick={cancelDamage}>Cancel Damage Claim</button>
     </div>
   );
 }

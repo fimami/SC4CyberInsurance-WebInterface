@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ActionWindow from "./ActionWindow";
 import ActiveContracts from "./ActiveContracts";
-import Counteroffers from "./Counteroffers";
 import PendingContracts from "./PendingContracts";
 import ReportedDamages from "./ReportedDamages";
 
@@ -51,7 +50,7 @@ function WebInterface() {
     axios
       .get(`${url}/getAvailableContracts2`)
       .then((response) => {
-        setAvailableContracts([]);
+        // setAvailableContracts([]);
         console.log(response);
         if (response.data.length) {
           setAvailableContracts(response.data);
@@ -70,61 +69,79 @@ function WebInterface() {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  const getNewDamagesOfHash = () => {
-    const listOfAllHashes = [];
-    for (var i = 0; i < availableContracts.length; i++) {
-      listOfAllHashes.push(availableContracts[i].jsonHash);
-    }
-    console.log(listOfAllHashes);
-    if (listOfAllHashes.length) {
-      listOfAllHashes.map((hash) => {
-        const jsonHash = JSON.stringify(hash);
-        axios
-          .post(`${url}/getNewDamagesOfHash`, jsonHash, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            console.log(res.data); //NoneType Object is not suscriptable
+  // const getDamagesOfHash = () => {
+  //   const listOfAllHashes = [];
+  //   for (var i = 0; i < availableContracts.length; i++) {
+  //     listOfAllHashes.push(availableContracts[i].jsonHash);
+  //   }
+  //   console.log(listOfAllHashes);
+  //   if (listOfAllHashes.length) {
+  //     listOfAllHashes.map((hash) => {
+  //       const jsonHash = JSON.stringify(hash);
+  //       axios
+  //         .post(`${url}/getDamagesOfHash`, jsonHash, {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         })
+  //         .then((res) => {
+  //           console.log(res.data); //NoneType Object is not suscriptable (still?)
+  //           setNewDamageReports(res.data);
+  //           console.log(newDamageReports);
+  //         })
+  //         .catch((error) => console.error(`Error: ${error}`));
+  //     });
+  //   } else {
+  //     setNewDamageReports([]);
+  //   }
+  // };
+
+  const getAllDamages = () => {
+    if (availableContracts.length) {
+      axios
+        .get(`${url}/getAllDamages`)
+        .then((res) => {
+          console.log(res);
+          if (Array.isArray(res.data)) {
             setNewDamageReports(res.data);
-            console.log(newDamageReports);
-          })
-          .catch((error) => console.error(`Error: ${error}`));
-      });
+          }
+          // console.log(newDamageReports);
+        })
+        .catch((error) => console.error(`Error: ${error}`));
     } else {
       setNewDamageReports([]);
     }
-    //   const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
-    //   axios
-    //     .post(`${url}/getNewDamagesOfHash`, jsonHash, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       // console.log(res);
-
-    //       //TODO: check the following -->
-    //       if (res.data.length) {
-    //         setNewDamageReports(res.data);
-    //       }
-    //       // console.log(newDamageReports);
-    //     })
-    //     .catch((error) => console.error(`Error: ${error}`));
   };
+
+  //   const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
+  //   axios
+  //     .post(`${url}/getNewDamagesOfHash`, jsonHash, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       // console.log(res);
+
+  //       //TODO: check the following -->
+  //       if (res.data.length) {
+  //         setNewDamageReports(res.data);
+  //       }
+  //       // console.log(newDamageReports);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
 
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
       getPendingContracts();
       // console.log(availableContracts);
-    }, 10000);
+    }, 15000);
   }, []);
 
   useEffect(() => {
     if (availableContracts.length && Array.isArray(availableContracts)) {
-      getNewDamagesOfHash();
+      getAllDamages();
     }
   }, [availableContracts]);
 
@@ -216,7 +233,6 @@ function WebInterface() {
         openReportOverview={openReportOverview}
         setSelectedReport={setSelectedReport}
       />
-      <Counteroffers />
       <ActionWindow
         // changeOverview={changeOverview}
         availableContracts={availableContracts}
@@ -259,7 +275,7 @@ function WebInterface() {
         setSelectedUpdateHash={setSelectedUpdateHash}
         selectedReport={selectedReport}
       />
-      <PendingContracts 
+      <PendingContracts
         pendingContracts={pendingContracts}
         openPendingInfo={openPendingInfo}
         setSelectedPendingContract={setSelectedPendingContract}

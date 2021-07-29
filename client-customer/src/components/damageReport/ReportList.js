@@ -1,3 +1,4 @@
+import { Button, ButtonGroup } from "@material-ui/core";
 import { useState } from "react";
 import ReportItem from "./ReportItem";
 
@@ -5,20 +6,34 @@ function ReportList(props) {
   // const [useReportMessage, setUseReportMessage] = useState("");
 
   if (!props.newDamageReports.length) {
-    return null;
+    return <div>No Damage Claims</div>;
   }
 
   return (
     <div style={{ margin: "10px" }}>
-      {props.newDamageReports.map((report, i) => (
+      {/* <ButtonGroup
+        variant="contained"
+        color="primary"
+        size="small"
+      >
+        <Button>All</Button>
+        <Button>New</Button>
+        <Button>Paid/Resolved</Button>
+        <Button>Dispute</Button>
+        <Button>Cancelled</Button>
+      </ButtonGroup> */}
+      {props.selectedList.map((report, i) => (
         <div key={i}>
           <ReportItem
-            contractHash={props.newDamageReports[i].contractHash}
-            damageDate={props.newDamageReports[i].date}
-            attackType={props.newDamageReports[i].attackType}
-            amount={props.newDamageReports[i].amount}
-            damageId={props.newDamageReports[i].id}
-            logfileHash={props.newDamageReports[i].logfileHash}
+            contractHash={props.selectedList[i].contractHash}
+            damageStatus={props.selectedList[i].status}
+            damageDate={props.selectedList[i].date}
+            attackType={props.selectedList[i].attackType}
+            amount={props.selectedList[i].amount}
+            damageId={props.selectedList[i].id}
+            logfileHash={props.selectedList[i].logfileHash}
+            declineReason={props.selectedList[i].declineReason}
+            counteroffer={props.selectedList[i].counteroffer}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             showDamageIsSelected={props.showDamageIsSelected}
             companyName={props.availableContracts[0].companyName}

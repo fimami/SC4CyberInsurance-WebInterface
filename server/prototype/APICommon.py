@@ -315,10 +315,10 @@ def resolveStatus(status):
     switcher = {
         "New" : 0,
         "Paid" : 1,
-        "UnderInvestigation" : 2,
-        "Dispute" : 3,
-        "Resolved" : 4,
-        "Canceled" : 5
+        "UnderInvestigation" : 2, #After the damage was declined by insurer, with a counteroffer or not
+        "Dispute" : 3, #After the counteroffer was declined by the customer
+        "Resolved" : 4, #After the claim was negotiated completely, after atleast one counteroffer
+        "Canceled" : 5 #After the customer canceled/withdrew his claim. 
     }
     return switcher.get(status, -1)
 
@@ -343,30 +343,30 @@ def getDamages(hash, status, statusAsInt):
     setDamagesDict(damages_dict)
     return message
 
-@app.route('/getAllDamages/<status>')
-def getAllDamages(status):
-    try:
-        statusAsInt = resolveStatus(status)
-        if(statusAsInt == -1):
-            message = "Error: Status " + status + " does not exist."
-        else:
-            message = ""
-            hashs = get_all_hashs_in_db(getConnection())
-            for hash in hashs:
-                message = message + getDamages(hash, status, statusAsInt)
-    except Exception as e:
-        message = transform_error_message(e)
-    return message
+# @app.route('/getAllDamages/<status>')
+# def getAllDamages(status):
+#     try:
+#         statusAsInt = resolveStatus(status)
+#         if(statusAsInt == -1):
+#             message = "Error: Status " + status + " does not exist."
+#         else:
+#             message = ""
+#             hashs = get_all_hashs_in_db(getConnection())
+#             for hash in hashs:
+#                 message = message + getDamages(hash, status, statusAsInt)
+#     except Exception as e:
+#         message = transform_error_message(e)
+#     return message
 
 ###################################################
-@app.route('/getAllNewDamages')
-def getAllNewDamages():
+@app.route('/getAllDamages')
+def getAllDamages():
     try: 
         damageList = []
         hashs = get_all_hashs_in_db(getConnection())
         for hash in hashs:
             sc = get_smart_contract_accessor(getConnection(), hash[0])
-            damages = sc.functions.getAllReportedDamagesWithStatus(0).call()
+            damages = sc.functions.getAllReportedDamages().call()
             for damage in damages:
                 dateAsTimestamp = damage[0]
                 if dateAsTimestamp != 0:
@@ -374,10 +374,12 @@ def getAllNewDamages():
                     date = convertTimestampToDateString(dateAsTimestamp)
                     jsonHash = hash[0]
                     amount = damage[1]
-                    status = 0
+                    status = damage[2]
                     id = damage[3]
                     attackType = damage[4]
-                    damageList.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+                    decline_reason = damage[6]
+                    counteroffer = damage[7]
+                    damageList.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash), 'declineReason':str(decline_reason), 'counteroffer':str(counteroffer)})
         message = json.dumps(damageList)
     except Exception as e:
         message = transform_error_message(e)
@@ -400,20 +402,75 @@ def getDamagesOfCurrentContract(status):
     return message
 
 #########################################
-@app.route('/getNewDamagesOfHash', methods=['POST'])
+@app.route('/getDamagesOfHash', methods=['POST'])
 def getNewDamagesOfHash():
     try:
         jsonHash = request.get_json()
         damage_arrayOfDicts = []
         sc = get_smart_contract_accessor(getConnection(), jsonHash)
-        damages = sc.functions.getAllReportedDamagesWithStatus(0).call()
-        for damage in damages:
+        damagesNew = sc.functions.getAllReportedDamagesWithStatus(0).call()
+        for damage in damagesNew:
             dateAsTimestamp = damage[0]
             if dateAsTimestamp != 0:
                 logfile_hash = damage[5]
                 date = convertTimestampToDateString(dateAsTimestamp)
                 amount = damage[1]
                 status = 0
+                id = damage[3]
+                attackType = damage[4]
+                damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        damagesPaid = sc.functions.getAllReportedDamagesWithStatus(0).call()
+        for damage in damagesPaid:
+            dateAsTimestamp = damage[0]
+            if dateAsTimestamp != 0:
+                logfile_hash = damage[5]
+                date = convertTimestampToDateString(dateAsTimestamp)
+                amount = damage[1]
+                status = 1
+                id = damage[3]
+                attackType = damage[4]
+                damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        damagesUnderInvestigation = sc.functions.getAllReportedDamagesWithStatus(2).call()
+        for damage in damagesUnderInvestigation:
+            dateAsTimestamp = damage[0]
+            if dateAsTimestamp != 0:
+                logfile_hash = damage[5]
+                date = convertTimestampToDateString(dateAsTimestamp)
+                amount = damage[1]
+                status = 2
+                id = damage[3]
+                attackType = damage[4]
+                damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        damagesDispute = sc.functions.getAllReportedDamagesWithStatus(3).call()
+        for damage in damagesDispute:
+            dateAsTimestamp = damage[0]
+            if dateAsTimestamp != 0:
+                logfile_hash = damage[5]
+                date = convertTimestampToDateString(dateAsTimestamp)
+                amount = damage[1]
+                status = 3
+                id = damage[3]
+                attackType = damage[4]
+                damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        damagesResolved = sc.functions.getAllReportedDamagesWithStatus(4).call()
+        for damage in damagesResolved:
+            dateAsTimestamp = damage[0]
+            if dateAsTimestamp != 0:
+                logfile_hash = damage[5]
+                date = convertTimestampToDateString(dateAsTimestamp)
+                amount = damage[1]
+                status = 4
+                id = damage[3]
+                attackType = damage[4]
+                damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
+        damagesCanceled = sc.functions.getAllReportedDamagesWithStatus(5).call()
+        for damage in damagesCanceled:
+            dateAsTimestamp = damage[0]
+            if dateAsTimestamp != 0:
+                logfile_hash = damage[5]
+                date = convertTimestampToDateString(dateAsTimestamp)
+                amount = damage[1]
+                status = 5
                 id = damage[3]
                 attackType = damage[4]
                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})

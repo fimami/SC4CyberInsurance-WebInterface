@@ -336,6 +336,17 @@ def deleteOldContract(old_hash):
         print(message)
     return message
 
+########################################
+@app.route('/cancelDamage', methods=['POST'])
+def cancelDamage():
+    try:
+        jsonId = request.get_json()
+        getSc().functions.cancelDamage(int(jsonId)).transact({'from': customer})
+        message = "The Claim was cancelled."
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 if __name__=='__main__':
     app.run(port=5001, debug=True)
 

@@ -22,11 +22,14 @@ function ReportItem(props) {
     // getLogfileContent();
     props.setSelectedReport({
       contractHash: props.contractHash,
+      damageStatus: props.damageStatus,
       damageDate: props.damageDate,
       attackType: props.attackType,
       amount: props.amount,
       logfileHash: props.logfileHash,
       id: props.damageId,
+      declineReason: props.declineReason,
+      counteroffer: props.counteroffer,
       // logfileContent: logfileContent,
     });
   }
@@ -40,7 +43,7 @@ function ReportItem(props) {
         <div>Company: {props.companyName}</div>
         <div>Amount (EUR): {props.amount}</div>
         <div>ID: {props.damageId}</div>
-        <div>Status: New</div>
+        <div>Status: {props.damageStatus}</div>
       </button>
       <br />
       <br />

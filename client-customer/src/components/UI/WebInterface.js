@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ActionWindow from "./ActionWindow";
 import ActiveContracts from "./ActiveContracts";
-import Counteroffers from "./Counteroffers";
 import PendingContracts from "./PendingContracts";
 import ReportedDamages from "./ReportedDamages";
 
@@ -53,7 +52,7 @@ function WebInterface() {
     axios
       .get(`${url}/getAvailableContracts2`)
       .then((response) => {
-        setAvailableContracts([]);
+        // setAvailableContracts([]); TODO:Check if this works
         console.log(response);
         if (response.data.length) {
           setAvailableContracts(response.data);
@@ -72,46 +71,55 @@ function WebInterface() {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  const getAllNewDamages = () => {
-    axios
-      .get(`${url}/getAllNewDamages`)
-      .then((res) => {
-        console.log(res);
-        if (Array.isArray(res.data)) {
-          setNewDamageReports(res.data);
-        }
-        // console.log(newDamageReports);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
+  const getAllDamages = () => {
+    if (availableContracts.length) {
+      axios
+        .get(`${url}/getAllDamages`)
+        .then((res) => {
+          console.log(res);
+          if (Array.isArray(res.data)) {
+            setNewDamageReports(res.data);
+          }
+          // console.log(newDamageReports);
+        })
+        .catch((error) => console.error(`Error: ${error}`));
+    } else {
+      setNewDamageReports([]);
+    }
   };
 
-  const getNewDamagesOfHash = () => {
-    const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
-    axios
-      .post(`${url}/getNewDamagesOfHash`, jsonHash, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        // console.log(res);
-        setNewDamageReports(res.data);
-        // console.log(newDamageReports);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
+  // const getDamagesOfHash = () => {
+  //   if (availableContracts.length) {
+  //     const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
+
+  //     axios
+  //       .post(`${url}/getDamagesOfHash`, jsonHash, {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //       .then((res) => {
+  //         // console.log(res);
+  //         setNewDamageReports(res.data);
+  //         // console.log(newDamageReports);
+  //       })
+  //       .catch((error) => console.error(`Error: ${error}`));
+  //   } else {
+  //     setNewDamageReports([]);
+  //   }
+  // };
 
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
       getPendingContracts();
       // console.log(availableContracts);
-    }, 10000);
+    }, 15000);
   }, []);
 
   useEffect(() => {
     if (availableContracts.length && Array.isArray(availableContracts)) {
-      getAllNewDamages();
+      getAllDamages();
     }
   }, [availableContracts]);
 
@@ -223,7 +231,6 @@ function WebInterface() {
         setSelectedReport={setSelectedReport}
         proposalHashList={proposalHashList}
       />
-      <Counteroffers />
       <ActionWindow
         // changeOverview={changeOverview}
         availableContracts={availableContracts}
