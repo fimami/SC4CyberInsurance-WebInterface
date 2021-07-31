@@ -72,20 +72,35 @@ function WebInterface() {
   };
 
   const getAllDamages = () => {
+    let reportlist = [];
     if (availableContracts.length) {
       axios
         .get(`${url}/getAllDamages`)
         .then((res) => {
           console.log(res);
           if (Array.isArray(res.data)) {
-            setNewDamageReports(res.data);
+            res.data.map((report, i) => {
+              if (!proposalHashList.includes(res.data[i].contractHash)) {
+                reportlist.push(res.data[i]);
+              }
+            });
           }
-          // console.log(newDamageReports);
+          setNewDamageReports(reportlist);
         })
         .catch((error) => console.error(`Error: ${error}`));
     } else {
       setNewDamageReports([]);
     }
+  };
+
+  const checkForNewProposal = () => {
+    axios
+      .get(`${url}/checkForNewProposal`)
+      .then((res) => {
+        console.log(res.data);
+        setProposalHashList(res.data);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
   };
 
   // const getDamagesOfHash = () => {
@@ -114,12 +129,13 @@ function WebInterface() {
       getAvailableContracts();
       getPendingContracts();
       // console.log(availableContracts);
-    }, 15000);
+    }, 10000);
   }, []);
 
   useEffect(() => {
     if (availableContracts.length && Array.isArray(availableContracts)) {
       getAllDamages();
+      checkForNewProposal();
     }
   }, [availableContracts]);
 

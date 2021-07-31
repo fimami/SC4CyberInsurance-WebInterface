@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ReportItem from "./ReportItem";
 
 function ReportList(props) {

@@ -23,6 +23,8 @@ function WebInterface() {
 
   const [selectedContract, setSelectedContract] = useState({});
 
+  // const [proposalHashList, setProposalHashList] = useState([]);
+
   // const [usedContractHash, setUsedContractHash] = useState("");
 
   const [selectedUpdateHash, setSelectedUpdateHash] = useState("");
@@ -113,6 +115,16 @@ function WebInterface() {
     }
   };
 
+  // const checkForNewProposal = () => {
+  //   axios
+  //     .get(`${url}/checkForNewProposal`)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setProposalHashList(res.data);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // };
+
   //   const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
   //   axios
   //     .post(`${url}/getNewDamagesOfHash`, jsonHash, {
@@ -136,12 +148,13 @@ function WebInterface() {
       getAvailableContracts();
       getPendingContracts();
       // console.log(availableContracts);
-    }, 15000);
+    }, 10000);
   }, []);
 
   useEffect(() => {
     if (availableContracts.length && Array.isArray(availableContracts)) {
       getAllDamages();
+      // checkForNewProposal();
     }
   }, [availableContracts]);
 

@@ -295,6 +295,17 @@ def acceptCounterOffer(id):
         message = transform_error_message(e)
     return message
 
+##########################################
+@app.route('/acceptCounteroffer2', methods=['POST'])
+def acceptCounteroffer2():
+    try:
+        jsonId = request.get_json()
+        getSc().functions.acceptCounterOffer(int(jsonId)).transact({'from': customer})
+        message = 'Counteroffer was successfully accepted.'
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 @app.route('/declineCounterOffer/<id>')
 def declineCounterOffer(id):
     try:
@@ -304,10 +315,32 @@ def declineCounterOffer(id):
         message = transform_error_message(e)
     return message
 
+################################################
+@app.route('/declineCounteroffer2', methods=['POST'])
+def declineCounteroffer2():
+    try:
+        jsonId = request.get_json()
+        getSc().functions.declineCounterOffer(int(jsonId)).transact({'from': customer})
+        message = 'Counter offer was declined.'
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
 @app.route('/resolveDispute/<id>')
 def resolveDispute(id):
     try:
         getSc().functions.resolveDispute(int(id)).transact({'from': customer})
+        message = 'Dispute was resolved.'
+    except Exception as e:
+        message = transform_error_message(e)
+    return message
+
+################################################
+@app.route('/resolveDispute2', methods=['POST'])
+def resolveDispute2():
+    try:
+        jsonId = request.get_json()
+        getSc().functions.resolveDispute(int(jsonId)).transact({'from': customer})
         message = 'Dispute was resolved.'
     except Exception as e:
         message = transform_error_message(e)

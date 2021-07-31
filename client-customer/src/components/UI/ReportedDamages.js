@@ -9,6 +9,7 @@ function ReportedDamages(props) {
   const [nrOfDispute, setNrOfDispute] = useState(0);
   const [nrOfCancelled, setNrOfCancelled] = useState(0);
   const [nrOfResolved, setNrOfResolved] = useState(0);
+  const [nrOfUnderInvestigation, setNrOfUnderInvestigation] = useState(0);
   const [selectedList, setSelectedList] = useState([]);
 
   const handleChange = (event) => {
@@ -37,6 +38,7 @@ function ReportedDamages(props) {
     let countDispute = 0;
     let countCancelled = 0;
     let countResolved = 0;
+    let countUnderInvestigation = 0;
     if (
       Array.isArray(props.newDamageReports) &&
       props.newDamageReports.length
@@ -47,6 +49,9 @@ function ReportedDamages(props) {
         }
         if (props.newDamageReports[i].status === 1) {
           countPaid++;
+        }
+        if (props.newDamageReports[i].status === 2) {
+          countUnderInvestigation++;
         }
         if (props.newDamageReports[i].status === 4) {
           countResolved++;
@@ -64,6 +69,7 @@ function ReportedDamages(props) {
     setNrOfDispute(countDispute);
     setNrOfCancelled(countCancelled);
     setNrOfResolved(countResolved);
+    setNrOfUnderInvestigation(countUnderInvestigation);
   };
 
   // const defineShownReports = () => {
@@ -118,6 +124,9 @@ function ReportedDamages(props) {
           <option value={6}>All ({props.newDamageReports.length})</option>
           <option value={0}>New ({nrOfNew})</option>
           <option value={1}>Paid ({nrOfPaid})</option>
+          <option value={2}>
+            Under Investigation ({nrOfUnderInvestigation})
+          </option>
           <option value={3}>Dispute ({nrOfDispute})</option>
           <option value={4}>Resolved ({nrOfResolved})</option>
           <option value={5}>Cancelled ({nrOfCancelled})</option>

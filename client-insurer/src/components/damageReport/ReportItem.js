@@ -34,6 +34,25 @@ function ReportItem(props) {
     });
   }
 
+  function getStatus() {
+    switch (props.damageStatus) {
+      case 0:
+        return "Pending";
+      case 1:
+        return "Paid";
+      case 2:
+        return "Under Investigation";
+      case 3:
+        return "Dispute";
+      case 4:
+        return "Resolved";
+      case 5:
+        return "Cancelled";
+      default:
+        break;
+    }
+  }
+
   return (
     <>
       <button
@@ -43,7 +62,7 @@ function ReportItem(props) {
         <div>Company: {props.companyName}</div>
         <div>Amount (EUR): {props.amount}</div>
         <div>ID: {props.damageId}</div>
-        <div>Status: {props.damageStatus}</div>
+        <div>Status: {getStatus()}</div>
       </button>
       <br />
       <br />

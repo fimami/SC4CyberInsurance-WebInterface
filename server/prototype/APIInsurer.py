@@ -171,6 +171,34 @@ def declineDamage(id, reason, counterOffer, ether):
         message = transform_error_message(e)
     return message
 
+####################################################
+@app.route('/declineDamage2', methods=['POST'])
+def declineDamage2():
+    try:
+        jsonData = request.get_json()
+        damageId = int(jsonData['id'])
+        print(damageId)
+        print(type(damageId))
+        reason = str(jsonData['reason'])
+        print(reason)
+        print(type(reason))
+        amount = int(jsonData['amount'])
+        print(amount)
+        print(type(amount))
+        exchange_rate = getSc().functions.getExchangeRate().call()
+        print(exchange_rate)
+        if amount == 0:
+            getSc().functions.declineDamage(damageId, reason, amount).transact({'from': insurer, 'value': w3.toWei(0, "ether")})
+            message = 'Damage was successfully declined without sending a counteroffer.'
+        else:
+            etherAmount = round(amount / exchange_rate)
+            getSc().functions.declineDamage(damageId, reason, etherAmount).transact({'from': insurer, 'value': w3.toWei(0, "ether")})
+            message = 'Damage was successfully declined and a counteroffer of ' + str(amount) + ' was offered.'
+    except Exception as e:
+        message = transform_error_message(e)
+        print(message)
+    return message
+
 @app.route('/getLogFileContent/<logFileHash>')
 def getLogFileContent(logFileHash):
     try:

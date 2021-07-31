@@ -95,8 +95,6 @@ function PendingOverview(props) {
     ],
   });
 
-  const [premiumResponse, setPremiumResponse] = useState("");
-  const [showPremiumResponse, setShowPremiumResponse] = useState(false);
 
   const url = "http://127.0.0.1:5000";
 
@@ -127,8 +125,6 @@ function PendingOverview(props) {
       })
       .then((res) => {
         console.log(res.data);
-        setPremiumResponse(res.data);
-        setShowPremiumResponse(true);
         props.setSelectedPendingContract({
           companyName: props.selectedPendingContract.companyName,
           jsonHash: props.selectedPendingContract.jsonHash,
@@ -601,7 +597,7 @@ function PendingOverview(props) {
       {/* {showPremiumResponse && (
         <div>The premium would be {premiumResponse} euro.</div>
       )} */}
-      {props.selectedPendingContract.premium != 0 && (
+      {parseInt(props.selectedPendingContract.premium) !== 0 && (
         <div>
           The calculated Premium is {props.selectedPendingContract.premium}{" "}
           euro.
@@ -610,7 +606,7 @@ function PendingOverview(props) {
       {/* {props.selectedPendingContract.status === "Accepted" && (
         <div>Waiting to be accepted by the Customer...</div>
       )} */}
-      {props.selectedPendingContract.premium == 0 && (
+      {parseInt(props.selectedPendingContract.premium) === 0 && (
         <button onClick={calculatePremium}>Calculate Premium</button>
       )}
 

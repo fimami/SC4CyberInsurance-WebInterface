@@ -1,6 +1,5 @@
 import { Card } from "@material-ui/core";
 // import InputCIForm from "../contractCreation/InputCIForm";
-import ReportForm from "../damageReport/ReportForm";
 import ReportOverview from "../damageReport/ReportOverview";
 import ContractInformationOverview from "../informationOverview/ContractInformationOverview";
 import PendingOverview from "../pendingRequests/PendingOverview";
@@ -12,10 +11,10 @@ function ActionWindow(props) {
   // }
 
   //close Form button on Report Form;
-  function closeReportForm() {
-    props.setShowReportForm(false);
-    props.setShowContractInfo(!props.showContractInfo);
-  }
+  // function closeReportForm() {
+  //   props.setShowReportForm(false);
+  //   props.setShowContractInfo(!props.showContractInfo);
+  // }
 
   return (
     <div className="active-window">
@@ -47,16 +46,13 @@ function ActionWindow(props) {
               // changeOverview={props.changeOverview}
               availableContracts={props.availableContracts}
               // useContractHash={props.useContractHash}
-              setShowReportForm={props.setShowReportForm}
               // clickReportDamage={clickReportDamage}
               closeInfoOrReport={props.closeInfoOrReport}
               selectedContract={props.selectedContract}
               selectedUpdateHash={props.selectedUpdateHash}
+              proposalHashList={props.proposalHashList}
             />
           </div>
-        )}
-        {!props.showContractInfo && props.showReportForm && (
-          <ReportForm closeReportForm={closeReportForm} />
         )}
         {props.showDamageReport && (
           <div>

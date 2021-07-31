@@ -8,8 +8,6 @@ function ListItem(props) {
   const [proposalDict, setProposalDict] = useState({});
   const [useContractMessage, setUseContractMessage] = useState("");
 
-  const [isSelected, setIsSelected] = useState(false);
-
   // function companyNameChangeHandler(event) {
   //   setCompanyName(props.setName(event));
   // }
@@ -41,7 +39,6 @@ function ListItem(props) {
         });
         props.openContractInfo();
         props.setSelectedUpdateHash(proposalDict.new_hash);
-        setIsSelected(true);
         // handleContractInfoChange();
         // props.setShowContractIsUsed(true);
         // props.changeUsedContract(jsonHash.toString());
@@ -63,7 +60,6 @@ function ListItem(props) {
 
   const getNewProposalByHash = () => {
     const jsonHash = JSON.stringify(props.jsonHash);
-
     axios
       .post(`${url}/getNewProposalByHash`, jsonHash, {
         headers: {
@@ -86,11 +82,11 @@ function ListItem(props) {
   //TODO: change the following function (read WARNING)!
   //TODO: maybe remove the setInterval() ?
   useEffect(() => {
-    // setInterval(() => {
-    // setCompanyName(props.companyName);
-    // setJsonHash(props.jsonHash);
-    getNewProposalByHash();
-    // }, 10000);
+    setInterval(() => {
+      // setCompanyName(props.companyName);
+      // setJsonHash(props.jsonHash);
+      getNewProposalByHash();
+    }, 11000);
   }, []);
 
   return (

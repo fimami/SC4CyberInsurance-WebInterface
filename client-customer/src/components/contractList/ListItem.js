@@ -93,17 +93,18 @@ function ListItem(props) {
   }
 
   //TODO: change the following function (read WARNING)!
-  useEffect(() => {
-    // setInterval(() => {
-    checkForNewProposal();
-    getNewProposalByHash();
-    checkIfIsUpdate();
-    // }, 10000);
-  }, []);
+  // useEffect(() => {
+  //   // setInterval(() => {
+  //   console.log(isUpdate);
+  //   checkForNewProposal();
+  //   getNewProposalByHash();
+  //   checkIfIsUpdate();
+  //   // }, 10000);
+  // }, []);
 
   return (
     <>
-      {isUpdate && (
+      {props.proposalHashList.includes(props.jsonHash) && (
         <button
           style={{ marginTop: "30px", padding: "20px" }}
           onClick={openUpdateOverview}
@@ -114,7 +115,7 @@ function ListItem(props) {
           <div style={{ color: "red" }}>Updated Form</div>
         </button>
       )}
-      {!isUpdate && (
+      {!props.proposalHashList.includes(props.jsonHash) && (
         <button
           style={{ marginTop: "30px", padding: "20px" }}
           onClick={useContract}
@@ -122,7 +123,7 @@ function ListItem(props) {
           <div>Company Name: {props.companyName}</div>
           <br />
           <br />
-          <div>{updateStatus}</div>
+          <div>Selected Contract</div>
           {/* <div>{'"' + jsonHash.toString() + '"'}</div>
           <div>{props.useContractHash.toString()}</div>
           <div>{props.showContractInfo.toString()}</div> */}

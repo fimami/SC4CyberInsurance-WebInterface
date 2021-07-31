@@ -362,6 +362,7 @@ def getDamages(hash, status, statusAsInt):
 @app.route('/getAllDamages')
 def getAllDamages():
     try: 
+        # exchange_rate = getSc().functions.getExchangeRate().call()
         damageList = []
         hashs = get_all_hashs_in_db(getConnection())
         for hash in hashs:
@@ -529,6 +530,16 @@ def getPremiumInEther():
         premiumEther = transform_error_message(e)
     return premiumEther
 
+######################################
+@app.route('/getExchangeRate')
+def getExchangeRateCall():
+    try:
+        exchange_rate = getSc().functions.getExchangeRate().call()
+        jsonExchange = json.dumps(exchange_rate)
+    except Exception as e:
+        jsonExchange = transform_error_message(e)
+    return jsonExchange
+
 ####################################
 @app.route('/getValidUntil')
 def getValidUntil():
@@ -607,17 +618,18 @@ def checkForNewProposal():
                 sc = get_smart_contract_accessor(getConnection(), hash[0])
                 if sc.functions.isNewProposalAvailable().call():
                     new_hash = sc.functions.getHashOfProposal().call()
-                    proposal_list.append({new_hash:hash[0]})
+                    if hash[0] != new_hash:
+                        proposal_list.append(new_hash)
                     message = "Update is available."
                     print(message)
             except:
                 print("No accessor available.")
         proposal_list_json = json.dumps(proposal_list)
     except Exception as e:
-        message = transform_error_message(e)
+        proposal_list_json = transform_error_message(e)
         print(message)
     # setProposalDict(proposal_dict)
-    return message
+    return proposal_list_json
 
 #######instead of isNewProposalAvailable()
 ##################################################
