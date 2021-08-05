@@ -95,7 +95,7 @@ function UpdateOverview(props) {
     ],
   });
 
-  const [updateMessage, setUpdateMessage] = useState("");
+  // const [updateMessage, setUpdateMessage] = useState("");
 
   const url = "http://127.0.0.1:5001";
 

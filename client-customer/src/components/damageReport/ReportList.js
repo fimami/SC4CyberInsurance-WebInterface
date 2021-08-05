@@ -1,12 +1,12 @@
-import { Button, ButtonGroup } from "@material-ui/core";
-import { useState } from "react";
+// import { Button, ButtonGroup } from "@material-ui/core";
+// import { useState } from "react";
 import ReportItem from "./ReportItem";
 
 function ReportList(props) {
   // const [useReportMessage, setUseReportMessage] = useState("");
 
   if (!props.newDamageReports.length) {
-    return <div>No Damage Claims</div>;
+    return <div>No claims available.</div>;
   }
 
   return (

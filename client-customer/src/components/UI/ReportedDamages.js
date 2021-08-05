@@ -62,6 +62,7 @@ function ReportedDamages(props) {
         if (props.newDamageReports[i].status === 5) {
           countCancelled++;
         }
+        return true;
       });
     }
     setNrOfNew(countNew);
@@ -135,19 +136,21 @@ function ReportedDamages(props) {
         <br />
         {/* TODO: Change the following, so no "0" is shown in frontend */}
         {Array.isArray(props.availableContracts) &&
-          props.availableContracts.length && (
-            <ReportList
-              openReportOverview={props.openReportOverview}
-              availableContracts={props.availableContracts}
-              // showDamageReport={props.showDamageReport}
-              showDamageIsSelected={props.showDamageIsSelected}
-              setShowDamageIsSelected={props.setShowDamageIsSelected}
-              newDamageReports={props.newDamageReports}
-              setSelectedReport={props.setSelectedReport}
-              proposalHashList={props.proposalHashList}
-              selectedList={selectedList}
-            />
-          )}
+        props.availableContracts.length ? (
+          <ReportList
+            openReportOverview={props.openReportOverview}
+            availableContracts={props.availableContracts}
+            // showDamageReport={props.showDamageReport}
+            showDamageIsSelected={props.showDamageIsSelected}
+            setShowDamageIsSelected={props.setShowDamageIsSelected}
+            newDamageReports={props.newDamageReports}
+            setSelectedReport={props.setSelectedReport}
+            proposalHashList={props.proposalHashList}
+            selectedList={selectedList}
+          />
+        ) : (
+          <div>No claims available.</div>
+        )}
       </Card>
     </div>
   );

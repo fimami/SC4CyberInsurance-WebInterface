@@ -21,7 +21,8 @@ function ActiveContracts(props) {
         }}
       >
         <h2>Active Contracts</h2>
-        {Array.isArray(props.availableContracts) && (
+        {Array.isArray(props.availableContracts) &&
+        props.availableContracts.length ? (
           <ContractList
             availableContracts={props.availableContracts}
             // onSelect={props.onSelect}
@@ -38,6 +39,8 @@ function ActiveContracts(props) {
             proposalHashList={props.proposalHashList}
             openUpdateContent={props.openUpdateContent}
           />
+        ) : (
+          <div>No contract is active.</div>
         )}
       </Card>
     </div>

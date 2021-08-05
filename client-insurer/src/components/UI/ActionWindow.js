@@ -65,12 +65,15 @@ function ActionWindow(props) {
           </div>
         )}
         {props.showPendingInfo && (
-          <PendingOverview 
+          <PendingOverview
             selectedPendingContract={props.selectedPendingContract}
             closeInfoOrReport={props.closeInfoOrReport}
             setSelectedPendingContract={props.setSelectedPendingContract}
           />
         )}
+        {!props.showPendingInfo &&
+          !props.showDamageReport &&
+          !props.showContractInfo && <div>Select a claim or contract.</div>}
       </Card>
     </div>
   );

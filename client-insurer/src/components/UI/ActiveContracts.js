@@ -22,7 +22,8 @@ function ActiveContracts(props) {
         }}
       >
         <h2>Active Contracts</h2>
-        {Array.isArray(props.availableContracts) && (
+        {Array.isArray(props.availableContracts) &&
+        props.availableContracts.length ? (
           <ContractList
             availableContracts={props.availableContracts}
             // onSelect={props.onSelect}
@@ -36,9 +37,12 @@ function ActiveContracts(props) {
             openContractInfo={props.openContractInfo}
             // setUsedContractHash={props.setUsedContractHash}
             setSelectedContract={props.setSelectedContract}
+            selectedContract={props.selectedContract}
             setSelectedUpdateHash={props.setSelectedUpdateHash}
             selectedReport={props.selectedReport}
           />
+        ) : (
+          <div>No contracts are active.</div>
         )}
       </Card>
     </div>

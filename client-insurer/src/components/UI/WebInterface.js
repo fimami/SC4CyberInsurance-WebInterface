@@ -98,23 +98,6 @@ function WebInterface() {
   //   }
   // };
 
-  const getAllDamages = () => {
-    if (availableContracts.length) {
-      axios
-        .get(`${url}/getAllDamages`)
-        .then((res) => {
-          console.log(res);
-          if (Array.isArray(res.data)) {
-            setNewDamageReports(res.data);
-          }
-          // console.log(newDamageReports);
-        })
-        .catch((error) => console.error(`Error: ${error}`));
-    } else {
-      setNewDamageReports([]);
-    }
-  };
-
   // const checkForNewProposal = () => {
   //   axios
   //     .get(`${url}/checkForNewProposal`)
@@ -152,6 +135,22 @@ function WebInterface() {
   }, []);
 
   useEffect(() => {
+    const getAllDamages = () => {
+      if (availableContracts.length) {
+        axios
+          .get(`${url}/getAllDamages`)
+          .then((res) => {
+            console.log(res);
+            if (Array.isArray(res.data)) {
+              setNewDamageReports(res.data);
+            }
+            // console.log(newDamageReports);
+          })
+          .catch((error) => console.error(`Error: ${error}`));
+      } else {
+        setNewDamageReports([]);
+      }
+    };
     if (availableContracts.length && Array.isArray(availableContracts)) {
       getAllDamages();
       // checkForNewProposal();
@@ -287,6 +286,7 @@ function WebInterface() {
         setSelectedContract={setSelectedContract}
         setSelectedUpdateHash={setSelectedUpdateHash}
         selectedReport={selectedReport}
+        selectedContract={selectedContract}
       />
       <PendingContracts
         pendingContracts={pendingContracts}

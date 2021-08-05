@@ -304,7 +304,7 @@ def declineToUpdateContract():
         getSc().functions.declineToUpdateContract().transact({'from': getUserAddress()})
         ################The two lines here are new--->
         new_hash = proposal_dict['new_hash']
-        message = requests.get('http://localhost:5001/deleteUpdateContract/' + new_hash).content.decode('UTF-8')
+        message = requests.get('http://localhost:5001/deleteUpdateContract/' + str(new_hash)).content.decode('UTF-8')
         # message = 'Contract was not updated.'
     except Exception as e:
         message = transform_error_message(e)

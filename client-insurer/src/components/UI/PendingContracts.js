@@ -14,12 +14,15 @@ function PendingContracts(props) {
         }}
       >
         <h2>Pending Contracts</h2>
-        {Array.isArray(props.pendingContracts) && (
+        {Array.isArray(props.pendingContracts) &&
+        props.pendingContracts.length ? (
           <PendingList
             pendingContracts={props.pendingContracts}
             openPendingInfo={props.openPendingInfo}
             setSelectedPendingContract={props.setSelectedPendingContract}
           />
+        ) : (
+          <div>No requests are pending.</div>
         )}
       </Card>
     </div>
