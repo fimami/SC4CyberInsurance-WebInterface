@@ -27,7 +27,8 @@ function ActionWindow(props) {
           height: "90vh",
         }}
       >
-        <h2>Action Window</h2>
+        <h2>Action Window (Address: {props.accAddr})</h2>
+        {/* <span>Address: {props.accAddr}</span> */}
         {/* {!props.isFormOpen && props.showFormButton && (
           <button onClick={props.openForm}>Open Contract Form</button>
         )} */}
@@ -41,6 +42,7 @@ function ActionWindow(props) {
         {props.showContractInfo && (
           <div>
             <ContractInformationOverview
+              setAvailableContracts={props.setAvailableContracts}
               // existingContractInfo={props.existingContractInfo}
               // setExistingContractInfo={props.setExistingContractInfo}
               // changeOverview={props.changeOverview}

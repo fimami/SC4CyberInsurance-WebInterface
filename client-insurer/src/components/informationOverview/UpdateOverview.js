@@ -95,7 +95,7 @@ function UpdateOverview(props) {
     ],
   });
 
-  const [updateMessage, setUpdateMessage] = useState("");
+  // const [updateMessage, setUpdateMessage] = useState("");
 
   const url = "http://127.0.0.1:5000";
 
@@ -110,7 +110,7 @@ function UpdateOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const fetchedData = response.data;
         if (typeof fetchedData === "object" && fetchedData !== null) {
           setUpdateContent(response.data);
@@ -123,8 +123,9 @@ function UpdateOverview(props) {
     axios
       .get(`${url}/agreeToUpdateContract`)
       .then((response) => {
-        console.log(response.data);
-        setUpdateMessage(response.data);
+        // console.log(response);
+        alert(response.data);
+        props.setAvailableContracts([]);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -133,8 +134,8 @@ function UpdateOverview(props) {
     axios
       .get(`${url}/declineToUpdateContract`)
       .then((response) => {
-        console.log(response.data);
-        setUpdateMessage(response.data);
+        // console.log(response.data);
+        alert(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -480,7 +481,7 @@ function UpdateOverview(props) {
           </div>
         ))}
       </div>
-      {updateMessage}
+      {/* {updateMessage} */}
       <span>
         <button
           onClick={agreeToUpdateContract}

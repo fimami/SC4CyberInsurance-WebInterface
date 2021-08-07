@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ActionWindow from "./ActionWindow";
 import ActiveContracts from "./ActiveContracts";
+import LoginScreen from "./LoginScreen";
 import PendingContracts from "./PendingContracts";
 import ReportedDamages from "./ReportedDamages";
 
@@ -25,6 +26,9 @@ function WebInterface() {
 
   const [proposalHashList, setProposalHashList] = useState([]);
 
+  const [addressConfiguration, setAddressConfiguration] = useState(false);
+  const [accAddr, setAccAddr] = useState("");
+
   // const [useContractHash, setUseContractHash] = useState("");
 
   //triggers if the contract creation form is shown
@@ -41,8 +45,6 @@ function WebInterface() {
   const [selectedPendingContract, setSelectedPendingContract] = useState({});
 
   //
-  const [showContractIsUsed, setShowContractIsUsed] = useState(false);
-
   //triggers the report form window (show, not show)
   const [showReportForm, setShowReportForm] = useState(false);
 
@@ -83,6 +85,7 @@ function WebInterface() {
               if (!proposalHashList.includes(res.data[i].contractHash)) {
                 reportlist.push(res.data[i]);
               }
+              return true;
             });
           }
           setNewDamageReports(reportlist);
@@ -128,7 +131,6 @@ function WebInterface() {
     setInterval(() => {
       getAvailableContracts();
       getPendingContracts();
-      // console.log(availableContracts);
     }, 10000);
   }, []);
 
@@ -175,7 +177,6 @@ function WebInterface() {
     setShowDamageReport(false);
     setShowCounterOffer(false);
     setShowFormButton(false);
-    setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowUpdateContent(true);
     setShowPendingInfo(false);
@@ -191,7 +192,6 @@ function WebInterface() {
     setShowDamageReport(false);
     setShowDamageReport(true);
     setShowFormButton(false);
-    setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowCounterOffer(false);
     setShowPendingInfo(false);
@@ -203,7 +203,6 @@ function WebInterface() {
     setShowDamageReport(false);
     setShowCounterOffer(false);
     setShowFormButton(false);
-    setShowContractIsUsed(true);
     setShowReportForm(false);
     setShowUpdateContent(false);
     setShowPendingInfo(false);
@@ -215,7 +214,6 @@ function WebInterface() {
     setShowDamageReport(false);
     setShowCounterOffer(false);
     setShowFormButton(true);
-    setShowContractIsUsed(false);
     setShowReportForm(false);
     setShowUpdateContent(false);
     setShowPendingInfo(false);
@@ -227,7 +225,6 @@ function WebInterface() {
     setShowDamageReport(false);
     setShowCounterOffer(false);
     setShowFormButton(false);
-    setShowContractIsUsed(false);
     setShowReportForm(false);
     setShowUpdateContent(false);
     setShowPendingInfo(true);
@@ -235,63 +232,73 @@ function WebInterface() {
 
   return (
     <>
-      <ReportedDamages
-        availableContracts={availableContracts}
-        // setIsFormOpen={setIsFormOpen}
-        // showDamageReport={showDamageReport}
-        newDamageReports={newDamageReports}
-        // showDamageIsSelected={showDamageIsSelected}
-        // setShowDamageIsSelected={setShowDamageIsSelected}
-        // setShowDamageReport={setShowDamageReport}
-        openReportOverview={openReportOverview}
-        setSelectedReport={setSelectedReport}
-        proposalHashList={proposalHashList}
-      />
-      <ActionWindow
-        // changeOverview={changeOverview}
-        availableContracts={availableContracts}
-        showContractInfo={showContractInfo}
-        setShowContractInfo={setShowContractInfo}
-        closeForm={closeForm}
-        openForm={openForm}
-        isFormOpen={isFormOpen}
-        showFormButton={showFormButton}
-        // useContractHash={useContractHash}
-        setShowContractIsUsed={setShowContractIsUsed}
-        showDamageReport={showDamageReport}
-        setShowDamageReport={setShowDamageReport}
-        showReportForm={showReportForm}
-        setShowReportForm={setShowReportForm}
-        showCounterOffer={showCounterOffer}
-        closeInfoOrReport={closeInfoOrReport}
-        newDamageReports={newDamageReports}
-        selectedReport={selectedReport}
-        selectedContract={selectedContract}
-        showUpdateContent={showUpdateContent}
-        showPendingInfo={showPendingInfo}
-        selectedPendingContract={selectedPendingContract}
-      />
-      <ActiveContracts
-        // onSelect={handleContractInfoChange}
-        // onChange={availableContractsHandler}
-        availableContracts={availableContracts}
-        // showContractInfo={showContractInfo}
-        // changeUsedContract={changeUsedContract}
-        // formButtonNotVisible={formButtonNotVisible}
-        // useContractHash={useContractHash}
-        // showContractIsUsed={showContractIsUsed}
-        // setShowContractIsUsed={setShowContractIsUsed}
-        openContractInfo={openContractInfo}
-        setSelectedContract={setSelectedContract}
-        setProposalHashList={setProposalHashList}
-        proposalHashList={proposalHashList}
-        openUpdateContent={openUpdateContent}
-      />
-      <PendingContracts
-        pendingContracts={pendingContracts}
-        openPendingInfo={openPendingInfo}
-        setSelectedPendingContract={setSelectedPendingContract}
-      />
+      {addressConfiguration === false ? (
+        <LoginScreen
+          setAddressConfiguration={setAddressConfiguration}
+          setAccAddr={setAccAddr}
+        />
+      ) : (
+        <>
+          <ReportedDamages
+            availableContracts={availableContracts}
+            // setIsFormOpen={setIsFormOpen}
+            // showDamageReport={showDamageReport}
+            newDamageReports={newDamageReports}
+            // showDamageIsSelected={showDamageIsSelected}
+            // setShowDamageIsSelected={setShowDamageIsSelected}
+            // setShowDamageReport={setShowDamageReport}
+            openReportOverview={openReportOverview}
+            setSelectedReport={setSelectedReport}
+            proposalHashList={proposalHashList}
+          />
+          <ActionWindow
+            // changeOverview={changeOverview}
+            availableContracts={availableContracts}
+            showContractInfo={showContractInfo}
+            setShowContractInfo={setShowContractInfo}
+            closeForm={closeForm}
+            openForm={openForm}
+            isFormOpen={isFormOpen}
+            showFormButton={showFormButton}
+            // useContractHash={useContractHash}
+            showDamageReport={showDamageReport}
+            setShowDamageReport={setShowDamageReport}
+            showReportForm={showReportForm}
+            setShowReportForm={setShowReportForm}
+            showCounterOffer={showCounterOffer}
+            closeInfoOrReport={closeInfoOrReport}
+            newDamageReports={newDamageReports}
+            selectedReport={selectedReport}
+            selectedContract={selectedContract}
+            showUpdateContent={showUpdateContent}
+            showPendingInfo={showPendingInfo}
+            selectedPendingContract={selectedPendingContract}
+            accAddr={accAddr}
+          />
+          <ActiveContracts
+            // onSelect={handleContractInfoChange}
+            // onChange={availableContractsHandler}
+            availableContracts={availableContracts}
+            // showContractInfo={showContractInfo}
+            // changeUsedContract={changeUsedContract}
+            // formButtonNotVisible={formButtonNotVisible}
+            // useContractHash={useContractHash}
+            // showContractIsUsed={showContractIsUsed}
+            // setShowContractIsUsed={setShowContractIsUsed}
+            openContractInfo={openContractInfo}
+            setSelectedContract={setSelectedContract}
+            setProposalHashList={setProposalHashList}
+            proposalHashList={proposalHashList}
+            openUpdateContent={openUpdateContent}
+          />
+          <PendingContracts
+            pendingContracts={pendingContracts}
+            openPendingInfo={openPendingInfo}
+            setSelectedPendingContract={setSelectedPendingContract}
+          />
+        </>
+      )}
+
       {/* <div>{useContractHash}</div> */}
       {/* <div>{JSON.stringify(availableContracts)}</div> */}
     </>

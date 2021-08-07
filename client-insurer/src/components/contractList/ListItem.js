@@ -28,9 +28,9 @@ function ListItem(props) {
         },
       })
       .then((response) => {
-        console.log(jsonHash);
-        console.log(response);
-        console.log(proposalDict.new_hash);
+        // console.log(jsonHash);
+        // console.log(response);
+        // console.log(proposalDict.new_hash);
         setUseContractMessage("This contract is selected.");
         props.setSelectedContract({
           companyName: props.companyName,
@@ -60,6 +60,8 @@ function ListItem(props) {
 
   const getNewProposalByHash = () => {
     const jsonHash = JSON.stringify(props.jsonHash);
+    // console.log(props.jsonHash);
+    // console.log(jsonHash);
     axios
       .post(`${url}/getNewProposalByHash`, jsonHash, {
         headers: {
@@ -67,7 +69,7 @@ function ListItem(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setProposalDict(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -82,6 +84,7 @@ function ListItem(props) {
   //TODO: change the following function (read WARNING)!
   //TODO: maybe remove the setInterval() ?
   useEffect(() => {
+    console.log("listitem has been rendered");
     setInterval(() => {
       // setCompanyName(props.companyName);
       // setJsonHash(props.jsonHash);

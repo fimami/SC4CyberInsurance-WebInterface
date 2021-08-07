@@ -139,29 +139,12 @@ function ContractOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  const getContractInformation = () => {
-    const jsonHashString = JSON.stringify(props.selectedContract.jsonHash);
-    console.log(jsonHashString);
-
-    axios
-      .post(`${url}/getContractInformation`, jsonHashString, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        setContractInformation(response.data);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
-
   const getPremiumInEther = () => {
     axios
       .get(`${url}/getPremiumInEther`)
       .then((response) => {
-        console.log(parseInt(response.data));
-        setCurrentPremiumEther(parseInt(response.data));
+        console.log(parseFloat(response.data));
+        setCurrentPremiumEther(parseFloat(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -178,31 +161,47 @@ function ContractOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  const getSecurity = () => {
-    const jsonHashString = JSON.stringify(props.availableContracts[0].jsonHash);
-
-    axios
-      .post(`${url}/getSecurity`, jsonHashString, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setCurrentSecurity(parseInt(response.data));
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
-
   useEffect(() => {
+    const getContractInformation = () => {
+      const jsonHashString = JSON.stringify(props.selectedContract.jsonHash);
+      // console.log(jsonHashString);
+
+      axios
+        .post(`${url}/getContractInformation`, jsonHashString, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // console.log(response);
+          setContractInformation(response.data);
+        })
+        .catch((error) => console.error(`Error: ${error}`));
+    };
     getContractInformation();
     getPremium();
     getPremiumInEther();
     getValidUntil();
     getIsContractValid();
+    const getSecurity = () => {
+      const jsonHashString = JSON.stringify(
+        props.availableContracts[0].jsonHash
+      );
+
+      axios
+        .post(`${url}/getSecurity`, jsonHashString, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // console.log(response.data);
+          //FIXME: all ethereum amounts must be in float
+          setCurrentSecurity(parseFloat(response.data));
+        })
+        .catch((error) => console.error(`Error: ${error}`));
+    };
     getSecurity();
-    console.log(showUpdateResponse);
-    console.log(updateResponse);
   }, [resetCounter]);
 
   // function changeOverview() {
@@ -221,7 +220,7 @@ function ContractOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         resetList();
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -239,7 +238,7 @@ function ContractOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         resetList();
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -292,12 +291,10 @@ function ContractOverview(props) {
           Close Overview
         </button>
         <div style={{ color: "green" }}>
-          Contract Hash:{" "}
-          {props.selectedContract.jsonHash}
+          Contract Hash: {props.selectedContract.jsonHash}
         </div>
-        <div style={{color: "red"}}>
-          Contract Address:{" "}
-          {props.selectedContract.contractAddress}
+        <div style={{ color: "red" }}>
+          Contract Address: {props.selectedContract.contractAddress}
         </div>
         <br />
         <UpdateForm
@@ -309,12 +306,12 @@ function ContractOverview(props) {
         />
       </div>
       <div>
-        Security: {currentSecurity}{" "}
+        Security: {currentSecurity.toFixed(4)}{" "}
         <button onClick={paySecurity}>Pay Security</button>
       </div>
       <div>
-        Premium: {currentPremiumEther} Ether ({currentPremiumEuro} euro){" "}
-        <button onClick={payPremium}>Pay Premium</button>
+        Premium: {currentPremiumEther.toFixed(4)} Ether ({currentPremiumEuro}{" "}
+        euro) <button onClick={payPremium}>Pay Premium</button>
       </div>
       <div>Contract valid until: {contractValidUntil}</div>
       {!isContractValid && (

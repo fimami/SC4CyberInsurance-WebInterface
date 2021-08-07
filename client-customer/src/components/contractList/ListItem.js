@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+// import { useState } from "react";
 
 function ListItem(props) {
-  const [updateStatus, setUpdateStatus] = useState("");
-  const [proposalDict, setProposalDict] = useState({});
-  const [isUpdate, setIsUpdate] = useState(false);
+  // const [updateStatus, setUpdateStatus] = useState("");
+  // const [proposalDict, setProposalDict] = useState({});
+  // const [isUpdate, setIsUpdate] = useState(false);
   // const [isSelected, setIsSelected] = useState(false);
 
   // function companyNameChangeHandler(event) {
@@ -27,9 +27,9 @@ function ListItem(props) {
         },
       })
       .then((response) => {
-        console.log(jsonHash);
-        console.log(response);
-        console.log(proposalDict.new_hash);
+        // console.log(jsonHash);
+        // console.log(response);
+        // console.log(proposalDict.new_hash);
         // setUseContractMessage("This contract is selected.");
         props.setSelectedContract({
           companyName: props.companyName,
@@ -48,40 +48,40 @@ function ListItem(props) {
       .catch((error) => console.error(`Error: ${error}`));
   }
 
-  const checkForNewProposal = () => {
-    axios
-      .get(`${url}/checkForNewProposal`)
-      .then((res) => {
-        console.log(res.data);
-        setUpdateStatus(res.data);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
+  // const checkForNewProposal = () => {
+  //   axios
+  //     .get(`${url}/checkForNewProposal`)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setUpdateStatus(res.data);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // };
 
-  const getNewProposalByHash = () => {
-    const jsonHash = JSON.stringify(props.jsonHash);
+  // const getNewProposalByHash = () => {
+  //   const jsonHash = JSON.stringify(props.jsonHash);
 
-    axios
-      .post(`${url}/getNewProposalByHash`, jsonHash, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        const newhash = res.data.new_hash;
-        props.setProposalHashList([newhash]);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
+  //   axios
+  //     .post(`${url}/getNewProposalByHash`, jsonHash, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       const newhash = res.data.new_hash;
+  //       props.setProposalHashList([newhash]);
+  //     })
+  //     .catch((error) => console.error(`Error: ${error}`));
+  // };
 
-  function checkIfIsUpdate() {
-    if (props.proposalHashList.includes(props.jsonHash)) {
-      setIsUpdate(true);
-    } else {
-      setIsUpdate(false);
-    }
-  }
+  // function checkIfIsUpdate() {
+  //   if (props.proposalHashList.includes(props.jsonHash)) {
+  //     setIsUpdate(true);
+  //   } else {
+  //     setIsUpdate(false);
+  //   }
+  // }
 
   function openUpdateOverview() {
     props.setSelectedContract({

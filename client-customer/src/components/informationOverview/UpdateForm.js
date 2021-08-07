@@ -1,10 +1,4 @@
-import axios from "axios";
-import { useState } from "react";
-
 function UpdateForm(props) {
-  const [showCreated, setShowCreated] = useState(false);
-  const [createdResponse, setCreatedResponse] = useState("");
-
   const addMetrics = (e) => {
     let temp = { ...props.contractInformation };
     temp.company_security.risk_assessment_metrics.push({
@@ -1018,7 +1012,6 @@ function UpdateForm(props) {
       <br />
       {props.showUpdateResponse && <div>{props.updateResponse}</div>}
       <br />
-      <div style={{ margin: "2px" }}>{showCreated && createdResponse}</div>
       <button
         style={{ marginRight: "5rem" }}
         type="button"

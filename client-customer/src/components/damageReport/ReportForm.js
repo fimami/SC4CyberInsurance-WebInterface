@@ -1,5 +1,5 @@
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 import { useState } from "react";
 
 function ReportForm(props) {
@@ -19,11 +19,11 @@ function ReportForm(props) {
     setDamageReport(temp);
   };
 
-  const formatDate = () => {
-    let temp = { ...damageReport };
-    temp.date = moment(damageReport.date).format("DD.MM.YYYY");
-    setDamageReport(temp);
-  };
+  // const formatDate = () => {
+  //   let temp = { ...damageReport };
+  //   temp.date = moment(damageReport.date).format("DD.MM.YYYY");
+  //   setDamageReport(temp);
+  // };
 
   const handleAttackTypeChange = (e) => {
     let temp = { ...damageReport };
@@ -54,7 +54,7 @@ function ReportForm(props) {
       temp.log_file_content = text;
       setDamageReport(temp);
       setIsLogFile(true);
-      console.log(text);
+      // console.log(text);
     };
     reader.readAsText(e.target.files[0]);
     //-->This function sets the damageReport.logfile-state to a string generated on logfile
@@ -75,7 +75,7 @@ function ReportForm(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setDamageReportResponse(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));

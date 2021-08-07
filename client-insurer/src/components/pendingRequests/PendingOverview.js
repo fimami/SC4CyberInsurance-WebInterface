@@ -100,7 +100,7 @@ function PendingOverview(props) {
 
   const getPendingContractInformation = () => {
     const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-    console.log(jsonHash);
+    // console.log(jsonHash);
 
     axios
       .post(`${url}/getPendingContractInformation`, jsonHash, {
@@ -109,7 +109,7 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setPendingInformation(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -124,7 +124,7 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         props.setSelectedPendingContract({
           companyName: props.selectedPendingContract.companyName,
           jsonHash: props.selectedPendingContract.jsonHash,
@@ -139,7 +139,7 @@ function PendingOverview(props) {
 
   const acceptRequest = (e) => {
     const pendingContract = JSON.stringify(props.selectedPendingContract);
-    console.log(pendingContract);
+    // console.log(pendingContract);
 
     axios
       .post(`${url}/acceptPendingContract`, pendingContract, {
@@ -148,14 +148,14 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
 
   const cancelRequest = (e) => {
     const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-    console.log(jsonHash);
+    // console.log(jsonHash);
 
     axios
       .post(`${url}/deletePendingContract`, jsonHash, {
@@ -164,7 +164,7 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));

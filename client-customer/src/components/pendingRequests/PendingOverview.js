@@ -95,28 +95,9 @@ function PendingOverview(props) {
     ],
   });
 
-  const [premiumResponse, setPremiumResponse] = useState("");
-  const [showPremiumResponse, setShowPremiumResponse] = useState(false);
   const [createdMessage, setCreatedMessage] = useState("");
 
   const url = "http://127.0.0.1:5001";
-
-  const getPendingContractInformation = () => {
-    const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-    console.log(jsonHash);
-
-    axios
-      .post(`${url}/getPendingContractInformation`, jsonHash, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        setPendingInformation(res.data);
-      })
-      .catch((error) => console.error(`Error: ${error}`));
-  };
 
   const createContract = (e) => {
     if (props.selectedPendingContract.status === "Accepted") {
@@ -144,8 +125,24 @@ function PendingOverview(props) {
   };
 
   useEffect(() => {
+    const getPendingContractInformation = () => {
+      const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
+      console.log(jsonHash);
+
+      axios
+        .post(`${url}/getPendingContractInformation`, jsonHash, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setPendingInformation(res.data);
+        })
+        .catch((error) => console.error(`Error: ${error}`));
+    };
     getPendingContractInformation();
-  }, []);
+  }, [props.selectedPendingContract.jsonHash]);
 
   return (
     <div>

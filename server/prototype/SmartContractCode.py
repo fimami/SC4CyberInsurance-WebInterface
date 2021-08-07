@@ -30,7 +30,17 @@ contract_content = """
               insurer_address = msg.sender;
               customer_address = company_address;
               OAR = OracleAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
-              exchange_rate = 320;
+              //fixed exchange rate:
+              exchange_rate = 2600;
+            }}
+
+            //checks the msg.sender of the call()
+            //function getMsgSender() public view returns (address) {{
+            //    return msg.sender;
+            //}}
+
+            function balanceOfSC() public view returns (uint) {{
+                return address(this).balance;
             }}
 
             function getInitialPremium() public view returns (uint) {{
@@ -61,19 +71,21 @@ contract_content = """
                 return proposed_new_json_hash;
             }}
             
-            function getDamageWithID (uint damage_id) public view returns (Reported_Damage memory){{
-               require(
-                  customer_address == msg.sender || insurer_address == msg.sender,
-                  "Only the registered customer or the insurer can get the damage infos."
-               );
-               return reported_damages[damage_id];
-            }}
+            //not used:
+            //function getDamageWithID (uint damage_id) public view returns (Reported_Damage memory){{
+            //   require(
+            //      customer_address == msg.sender || insurer_address == msg.sender,
+            //      "Only the registered customer or the insurer can get the damage infos."
+            //   );
+            //   return reported_damages[damage_id];
+            //}}
             
             function getAllReportedDamages () public view returns (Reported_Damage[100] memory){{
-               require(
-                  customer_address == msg.sender || insurer_address == msg.sender,
-                  "Only the registered customer or the insurer can get the damage infos."
-               );
+               //The msg.sender here is always fixed (first ganache account); conditional statement not needed
+               //require(
+               //   customer_address == msg.sender || insurer_address == msg.sender,
+               //   "Only the registered customer or the insurer can get the damage infos."
+               //);
                 Reported_Damage [100] memory allDamages;
                //Reported_Damage [count_of_damages] memory allDamages;
                for (uint i=0; i<count_of_damages; i++) {{

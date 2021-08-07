@@ -29,7 +29,8 @@ function ActionWindow(props) {
           height: "90vh",
         }}
       >
-        <h2>Action Window</h2>
+        <h2>Action Window (Address: {props.accAddr})</h2>
+        {/* <span>Address: {props.accAddr}</span> */}
         {!props.isFormOpen && props.showFormButton && (
           <button onClick={props.openForm}>Open Contract Form</button>
         )}
@@ -68,15 +69,17 @@ function ActionWindow(props) {
         {!props.showContractInfo && props.showReportForm && (
           <ReportForm closeReportForm={closeReportForm} />
         )}
-        {props.showDamageReport && Array.isArray(props.availableContracts) && props.availableContracts.length && (
-          <div>
-            <ReportOverview
-              availableContracts={props.availableContracts}
-              closeInfoOrReport={props.closeInfoOrReport}
-              selectedReport={props.selectedReport}
-            />
-          </div>
-        )}
+        {props.showDamageReport &&
+          Array.isArray(props.availableContracts) &&
+          props.availableContracts.length && (
+            <div>
+              <ReportOverview
+                availableContracts={props.availableContracts}
+                closeInfoOrReport={props.closeInfoOrReport}
+                selectedReport={props.selectedReport}
+              />
+            </div>
+          )}
         {props.showPendingInfo && (
           <PendingOverview
             selectedPendingContract={props.selectedPendingContract}

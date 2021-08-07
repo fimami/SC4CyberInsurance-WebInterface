@@ -1,4 +1,5 @@
 import json
+from prototype.GlobalAttributes import getUserAddress
 import requests
 import time
 from web3 import Web3
@@ -6,7 +7,8 @@ from DatabaseConnector import *
 
 # HTTPProvider:
 w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
-insurer = w3.eth.accounts[0]
+# insurer = w3.eth.accounts[0]
+userAddr = requests.get("http://localhost:5000/getInsurerAddress").content.decode('UTF-8')
 connection = open_connection(True)
 
 while(True):
@@ -18,7 +20,7 @@ while(True):
         old_exchange_rate = sc.functions.getExchangeRate().call()
         print ("Old: " + str(old_exchange_rate) + " New: " + str(new_exchange_rate))
         if new_exchange_rate >= old_exchange_rate * 1.01 :
-            sc.functions.updateExchangeRate().transact({'from': insurer,'value': 1000})
+            sc.functions.updateExchangeRate().transact({'from': userAddr,'value': 1000})
     time.sleep(10)
 
 

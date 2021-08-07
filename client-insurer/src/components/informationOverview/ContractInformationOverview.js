@@ -116,7 +116,7 @@ function ContractInformationOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setContractInformation(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -126,11 +126,11 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getValidUntil`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const validDate = response.data;
-        console.log(
-          moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
-        );
+        // console.log(
+        //   moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
+        // );
         setContractValidUntil(
           moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
         );
@@ -142,7 +142,7 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getPremium2`)
       .then((response) => {
-        console.log(parseInt(response.data));
+        // console.log(parseInt(response.data));
         setCurrentPremiumEuro(parseInt(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -152,8 +152,8 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getPremiumInEther`)
       .then((response) => {
-        console.log(parseInt(response.data));
-        setCurrentPremiumEther(parseInt(response.data));
+        // console.log(parseInt(response.data));
+        setCurrentPremiumEther(parseFloat(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -162,7 +162,7 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getValidBool`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data === "True") {
           setIsContractValid(true);
         }
@@ -180,8 +180,8 @@ function ContractInformationOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        setCurrentSecurity(parseInt(response.data));
+        // console.log(response.data);
+        setCurrentSecurity(parseFloat(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -633,7 +633,7 @@ function ContractInformationOverview(props) {
           <div className={styles.update}>
             <UpdateOverview
               selectedUpdateHash={props.selectedUpdateHash}
-              
+              setAvailableContracts={props.setAvailableContracts}
             />
           </div>
         ) : (
@@ -641,12 +641,12 @@ function ContractInformationOverview(props) {
         )}
       </div>
       <div>
-        Security: {currentSecurity}{" "}
+        Security: {currentSecurity.toFixed(4)}{" "}
         {/* <button onClick={paySecurity}>Pay Security</button> */}
       </div>
       <div>
-        Premium: {currentPremiumEther} Ether ({currentPremiumEuro} euro){" "}
-        {/* <button onClick={payPremium}>Pay Premium</button> */}
+        Premium: {currentPremiumEther.toFixed(4)} Ether ({currentPremiumEuro}{" "}
+        euro) {/* <button onClick={payPremium}>Pay Premium</button> */}
       </div>
       <div>Contract valid until: {contractValidUntil}</div>
       {!isContractValid && (

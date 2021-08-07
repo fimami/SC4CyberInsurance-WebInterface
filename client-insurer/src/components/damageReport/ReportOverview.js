@@ -11,7 +11,7 @@ function ReportOverview(props) {
 
   const getLogfileContentAndHash = () => {
     const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
-    console.log(logfileHash);
+    // console.log(logfileHash);
     const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
     axios
@@ -32,14 +32,14 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((error) => console.error(`Error: ${error}`));
 
     axios
       .get(`${url}/getExchangeRate`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setExchangeRate(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -50,7 +50,7 @@ function ReportOverview(props) {
       id: props.selectedReport.id,
       amount: props.selectedReport.amount,
     });
-    console.log(idAndAmount);
+    // console.log(idAndAmount);
 
     axios
       .post(`${url}/acceptDamage2`, idAndAmount, {
@@ -59,7 +59,7 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -71,7 +71,7 @@ function ReportOverview(props) {
       reason: declineReason,
       amount: counterofferAmount,
     });
-    console.log(idAmountAndReason);
+    // console.log(idAmountAndReason);
 
     axios
       .post(`${url}/declineDamage2`, idAmountAndReason, {
@@ -80,7 +80,7 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -209,16 +209,26 @@ function ReportOverview(props) {
           </button>
           <br />
           <br />
-          {/* <button onClick={sendCounterofferOrDecline}>
-            Decline Damage Claim (no counteroffer)
-          </button> */}
         </div>
       )}
       {getStatus() === "Paid" && (
-        <div>The damage has been paid with {props.selectedReport.amount}.</div>
+        <div style={{ float: "right" }}>
+          The damage has been paid with {props.selectedReport.amount}.
+        </div>
       )}
       {getStatus() === "Under Investigation" && (
-        <div style={{ float: "right" }}>
+        <div
+          style={{
+            float: "right",
+            height: "30vh",
+            margin: "5px",
+            overflowY: "scroll",
+            borderStyle: "solid",
+            borderColor: "red",
+            padding: "5px",
+            width: "20vw",
+          }}
+        >
           <div>
             The claim was declined with a counteroffer of:{" "}
             {parseInt(props.selectedReport.counteroffer) * exchangeRate}
@@ -234,7 +244,18 @@ function ReportOverview(props) {
         </div>
       )}
       {getStatus() === "Dispute" && (
-        <div style={{ float: "right" }}>
+        <div
+          style={{
+            float: "right",
+            height: "30vh",
+            margin: "5px",
+            overflowY: "scroll",
+            borderStyle: "solid",
+            borderColor: "red",
+            padding: "5px",
+            width: "20vw",
+          }}
+        >
           <div>
             The claim with a counteroffer of{" "}
             {parseInt(props.selectedReport.counteroffer) * exchangeRate} was
