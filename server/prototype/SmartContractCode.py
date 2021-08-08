@@ -31,7 +31,7 @@ contract_content = """
               customer_address = company_address;
               OAR = OracleAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
               //fixed exchange rate:
-              exchange_rate = 2600;
+              exchange_rate = 320;
             }}
 
             //checks the msg.sender of the call()

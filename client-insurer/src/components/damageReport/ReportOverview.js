@@ -165,7 +165,7 @@ function ReportOverview(props) {
       <div style={{ float: "left" }}>
         <div
           style={{
-            height: "30vh",
+            height: "40vh",
             margin: "5px",
             overflowY: "scroll",
             borderStyle: "solid",
@@ -213,25 +213,34 @@ function ReportOverview(props) {
       )}
       {getStatus() === "Paid" && (
         <div style={{ float: "right" }}>
-          The damage has been paid with {props.selectedReport.amount}.
+          {parseInt(props.selectedReport.counteroffer) !== 0 ? (
+            <div>
+              The claim has been paid with the counteroffer:{" "}.
+              {props.selectedReport.counteroffer}
+            </div>
+          ) : (
+            <div>
+              The claim has been paid with {props.selectedReport.amount}.
+            </div>
+          )}
         </div>
       )}
       {getStatus() === "Under Investigation" && (
         <div
           style={{
             float: "right",
-            height: "30vh",
+            height: "40vh",
             margin: "5px",
             overflowY: "scroll",
             borderStyle: "solid",
             borderColor: "red",
             padding: "5px",
-            width: "20vw",
+            width: "28vw",
           }}
         >
           <div>
             The claim was declined with a counteroffer of:{" "}
-            {parseInt(props.selectedReport.counteroffer) * exchangeRate}
+            {parseInt(props.selectedReport.counteroffer)}
           </div>
           <br />
           <br />
@@ -247,19 +256,19 @@ function ReportOverview(props) {
         <div
           style={{
             float: "right",
-            height: "30vh",
+            height: "40vh",
             margin: "5px",
             overflowY: "scroll",
             borderStyle: "solid",
             borderColor: "red",
             padding: "5px",
-            width: "20vw",
+            width: "28vw",
           }}
         >
           <div>
             The claim with a counteroffer of{" "}
-            {parseInt(props.selectedReport.counteroffer) * exchangeRate} was
-            declined by the customer.
+            {parseInt(props.selectedReport.counteroffer)} was declined by the
+            customer.
           </div>
           <br />
           <br />

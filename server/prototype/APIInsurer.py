@@ -177,9 +177,9 @@ def acceptDamage2():
     try:
         jsonData = request.get_json()
         damageId = jsonData['id']
-        amount = jsonData['amount']
+        amount = int(jsonData['amount'])
         exchange_rate = getSc().functions.getExchangeRate().call()
-        ether = (amount / exchange_rate)
+        ether = float(amount / exchange_rate)
         print(ether)
         print(type(ether))
         # weiInSC = getSc().functions.balanceOfSC().call()
@@ -222,7 +222,7 @@ def declineDamage2():
             message = 'Damage was successfully declined without sending a counteroffer.'
         else:
             exchange_rate = getSc().functions.getExchangeRate().call()
-            ether = (amount / exchange_rate)
+            ether = float(amount / exchange_rate)
             weiInSC = getSc().functions.balanceOfSC().call()
             ethInSC = weiInSC / 1000000000000000000
             ethToTransfer = ether - ethInSC

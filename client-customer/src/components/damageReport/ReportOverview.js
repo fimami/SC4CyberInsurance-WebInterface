@@ -161,7 +161,7 @@ function ReportOverview(props) {
       <br />
       <div>Attack Type: {props.selectedReport.attackType}</div>
       <br />
-      <div>Amount to cover: {props.selectedReport.amount}</div>
+      <div>Initial amount to cover: {props.selectedReport.amount}</div>
       <br />
       <div style={{ float: "left" }}>
         <div
@@ -201,8 +201,7 @@ function ReportOverview(props) {
         {getStatus() === "Under Investigation" && (
           <div style={{ float: "right" }}>
             <div>
-              The new counteroffer is:{" "}
-              {props.selectedReport.counteroffer * exchangeRate}
+              The new counteroffer is: {props.selectedReport.counteroffer}
             </div>
             <br />
             <br />
@@ -236,6 +235,20 @@ function ReportOverview(props) {
         {getStatus() === "Resolved" && (
           <div style={{ float: "right" }}>
             The dispute was resolved externally.
+          </div>
+        )}
+        {getStatus() === "Paid" && (
+          <div style={{ float: "right" }}>
+            {parseInt(props.selectedReport.counteroffer) !== 0 ? (
+              <div>
+                The claim has been paid with the counteroffer:{" "}
+                {props.selectedReport.counteroffer}.
+              </div>
+            ) : (
+              <div>
+                The claim has been paid with {props.selectedReport.amount}.
+              </div>
+            )}
           </div>
         )}
       </div>
