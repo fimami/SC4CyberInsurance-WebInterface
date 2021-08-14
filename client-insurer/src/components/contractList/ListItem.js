@@ -94,7 +94,10 @@ function ListItem(props) {
 
   return (
     <>
-      <button style={{ padding: "20px" }} onClick={useContract}>
+      <button
+        style={{ padding: "20px", backgroundColor: "yellow" }}
+        onClick={useContract}
+      >
         <div>Company Name: {props.companyName}</div>
         <br />
         <br />

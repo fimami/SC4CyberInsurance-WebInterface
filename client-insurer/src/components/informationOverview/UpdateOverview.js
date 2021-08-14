@@ -99,6 +99,23 @@ function UpdateOverview(props) {
 
   const url = "http://127.0.0.1:5000";
 
+  const calculatePremium = () => {
+    const json_content = JSON.stringify(updateContent);
+    axios
+      .post(`${url}/calculatePremium2`, json_content, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        props.setUpdatePremium(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const checkProposal = () => {
     const jsonHash = JSON.stringify(props.selectedUpdateHash);
     console.log(jsonHash);
@@ -143,6 +160,10 @@ function UpdateOverview(props) {
   useEffect(() => {
     checkProposal();
   }, []);
+
+  useEffect(() => {
+    calculatePremium();
+  }, [updateContent]);
 
   return (
     <div>

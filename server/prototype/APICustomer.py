@@ -355,7 +355,7 @@ def declineCounteroffer2():
 def resolveDispute2():
     try:
         jsonId = request.get_json()
-        getSc().functions.resolveDispute(int(jsonId)).transact({'from': getUserAddress()})
+        message = str(getSc().functions.resolveDispute(int(jsonId)).transact({'from': getUserAddress()}))
         message = 'Dispute was resolved.'
     except Exception as e:
         message = transform_error_message(e)

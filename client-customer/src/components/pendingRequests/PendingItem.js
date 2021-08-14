@@ -11,7 +11,10 @@ function PendingItem(props) {
 
   return (
     <>
-      <button style={{ padding: "15px" }} onClick={clickPendingContract}>
+      <button
+        style={{ padding: "15px", backgroundColor: "yellow" }}
+        onClick={clickPendingContract}
+      >
         <div>Company Name: {props.companyName}</div>
         <div>Status: {props.status}</div>
         {parseInt(props.premium) !== 0 && <div>Premium: {props.premium}</div>}

@@ -294,6 +294,7 @@ def proposeToUpdateContract2():
             message = 'Contract was proposed to be updated. The new premium would be ' + str(premium) \
                   + ' euro.'
             print(message)
+            #setproposaldict or somehow
         else:
             message = 'Error: Contract constraints are fixed and can not be changed.'
             print(message)
@@ -330,9 +331,9 @@ def agreeToUpdateContract():
 @app.route('/declineToUpdateContract')
 def declineToUpdateContract():
     try:
+        new_hash = getSc().functions.getHashOfProposal().call()
         getSc().functions.declineToUpdateContract().transact({'from': getUserAddress()})
-        ################The two lines here are new--->
-        new_hash = proposal_dict['new_hash']
+        # new_hash = proposal_dict['new_hash']
         message = requests.get('http://localhost:5001/deleteUpdateContract/' + str(new_hash)).content.decode('UTF-8')
         # message = 'Contract was not updated.'
     except Exception as e:

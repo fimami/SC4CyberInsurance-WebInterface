@@ -57,9 +57,13 @@ function ReportItem(props) {
     <>
       <button
         onClick={openReportSelectHash}
-        style={{ padding: "10px", marginBottom: "10px", textAlign: "left" }}
+        style={{
+          padding: "10px",
+          marginBottom: "10px",
+          textAlign: "left",
+          backgroundColor: "yellow",
+        }}
       >
-        <div>Company: {props.companyName}</div>
         <div>Amount (EUR): {props.amount}</div>
         <div>ID: {props.damageId}</div>
         <div>Status: {getStatus()}</div>

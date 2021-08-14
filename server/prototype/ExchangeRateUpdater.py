@@ -1,5 +1,4 @@
 import json
-from prototype.GlobalAttributes import getUserAddress
 import requests
 import time
 from web3 import Web3

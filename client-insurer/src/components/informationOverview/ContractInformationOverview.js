@@ -97,6 +97,7 @@ function ContractInformationOverview(props) {
       },
     ],
   });
+  const [updatePremium, setUpdatePremium] = useState(0);
   const [currentPremiumEuro, setCurrentPremiumEuro] = useState(0);
   const [currentPremiumEther, setCurrentPremiumEther] = useState(0);
   const [contractValidUntil, setContractValidUntil] = useState("");
@@ -217,9 +218,9 @@ function ContractInformationOverview(props) {
         <div style={{ color: "green" }}>
           Contract Hash: {props.selectedContract.jsonHash}
         </div>
-        <div style={{ color: "red" }}>
-          Contract Address: {props.selectedContract.contractAddress}
-        </div>
+        <div>Contract Address: {props.selectedContract.contractAddress}</div>
+        <br />
+        <div style={{ color: "red" }}>New premium: {updatePremium}</div>
         <br />
         <div className={styles.info}>
           <div style={{ fontSize: "20px", textDecoration: "underline" }}>
@@ -634,6 +635,7 @@ function ContractInformationOverview(props) {
             <UpdateOverview
               selectedUpdateHash={props.selectedUpdateHash}
               setAvailableContracts={props.setAvailableContracts}
+              setUpdatePremium={setUpdatePremium}
             />
           </div>
         ) : (

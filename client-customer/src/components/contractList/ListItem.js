@@ -106,7 +106,11 @@ function ListItem(props) {
     <>
       {props.proposalHashList.includes(props.jsonHash) && (
         <button
-          style={{ marginTop: "30px", padding: "20px" }}
+          style={{
+            marginTop: "30px",
+            padding: "20px",
+            backgroundColor: "yellow",
+          }}
           onClick={openUpdateOverview}
         >
           <div>Company Name: {props.companyName}</div>
@@ -117,7 +121,11 @@ function ListItem(props) {
       )}
       {!props.proposalHashList.includes(props.jsonHash) && (
         <button
-          style={{ marginTop: "30px", padding: "20px" }}
+          style={{
+            marginTop: "30px",
+            padding: "20px",
+            backgroundColor: "yellow",
+          }}
           onClick={useContract}
         >
           <div>Company Name: {props.companyName}</div>

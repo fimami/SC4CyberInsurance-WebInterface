@@ -97,6 +97,8 @@ function UpdateOverview(props) {
 
   // const [updateMessage, setUpdateMessage] = useState("");
 
+  const [updatePremium, setUpdatePremium] = useState(0);
+
   const url = "http://127.0.0.1:5001";
 
   const checkProposal = () => {
@@ -116,13 +118,37 @@ function UpdateOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
+  const calculatePremium = () => {
+    const json_content = JSON.stringify(updateContent);
+    axios
+      .post(`${url}/calculatePremium2`, json_content, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setUpdatePremium(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     checkProposal();
   }, []);
 
+  useEffect(() => {
+    calculatePremium();
+  }, [updateContent]);
+
   return (
     <div>
       <button onClick={props.closeInfoOrReport}>Close Overview</button>
+      <br />
+      <br />
+      <div style={{ color: "red" }}>New Premium: {updatePremium}</div>
       <br />
       <div>
         <div style={{ fontSize: "20px", textDecoration: "underline" }}>

@@ -94,21 +94,21 @@ contract_content = """
                return allDamages;
             }}
             
-            function getAllReportedDamagesWithStatus (StatusDamage status) public view returns (Reported_Damage[100] memory){{
-               require(
-                  customer_address == msg.sender || insurer_address == msg.sender,
-                  "Only the registered customer or the insurer can get the damage infos."
-               );
-               Reported_Damage[100] memory allDamagesWithStatus;
-               uint count = 0;
-               for (uint i=0; i<count_of_damages; i++) {{
-                    if(reported_damages[list_of_damage_ids[i]].status == status){{
-                        allDamagesWithStatus[count] = reported_damages[list_of_damage_ids[i]];
-                        count++;
-                    }}
-                }}
-               return allDamagesWithStatus;
-            }}
+            //function getAllReportedDamagesWithStatus (StatusDamage status) public view returns (Reported_Damage[100] memory){{
+            //   require(
+            //      customer_address == msg.sender || insurer_address == msg.sender,
+            //      "Only the registered customer or the insurer can get the damage infos."
+            //   );
+            //   Reported_Damage[100] memory allDamagesWithStatus;
+            //   uint count = 0;
+            //   for (uint i=0; i<count_of_damages; i++) {{
+            //        if(reported_damages[list_of_damage_ids[i]].status == status){{
+            //            allDamagesWithStatus[count] = reported_damages[list_of_damage_ids[i]];
+            //            count++;
+            //        }}
+            //    }}
+            //   return allDamagesWithStatus;
+            //}}
             
             enum StatusDamage {{ New, Paid, UnderInvestigation, Dispute, Resolved, Canceled }}
             
@@ -345,7 +345,7 @@ contract_content = """
                   reported_damages[damage_id].status == StatusDamage.Dispute,
                   "Only when there is a dispute it can be resolved."
                );
-               reported_damages[damage_id].status == StatusDamage.Resolved;
+               reported_damages[damage_id].status = StatusDamage.Resolved;
             }}
         
             function proposeToUpdateContract (uint new_premium, string memory new_json_hash) public{{
