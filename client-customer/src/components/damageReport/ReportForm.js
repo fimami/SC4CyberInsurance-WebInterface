@@ -1,5 +1,4 @@
 import axios from "axios";
-// import moment from "moment";
 import { useState } from "react";
 
 function ReportForm(props) {
@@ -19,12 +18,6 @@ function ReportForm(props) {
     setDamageReport(temp);
   };
 
-  // const formatDate = () => {
-  //   let temp = { ...damageReport };
-  //   temp.date = moment(damageReport.date).format("DD.MM.YYYY");
-  //   setDamageReport(temp);
-  // };
-
   const handleAttackTypeChange = (e) => {
     let temp = { ...damageReport };
     temp.attack_type = e.target.value;
@@ -38,15 +31,6 @@ function ReportForm(props) {
   };
 
   const handleLogFileChange = (e) => {
-    // let temp = { ...damageReport };
-    // temp.log_file_content = e.target.files[0];
-    // setDamageReport(temp);
-    // console.log(damageReport.log_file_content);
-    // console.log(e.target.files[0]);
-    // const fileReader = new FileReader();
-    // const fileString = fileReader.readAsText(e.target.files[0]);
-    // console.log(fileString);
-    // setIsLogFile(true);
     const reader = new FileReader();
     reader.onload = async (e) => {
       const text = e.target.result;
@@ -54,7 +38,6 @@ function ReportForm(props) {
       temp.log_file_content = text;
       setDamageReport(temp);
       setIsLogFile(true);
-      // console.log(text);
     };
     reader.readAsText(e.target.files[0]);
     //-->This function sets the damageReport.logfile-state to a string generated on logfile
@@ -65,17 +48,15 @@ function ReportForm(props) {
       alert("A Logfile needs to be uploaded!");
       return;
     }
-    // formatDate();
     const json_content = JSON.stringify(damageReport);
     console.log(json_content);
     axios
-      .post("http://127.0.0.1:5001/reportDamage2", json_content, {
+      .post("http://127.0.0.1:5001/reportDamage", json_content, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        // console.log(res);
         setDamageReportResponse(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -113,6 +94,7 @@ function ReportForm(props) {
             <option value="Man-in-the-middle attack">
               Man-in-the-middle attack
             </option>
+            <option value="data breach">Data Breach</option>
             <option value="SQL injection">SQL injection</option>
             <option value="Zero-day exploit">Zero-day exploit</option>
             <option value="DNS Tunneling">DNS Tunneling</option>
@@ -145,13 +127,6 @@ function ReportForm(props) {
           name="log_file_content"
           onChange={handleLogFileChange}
         />
-        {/* {isLogFile && (
-          <div>
-            Log File Content: <br />
-            <br />
-            {damageReport.log_file_content}
-          </div>
-        )} */}
         <br />
         <br />
         <br />

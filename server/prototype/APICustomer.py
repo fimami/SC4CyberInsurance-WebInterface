@@ -1,23 +1,5 @@
 from APICommon import *
 
-###############################################
-# @app.route('/assignCustomer', methods=['POST'])
-# def assignInsurer():
-#     try:
-#         addrKey = request.get_json()
-#         acct = w3.eth.account.from_key(addrKey)
-#         address = acct.address
-#         print(address)
-#         print(type(address))
-#         setUserAddress(address)
-#         # print(w3.eth.accounts[0])
-#         # print(type(w3.eth.accounts[0]))
-#     except Exception as e:
-#         address = transform_error_message(e)
-#     return str(address)
-
-# setUserAddress(customer)
-
 #open the database connection and create the tables if they do not already exist
 setConnection(open_connection(False))
 create_contract_databases_if_not_exist(getConnection())
@@ -42,58 +24,15 @@ create_contract_databases_if_not_exist(getConnection())
 #     return response
 
 ####################################
-# @app.route('/testing', methods=['POST'])
-# def testing():
-#     rawdata = request.data
-#     print(rawdata)
-#     print(type(rawdata))
-#     requestData = request.get_json()
-#     print(requestData)
-#     print(type(requestData))
-#     json_content = json.dumps(requestData, indent=8)
-#     print(json_content)
-#     print(type(json_content))
-#     jsonLoads = json.loads(json_content)
-#     print(jsonLoads)
-#     print(type(jsonLoads))
-#     response = requests.post(url='http://localhost:5000/testing2', data=rawdata).content.decode('UTF-8')
-#     return response
-
-####################################
-# @app.route('/createContract2', methods=['POST'])
-# def createContract2():
-#     try:
-#         rawdata = request.data
-#         requestData = request.get_json()
-#         json_content = json.dumps(requestData, indent=8)
-#         response = requests.post(url='http://localhost:5000/deployContract2', data=rawdata).content.decode('UTF-8')
-#         json_hash = get_hash_of_string(json_content)
-
-#         contract_address = requests.get('http://localhost:5000/getContractAddress/' + json_hash).content.decode('UTF-8')
-#         contract_abi = requests.get('http://localhost:5000/getContractABI/' + json_hash).content.decode('UTF-8')
-#         #insert the data in the database
-#         insert_contract_information(getConnection(), json_hash, contract_address, contract_abi)
-#         insert_json_file_content(getConnection(), json_content, json_hash)
-#         #assign the newly created smart contract as currently used one
-#         sc = get_smart_contract_accessor(getConnection(), json_hash)
-#         setSc(sc)
-#         setHash(json_hash)
-#     # print(response)
-#     except Exception as e:
-#         response = str(e)
-#         print(str(e))
-#     return response
-
-####################################
-@app.route('/createContract3', methods=['POST'])
-def createContract3():
+@app.route('/createContract', methods=['POST'])
+def createContract():
     try:
         rawdata = request.data
         pendingHash = request.get_json()
         infoCustomer = get_request_content_with_hash(getConnection(), pendingHash)
         infoInsurer = requests.post(url='http://localhost:5000/getPendingContractInformation', data=rawdata).content.decode('UTF-8')
         if (infoCustomer == infoInsurer):
-            response = requests.post(url='http://localhost:5000/deployContract2', data=infoCustomer).content.decode('UTF-8')
+            response = requests.post(url='http://localhost:5000/deployContract', data=infoCustomer).content.decode('UTF-8')
             contract_address = requests.get('http://localhost:5000/getContractAddress/' + pendingHash).content.decode('UTF-8')
             contract_abi = requests.get('http://localhost:5000/getContractABI/' + pendingHash).content.decode('UTF-8')
 
@@ -123,11 +62,9 @@ def createPendingContract():
         status = "New"
         premium = 0
         response = requests.post(url='http://localhost:5000/storePendingContract', data=rawdata).content.decode('UTF-8')
-        print(response)
         insert_pending_json_file_content(getConnection(), json_content, json_hash, status, premium)
     except Exception as e:
         response = str(e)
-        print(response)
     return response
 
 #########################################################
@@ -139,48 +76,37 @@ def updatePendingContract():
         new_json = json.loads(json1)
         
         jsonHash = new_json['jsonHash']
-        print(jsonHash)
-        print(type(jsonHash))
         status = new_json['status']
         premium = new_json['premium']
-        print(premium)
         update_pending_contract(getConnection(), jsonHash, status, premium)
         response = "The pending contracts were updated."
     except Exception as e:
         response = "Error appeared during: " + str(e)
-        print(response)
     return response
 
 #########################################################
 @app.route('/deletePendingContract/<jsonHash>')
 def deletePendingContract2(jsonHash):
     try:
-        # rawdata = request.data
-        # jsonHash1 = rawdata.decode('utf8')
-        # jsonHash = jsonHash1.replace('"', '')
         delete_pending_json_with_hash(getConnection(), jsonHash)
         message = "Pending Contract was deleted."
     except Exception as e:
         message = str(e)
     return message
 
-# @app.route('/getJsonContent/<jsonFile>')
-# def getJsonContent(jsonFile):
-#     return read_file(jsonFile)
-
 @app.route('/getCustomerAddress')
 def getCustomerAddress():
     return getUserAddress()
 
 ############################################
-@app.route('/updateFileHash/<old_hash>/<new_hash>')
-def updateFileHash(old_hash, new_hash):
-    try:
-        update_file_hash(getConnection(), old_hash, new_hash)
-        message = "The File hash was updated successfully."
-    except Exception as e:
-        message = transform_error_message(e)
-    return message
+# @app.route('/updateFileHash/<old_hash>/<new_hash>')
+# def updateFileHash(old_hash, new_hash):
+#     try:
+#         update_file_hash(getConnection(), old_hash, new_hash)
+#         message = "The File hash was updated successfully."
+#     except Exception as e:
+#         message = transform_error_message(e)
+#     return message
 
 # @app.route('/paySecurity/<ether>')
 # def paySecurity(ether):
@@ -195,8 +121,8 @@ def updateFileHash(old_hash, new_hash):
 #     return message
 
 ####################################
-@app.route('/paySecurity2', methods=['POST'])
-def paySecurity2():
+@app.route('/paySecurity', methods=['POST'])
+def paySecurity():
     if getSc() == 0:
         message = 'Error: Have to chose a contract first by calling useContract function.'
     else:
@@ -222,8 +148,8 @@ def paySecurity2():
 #     return message
 
 ####################################
-@app.route('/payPremium2', methods=['POST'])
-def payPremium2():
+@app.route('/payPremium', methods=['POST'])
+def payPremium():
     if getSc() == 0:
         message = 'Error: Have to chose a contract first by calling useContract function.'
     else:
@@ -252,37 +178,29 @@ def payPremium2():
 #     return message
 
 #########################################
-@app.route('/reportDamage2', methods=['POST'])
-def reportDamage2():
+@app.route('/reportDamage', methods=['POST'])
+def reportDamage():
     try:
         json_content = request.get_json()
         json_content_as_string = json.dumps(json_content)
-        print(type(json_content_as_string))
-        print(json_content_as_string)
         dateAsTimestamp = convertDateStringToTimestamp2(json_content['date'])
-        print(dateAsTimestamp)
         contentOfLogFile = json_content['log_file_content']
         hashOfLogFile = get_hash_of_string(contentOfLogFile)
-        print(hashOfLogFile)
         amount = json_content['damage_amount']
-        print(amount)
         typeOfAttack = json_content['attack_type']
         jsonForID = json_content_as_string
         jsonForID = jsonForID.replace('{', '')
         jsonForID = jsonForID.replace('}', '')
-        print(jsonForID)
         id_report = get_hash_for_id(jsonForID)
-        print(id_report)
         insert_log_data(getConnection(), hashOfLogFile, contentOfLogFile)
         getSc().functions.reportDamage(dateAsTimestamp, int(amount), int(id_report), typeOfAttack, hashOfLogFile).transact({'from': getUserAddress()})
         message = "Damage was successfully reported."
     except Exception as e:
         message = "Error appeared: \n" + str(e)
-        print(message)
     return message
 
-@app.route('/getLogContent/<hashOfLog>')
-def getLogContent(hashOfLog):
+@app.route('/getLogContentForInsurer/<hashOfLog>')
+def getLogContentForInsurer(hashOfLog):
     try:
         message = get_log_data(getConnection(), hashOfLog)
     except Exception as e:
@@ -291,8 +209,8 @@ def getLogContent(hashOfLog):
 
 #TODO: check if used --->
 ##########################################
-@app.route('/getLogContent2', methods=['POST'])
-def getLogContent2():
+@app.route('/getLogContent', methods=['POST'])
+def getLogContent():
     try:
         hashOfLog = request.get_json()
         message = get_log_data(getConnection(), hashOfLog)
@@ -311,8 +229,8 @@ def getLogContent2():
 #     return message
 
 ##########################################
-@app.route('/acceptCounteroffer2', methods=['POST'])
-def acceptCounteroffer2():
+@app.route('/acceptCounteroffer', methods=['POST'])
+def acceptCounteroffer():
     try:
         jsonId = request.get_json()
         getSc().functions.acceptCounterOffer(int(jsonId)).transact({'from': getUserAddress()})
@@ -331,8 +249,8 @@ def acceptCounteroffer2():
 #     return message
 
 ################################################
-@app.route('/declineCounteroffer2', methods=['POST'])
-def declineCounteroffer2():
+@app.route('/declineCounteroffer', methods=['POST'])
+def declineCounteroffer():
     try:
         jsonId = request.get_json()
         getSc().functions.declineCounterOffer(int(jsonId)).transact({'from': getUserAddress()})
@@ -351,8 +269,8 @@ def declineCounteroffer2():
 #     return message
 
 ################################################
-@app.route('/resolveDispute2', methods=['POST'])
-def resolveDispute2():
+@app.route('/resolveDispute', methods=['POST'])
+def resolveDispute():
     try:
         jsonId = request.get_json()
         message = str(getSc().functions.resolveDispute(int(jsonId)).transact({'from': getUserAddress()}))
@@ -369,7 +287,6 @@ def deleteUpdateContract(new_hash):
         message = "The update request was deleted successfully."
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 #######################################
@@ -378,10 +295,8 @@ def deleteOldContract(old_hash):
     try:
         remove_contract_from_db_with_hash(getConnection(), old_hash)
         message = "The old contract was deleted."
-        print(message)
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 ########################################

@@ -30,8 +30,8 @@ contract_content = """
               insurer_address = msg.sender;
               customer_address = company_address;
               OAR = OracleAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
-              //fixed exchange rate:
-              exchange_rate = 320;
+              //fixed exchange rate (from august 2021):
+              exchange_rate = 2700;
             }}
 
             //checks the msg.sender of the call()
@@ -82,6 +82,7 @@ contract_content = """
             
             function getAllReportedDamages () public view returns (Reported_Damage[100] memory){{
                //The msg.sender here is always fixed (first ganache account); conditional statement not needed
+               //An option would be to take the sender address as a parameter
                //require(
                //   customer_address == msg.sender || insurer_address == msg.sender,
                //   "Only the registered customer or the insurer can get the damage infos."
@@ -94,6 +95,7 @@ contract_content = """
                return allDamages;
             }}
             
+            //not used:
             //function getAllReportedDamagesWithStatus (StatusDamage status) public view returns (Reported_Damage[100] memory){{
             //   require(
             //      customer_address == msg.sender || insurer_address == msg.sender,

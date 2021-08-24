@@ -22,5 +22,4 @@ while(True):
             sc.functions.updateExchangeRate().transact({'from': userAddr,'value': 1000})
     time.sleep(10)
 
-
     

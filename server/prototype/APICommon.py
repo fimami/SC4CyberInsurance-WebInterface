@@ -27,14 +27,12 @@ def defineAccount():
         print(address)
         print(type(address))
         setUserAddress(address)
-        # print(w3.eth.accounts[0])
-        # print(type(w3.eth.accounts[0]))
     except Exception as e:
         address = transform_error_message(e)
     return str(address)
 
 #################################################
-#FIXME: ALWAYS the first ganache account is the msg.sender
+#FIXME: Always the first ganache account is the msg.sender
 @app.route('/getMessageSender')
 def getMessageSender():
     try:
@@ -42,9 +40,6 @@ def getMessageSender():
     except Exception as e:
         sender = transform_error_message(e)
     return sender
-
-# insurer = w3.eth.accounts[0]
-# customer = w3.eth.accounts[1]
 
 ####################################
 @app.route('/getPendingContracts')
@@ -79,9 +74,7 @@ def getPendingContractInformation():
 def getContractInformation():
     try:
         jsonHash = request.get_json()
-        # print(jsonHash)
         message = get_json_content_with_hash(getConnection(), jsonHash)
-        # print(message)
     except Exception as e:
         message = "Error appeared during processing: \n" + str(e)
         print("message: " + message)
@@ -99,14 +92,12 @@ def getContractInformation():
 #     return message
 
 ####################################
-@app.route('/useContract2', methods=['POST'])
-def useContract2():
+@app.route('/useContract', methods=['POST'])
+def useContract():
     try:
         jsonHash = request.get_json()
         setSc(get_smart_contract_accessor(getConnection(), jsonHash))
         setHash(jsonHash)
-        # print(jsonHash)
-        # print(type(jsonHash))
         message = "The contract was selected to be accessed."
     except Exception as e:
         message = "Error appeared: " + str(e)
@@ -140,7 +131,7 @@ def transform_error_message(error_message):
 #     return "The premium with the inserted json file would be: " + str(premium) + " swiss francs per period."
 
 ####################################
-@app.route('/calculatePremium2', methods=['POST'])
+@app.route('/calculatePremium', methods=['POST'])
 def calculatePremium2():
     data = request.get_json()
     json_content = json.dumps(data, indent=8)
@@ -175,41 +166,22 @@ def calculatePremium2():
 #     return message
 
 ####################################
-###TODO: Debuggin necessary, problem after "checkProposal"
-@app.route('/getAvailableContracts2')
-def getAvailableContracts2():
+@app.route('/getAvailableContracts')
+def getAvailableContracts():
     try:
         tuples = get_all_contracts_in_db2(getConnection())
         print(tuples)
-        # print(tuples)
         print(type(tuples))
         contract_list = []
-        # print(type(contract_list))
         for tuple in tuples:
             contract_address = get_contract_address_with_hash(getConnection(), tuple[1])
             contract_list.append({'companyName':str(tuple[0]), 'jsonHash':str(tuple[1]), 'contractAddress':str(contract_address)})
-        # tuples_loaded_json = json.loads(tuples)
-        # print(tuples_loaded_json)
-        # print(type(tuples_loaded_json))
-        # contract_dict = {
-        #     'companyName': [''],
-        #     'jsonHash': ['']
-        # }            
-        # print(contract_list)
-
         contract_json = json.dumps(contract_list)
-        # print(contract_json)
-        # print(type(contract_json))
-        # contract_json = json.dumps(contract_dict)
-        # print(contract_json)
     except Exception as e:
         contract_json = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
         print(contract_json)
     return contract_json
 
-# def get_list_of_dict(keys, list_of_tuples):
-#     list_of_dict = [dict(zip(keys, values)) for values in list_of_tuples]
-#     return list_of_dict
 
 ####################################
 # @app.route('/getAvailableContracts3')
@@ -260,47 +232,29 @@ def validate_new_conditions(newJsonContent, oldJsonContent):
 #     return message
 
 ####################################
-@app.route('/proposeToUpdateContract2', methods=['POST'])
-def proposeToUpdateContract2():
+@app.route('/proposeToUpdateContract', methods=['POST'])
+def proposeToUpdateContract():
     try:
-        # rawdata = request.data
-        # json1 = rawdata.decode('utf8')
-        # newContract_dict = json.loads(json1)
-        # newContract_json_pre = json.dumps(newContract_dict, indent=8)
         newContract_dict = request.get_json()
         newContract = json.dumps(newContract_dict, indent=8)
-        # newContract = json.dumps(requestData, indent=8)
-        # newContract_json = newContract_json_pre.strip('\n')
-        print(newContract)
-        print(type(newContract))
         currentHash = getHash()
-        print(currentHash)
         currentContract = get_json_content_with_hash(getConnection(), currentHash)
-        print(validate_new_conditions(newContract, currentContract))
         if validate_new_conditions(newContract, currentContract):
             premium_pre = calculate_premium(newContract)
             premium = round(premium_pre)            
-            print(premium)
             newHash = get_hash_of_string(newContract)
-            print(newHash)
             contract_information = get_contract_information_with_hash(getConnection(), currentHash)
             address = contract_information[1]
-            print(address)
             abi = contract_information[2]
-            print(abi)
             getSc().functions.proposeToUpdateContract(premium, newHash).transact({'from': getUserAddress()})
             insert_contract_information(getConnection(), newHash, address, abi)
             insert_json_file_content(getConnection(), newContract, newHash)
             message = 'Contract was proposed to be updated. The new premium would be ' + str(premium) \
                   + ' euro.'
-            print(message)
-            #setproposaldict or somehow
         else:
             message = 'Error: Contract constraints are fixed and can not be changed.'
-            print(message)
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 @app.route('/agreeToUpdateContract')
@@ -309,23 +263,16 @@ def agreeToUpdateContract():
         old_hash = getHash()
         new_hash = getSc().functions.getHashOfProposal().call()
         update_file_hash(getConnection(), old_hash, new_hash )
-        # customerUpdateMessage = requests.get('http://localhost:5001/updateFileHash/' + old_hash + "/" + new_hash).content.decode('UTF-8')
         oldContractDeletion = requests.get('http://localhost:5001/deleteOldContract/' + old_hash).content.decode('UTF-8')
-        print(oldContractDeletion)
         remove_old_content_after_update(getConnection(), old_hash)
         content = requests.get('http://localhost:5001' +
                            '/getContentOfProposal/' + new_hash).content.decode('UTF-8')
         insert_json_file_content(getConnection(), content, new_hash)
         setHash(new_hash)
-        print(getUserAddress())
-        print(type(getUserAddress()))
         getSc().functions.agreeToUpdateContract().transact({'from': getUserAddress()})
-        print("getSc() worked")
         message = 'Contract was updated.'
-        print(message)
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 @app.route('/declineToUpdateContract')
@@ -333,12 +280,9 @@ def declineToUpdateContract():
     try:
         new_hash = getSc().functions.getHashOfProposal().call()
         getSc().functions.declineToUpdateContract().transact({'from': getUserAddress()})
-        # new_hash = proposal_dict['new_hash']
         message = requests.get('http://localhost:5001/deleteUpdateContract/' + str(new_hash)).content.decode('UTF-8')
-        # message = 'Contract was not updated.'
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 def resolveStatus(status):
@@ -352,26 +296,26 @@ def resolveStatus(status):
     }
     return switcher.get(status, -1)
 
-def getDamages(hash, status, statusAsInt):
-    damages_dict = getDamagesDict()
-    damages_dict.clear()
-    sc = get_smart_contract_accessor(getConnection(), hash[0])
-    damages = sc.functions.getAllReportedDamagesWithStatus(statusAsInt).call()
-    message = ""
-    for damage in damages:
-        dateAsTimestamp = damage[0]
-        if dateAsTimestamp != 0:
-            logfile_hash = damage[5]
-            damages_dict.update({logfile_hash:hash})
-            date = convertTimestampToDateString(dateAsTimestamp)
-            message = message + "\nHash of Contract: " + hash[0] \
-                      + "\nDamage: \nDate: " + date + " \nAmount: " + str(damage[1]) \
-                      + " \nStatus: " + status + " \nID: " + str(damage[3]) \
-                      + " \nAttackType: " + damage[4] + " \nLogfileHash: " + logfile_hash \
-                      + " \nDeclineReason: " + damage[6] + " \nCounterOffer: " + str(damage[7]) \
-                      + "\n\n"
-    setDamagesDict(damages_dict)
-    return message
+# def getDamages(hash, status, statusAsInt):
+#     damages_dict = getDamagesDict()
+#     damages_dict.clear()
+#     sc = get_smart_contract_accessor(getConnection(), hash[0])
+#     damages = sc.functions.getAllReportedDamagesWithStatus(statusAsInt).call()
+#     message = ""
+#     for damage in damages:
+#         dateAsTimestamp = damage[0]
+#         if dateAsTimestamp != 0:
+#             logfile_hash = damage[5]
+#             damages_dict.update({logfile_hash:hash})
+#             date = convertTimestampToDateString(dateAsTimestamp)
+#             message = message + "\nHash of Contract: " + hash[0] \
+#                       + "\nDamage: \nDate: " + date + " \nAmount: " + str(damage[1]) \
+#                       + " \nStatus: " + status + " \nID: " + str(damage[3]) \
+#                       + " \nAttackType: " + damage[4] + " \nLogfileHash: " + logfile_hash \
+#                       + " \nDeclineReason: " + damage[6] + " \nCounterOffer: " + str(damage[7]) \
+#                       + "\n\n"
+#     setDamagesDict(damages_dict)
+#     return message
 
 # @app.route('/getAllDamages/<status>')
 # def getAllDamages(status):
@@ -392,13 +336,10 @@ def getDamages(hash, status, statusAsInt):
 @app.route('/getAllDamages')
 def getAllDamages():
     try: 
-        # exchange_rate = getSc().functions.getExchangeRate().call()
         damageList = []
         hashs = get_all_hashs_in_db(getConnection())
         for hash in hashs:
             sc = get_smart_contract_accessor(getConnection(), hash[0])
-            print(str(sc))
-            print(getUserAddress())
             damages = sc.functions.getAllReportedDamages().call()
             for damage in damages:
                 dateAsTimestamp = damage[0]
@@ -416,20 +357,17 @@ def getAllDamages():
         message = json.dumps(damageList)
     except Exception as e:
         message = transform_error_message(e)
-        print(message)
     return message
 
 #######################################################
 #####works: 1 eth == 10^18 wei
-@app.route('/getBalanceOfContract')
-def getBalanceOfContract():
-    try:
-        message = str(getSc().functions.balanceOfSC().call())
-        print(message)
-    except Exception as e:
-        message = transform_error_message(e)
-        print(message)
-    return message
+# @app.route('/getBalanceOfContract')
+# def getBalanceOfContract():
+#     try:
+#         message = str(getSc().functions.balanceOfSC().call())
+#     except Exception as e:
+#         message = transform_error_message(e)
+#     return message
 
 # @app.route('/getDamagesOfCurrentContract/<status>')
 # def getDamagesOfCurrentContract(status):
@@ -448,85 +386,6 @@ def getBalanceOfContract():
 #     return message
 
 
-
-#########################################
-# @app.route('/getDamagesOfHash', methods=['POST'])
-# def getNewDamagesOfHash():
-#     try:
-#         jsonHash = request.get_json()
-#         damage_arrayOfDicts = []
-#         sc = get_smart_contract_accessor(getConnection(), jsonHash)
-#         damagesNew = sc.functions.getAllReportedDamagesWithStatus(0).call()
-#         for damage in damagesNew:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 0
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         damagesPaid = sc.functions.getAllReportedDamagesWithStatus(0).call()
-#         for damage in damagesPaid:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 1
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         damagesUnderInvestigation = sc.functions.getAllReportedDamagesWithStatus(2).call()
-#         for damage in damagesUnderInvestigation:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 2
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         damagesDispute = sc.functions.getAllReportedDamagesWithStatus(3).call()
-#         for damage in damagesDispute:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 3
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         damagesResolved = sc.functions.getAllReportedDamagesWithStatus(4).call()
-#         for damage in damagesResolved:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 4
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         damagesCanceled = sc.functions.getAllReportedDamagesWithStatus(5).call()
-#         for damage in damagesCanceled:
-#             dateAsTimestamp = damage[0]
-#             if dateAsTimestamp != 0:
-#                 logfile_hash = damage[5]
-#                 date = convertTimestampToDateString(dateAsTimestamp)
-#                 amount = damage[1]
-#                 status = 5
-#                 id = damage[3]
-#                 attackType = damage[4]
-#                 damage_arrayOfDicts.append({'contractHash':str(jsonHash), 'status':status, 'id':id, 'date':str(date), 'attackType':str(attackType), 'amount':amount, 'logfileHash':str(logfile_hash)})
-#         message = json.dumps(damage_arrayOfDicts)
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
 #########################################
 # @app.route('/getLogfileContent', methods=['POST'])
 # def getLogfileContent():
@@ -538,13 +397,13 @@ def getBalanceOfContract():
 #     return logfile_content
 
 #########################################
-@app.route('/getHash')
-def getUsedHash():
-    try:
-        message = str(getHash())
-    except Exception as e:
-        message = transform_error_message(e)
-    return message
+# @app.route('/getHash')
+# def getUsedHash():
+#     try:
+#         message = str(getHash())
+#     except Exception as e:
+#         message = transform_error_message(e)
+#     return message
 
 # @app.route('/getPremium')
 # def getPremium():
@@ -555,12 +414,10 @@ def getUsedHash():
 #     return message
 
 ####################################
-@app.route('/getPremium2')
-def getPremium2():
+@app.route('/getPremium')
+def getPremium():
     try:
         message = str(getSc().functions.getPremium().call())
-        exchange_rate = str(getSc().functions.getExchangeRate().call())
-        # print(exchange_rate)
     except Exception as e:
         message = transform_error_message(e)
     return message
@@ -572,28 +429,24 @@ def getPremiumInEther():
         euro = getSc().functions.getPremium().call()
         exchange_rate = getSc().functions.getExchangeRate().call()
         premiumEther = str(euro / exchange_rate)
-        # format_float = "{:.4f}".format(premiumEther)
-        # premiumFloat = format_float
     except Exception as e:
         premiumEther = transform_error_message(e)
     return premiumEther
 
-######################################FIXME: Not used
-@app.route('/getExchangeRate')
-def getExchangeRateCall():
-    try:
-        exchange_rate = getSc().functions.getExchangeRate().call()
-        jsonExchange = json.dumps(exchange_rate)
-    except Exception as e:
-        jsonExchange = transform_error_message(e)
-    return jsonExchange
+# @app.route('/getExchangeRate')
+# def getExchangeRateCall():
+#     try:
+#         exchange_rate = getSc().functions.getExchangeRate().call()
+#         jsonExchange = json.dumps(exchange_rate)
+#     except Exception as e:
+#         jsonExchange = transform_error_message(e)
+#     return jsonExchange
 
 ####################################
 @app.route('/getValidUntil')
 def getValidUntil():
     try:
         validUntil = str(getSc().functions.getValidUntil().call())
-        print("valid until" + validUntil)
     except Exception as e:
         validUntil = transform_error_message(e)
     return validUntil
@@ -603,7 +456,6 @@ def getValidUntil():
 def getValidBool():
     try:
         validBool = str(getSc().functions.getValidBool().call())
-        print("validBool: " + str(validBool))
     except Exception as e:
         validBool = transform_error_message(e)
     return validBool
@@ -616,18 +468,14 @@ def getSecurity():
         exchange_rate = getSc().functions.getExchangeRate().call()
         initialPremium = initialPremiumEuro / exchange_rate
         jsonHash = request.get_json()
-        # print(jsonHash)
         content = get_json_content_with_hash(getConnection(), jsonHash)
         jsonContent = json.loads(content)
         cancellationPenalty = jsonContent["contract_constraints"]["cancellation"]["penaltyInPercent"]
         cancellationPercentage = cancellationPenalty / 100
-        securityRaw = str(cancellationPercentage * initialPremium)
-        # format_float = "{:.4f}".format(securityRaw)
-        # security = format_float
+        security = str(cancellationPercentage * initialPremium)
     except Exception as e:
-        securityRaw = transform_error_message(e)
-        print(securityRaw)
-    return securityRaw
+        security = transform_error_message(e)
+    return security
 
 # @app.route('/isNewProposalAvailable')
 # def isNewProposalAvailable():
@@ -652,13 +500,10 @@ def getSecurity():
 #     setProposalDict(proposal_dict)
 #     return message
 
-#####TODO: not used:
 ####################################
 @app.route('/checkForNewProposal')
 def checkForNewProposal():
     try:
-        # proposal_dict = getProposalDict()
-        # proposal_dict.clear()
         hashs = get_all_hashs_in_db(getConnection())
         message = "No update is available."
         proposal_list = []
@@ -670,14 +515,11 @@ def checkForNewProposal():
                     if hash[0] != new_hash:
                         proposal_list.append(new_hash)
                     message = "Update is available."
-                    print(message)
             except:
                 print("No accessor available.")
         proposal_list_json = json.dumps(proposal_list)
     except Exception as e:
         proposal_list_json = transform_error_message(e)
-        print(message)
-    # setProposalDict(proposal_dict)
     return proposal_list_json
 
 #######instead of isNewProposalAvailable()
@@ -686,7 +528,6 @@ def checkForNewProposal():
 def getNewProposalByHash():
     try:
         jsonHash = request.get_json()
-        print(jsonHash)
         proposal_dict = {}
         message = "No update is available."
         try:
@@ -715,8 +556,8 @@ def getContentOfProposal(hash):
 #     return get_json_content_with_hash(getConnection(), jsonHash)
 
 ###############################################
-@app.route('/checkProposal2', methods=['POST'])
-def checkProposal2():
+@app.route('/checkProposal', methods=['POST'])
+def checkProposal():
     port = 5001
     jsonHash = request.get_json()
     content = content = requests.get('http://localhost:' + str(port) +

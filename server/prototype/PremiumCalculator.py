@@ -1,7 +1,45 @@
 import json
 
 def calculate_risk_level(company_security, company_infrastructure):
-    risk_level = 3 * len(company_security['attacks_history']) \
+    """Additional metrics can be easily added"""
+    risk_metrics = company_security['risk_assessment_metrics']
+    knownVuln = 0
+    volTransf = 0
+    cybersecEd = 0
+    for x in risk_metrics:
+        if x['name'] == "Known vulnerabilities":
+            if x['result'] == "low":
+                knownVuln = -0.25
+            elif x['result'] == "medium":
+                knownVuln = 0.25
+            elif x['result'] == "high":
+                knownVuln = 0.5
+        if x['name'] == "Volume of transfer":
+            if x['result'] == "low":
+                volTransf = -0.25
+            elif x['result'] == "medium":
+                volTransf = 0.25
+            elif x['result'] == "high":
+                volTransf = 0.5
+        if x['name'] == "cybersecurity education":
+            if x['result'] == "low":
+                cybersecEd = 0.5
+            elif x['result'] == "medium":
+                cybersecEd = 0.25
+            elif x['result'] == "high":
+                cybersecEd = -0.25
+    metrics_level = 1 + (knownVuln+cybersecEd+volTransf)
+    updatedTech = 0
+    notUpdatedTech = 0
+    for x in company_infrastructure['technologies']:
+        if x['updates'] == True:
+            updatedTech = updatedTech + 1
+        else:
+            notUpdatedTech = notUpdatedTech + 1
+    
+    risk_level = 3 * len(company_security['attacks_history']) + metrics_level \
+                 + company_infrastructure['number_connected_devices']/25 \
+                 + 0.5 * updatedTech + notUpdatedTech + 0.5 * len(company_infrastructure['critical_services']) \
                  - (len(company_security['security_software']) + len(company_security['security_training']))
     """Calculate the risk level through the contract conditions"""
     return risk_level
@@ -12,9 +50,6 @@ def calculate_premium_before_adjustement(company_conditions,
                       risk_level,):
     """Calculate the premium by considering the risk level, the coverage
     and the yearly sales"""
-    """"using a simple function to calculate the premium
-    -> using risk as a weight to calculate the premium
-    -> proof of concept for calculation -> can be adapted easily"""
     yearly_revenue = company_conditions['yearly_revenue']
     yearly_revenue_through_technology = company_conditions['revenue'] * yearly_revenue
     amount_of_coverages = len(contract_coverage)

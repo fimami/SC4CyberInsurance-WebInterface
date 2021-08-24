@@ -95,12 +95,10 @@ function PendingOverview(props) {
     ],
   });
 
-
   const url = "http://127.0.0.1:5000";
 
   const getPendingContractInformation = () => {
     const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-    // console.log(jsonHash);
 
     axios
       .post(`${url}/getPendingContractInformation`, jsonHash, {
@@ -109,7 +107,6 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        // console.log(res);
         setPendingInformation(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -118,13 +115,12 @@ function PendingOverview(props) {
   const calculatePremium = (e) => {
     const json_content = JSON.stringify(pendingInformation);
     axios
-      .post(`${url}/calculatePremium2`, json_content, {
+      .post(`${url}/calculatePremium`, json_content, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        // console.log(res.data);
         props.setSelectedPendingContract({
           companyName: props.selectedPendingContract.companyName,
           jsonHash: props.selectedPendingContract.jsonHash,
@@ -139,7 +135,6 @@ function PendingOverview(props) {
 
   const acceptRequest = (e) => {
     const pendingContract = JSON.stringify(props.selectedPendingContract);
-    // console.log(pendingContract);
 
     axios
       .post(`${url}/acceptPendingContract`, pendingContract, {
@@ -147,15 +142,12 @@ function PendingOverview(props) {
           "Content-Type": "application/json",
         },
       })
-      .then((res) => {
-        // console.log(res);
-      })
+      .then((res) => {})
       .catch((error) => console.error(`Error: ${error}`));
   };
 
   const cancelRequest = (e) => {
     const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-    // console.log(jsonHash);
 
     axios
       .post(`${url}/deletePendingContract`, jsonHash, {
@@ -164,7 +156,6 @@ function PendingOverview(props) {
         },
       })
       .then((res) => {
-        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -594,18 +585,12 @@ function PendingOverview(props) {
           <br />
         </div>
       </div>
-      {/* {showPremiumResponse && (
-        <div>The premium would be {premiumResponse} euro.</div>
-      )} */}
       {parseInt(props.selectedPendingContract.premium) !== 0 && (
         <div>
           The calculated Premium is {props.selectedPendingContract.premium}{" "}
           euro.
         </div>
       )}
-      {/* {props.selectedPendingContract.status === "Accepted" && (
-        <div>Waiting to be accepted by the Customer...</div>
-      )} */}
       {parseInt(props.selectedPendingContract.premium) === 0 && (
         <button onClick={calculatePremium}>Calculate Premium</button>
       )}

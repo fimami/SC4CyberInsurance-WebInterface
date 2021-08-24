@@ -29,22 +29,17 @@ function WebInterface() {
   const [addressConfiguration, setAddressConfiguration] = useState(false);
   const [accAddr, setAccAddr] = useState("");
 
-  // const [useContractHash, setUseContractHash] = useState("");
-
-  //triggers if the contract creation form is shown
   const [isFormOpen, setIsFormOpen] = useState(false);
+
   //triggers the visibility of the Open Form Button
   const [showFormButton, setShowFormButton] = useState(true);
 
   const [showDamageReport, setShowDamageReport] = useState(false);
 
-  // const [showDamageIsSelected, setShowDamageIsSelected] = useState(false);
-
   const [showCounterOffer, setShowCounterOffer] = useState(false);
 
   const [selectedPendingContract, setSelectedPendingContract] = useState({});
 
-  //
   //triggers the report form window (show, not show)
   const [showReportForm, setShowReportForm] = useState(false);
 
@@ -52,9 +47,8 @@ function WebInterface() {
 
   const getAvailableContracts = () => {
     axios
-      .get(`${url}/getAvailableContracts2`)
+      .get(`${url}/getAvailableContracts`)
       .then((response) => {
-        // setAvailableContracts([]); TODO:Check if this works
         console.log(response);
         if (response.data.length) {
           setAvailableContracts(response.data);
@@ -106,27 +100,6 @@ function WebInterface() {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
-  // const getDamagesOfHash = () => {
-  //   if (availableContracts.length) {
-  //     const jsonHash = JSON.stringify(availableContracts[0].jsonHash);
-
-  //     axios
-  //       .post(`${url}/getDamagesOfHash`, jsonHash, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //       .then((res) => {
-  //         // console.log(res);
-  //         setNewDamageReports(res.data);
-  //         // console.log(newDamageReports);
-  //       })
-  //       .catch((error) => console.error(`Error: ${error}`));
-  //   } else {
-  //     setNewDamageReports([]);
-  //   }
-  // };
-
   useEffect(() => {
     setInterval(() => {
       getAvailableContracts();
@@ -140,24 +113,6 @@ function WebInterface() {
       checkForNewProposal();
     }
   }, [availableContracts]);
-
-  // function handleContractInfoChange() {
-  //   setShowContractInfo(true);
-  // }
-
-  // function changeOverview() {
-  //   setShowContractInfo(false);
-  //   setShowFormButton(true);
-  //   setShowContractIsUsed(false);
-  // }
-
-  // function availableContractsHandler(value) {
-  //   setAvailableContracts(value);
-  // }
-
-  // function changeUsedContract(value) {
-  //   setUseContractHash(value);
-  // }
 
   function closeForm() {
     setIsFormOpen(false);
@@ -181,10 +136,6 @@ function WebInterface() {
     setShowUpdateContent(true);
     setShowPendingInfo(false);
   }
-
-  // function formButtonNotVisible() {
-  //   setShowFormButton(false);
-  // }
 
   function openReportOverview() {
     setShowContractInfo(false);
@@ -241,18 +192,12 @@ function WebInterface() {
         <>
           <ReportedDamages
             availableContracts={availableContracts}
-            // setIsFormOpen={setIsFormOpen}
-            // showDamageReport={showDamageReport}
             newDamageReports={newDamageReports}
-            // showDamageIsSelected={showDamageIsSelected}
-            // setShowDamageIsSelected={setShowDamageIsSelected}
-            // setShowDamageReport={setShowDamageReport}
             openReportOverview={openReportOverview}
             setSelectedReport={setSelectedReport}
             proposalHashList={proposalHashList}
           />
           <ActionWindow
-            // changeOverview={changeOverview}
             availableContracts={availableContracts}
             showContractInfo={showContractInfo}
             setShowContractInfo={setShowContractInfo}
@@ -260,7 +205,6 @@ function WebInterface() {
             openForm={openForm}
             isFormOpen={isFormOpen}
             showFormButton={showFormButton}
-            // useContractHash={useContractHash}
             showDamageReport={showDamageReport}
             setShowDamageReport={setShowDamageReport}
             showReportForm={showReportForm}
@@ -276,15 +220,7 @@ function WebInterface() {
             accAddr={accAddr}
           />
           <ActiveContracts
-            // onSelect={handleContractInfoChange}
-            // onChange={availableContractsHandler}
             availableContracts={availableContracts}
-            // showContractInfo={showContractInfo}
-            // changeUsedContract={changeUsedContract}
-            // formButtonNotVisible={formButtonNotVisible}
-            // useContractHash={useContractHash}
-            // showContractIsUsed={showContractIsUsed}
-            // setShowContractIsUsed={setShowContractIsUsed}
             openContractInfo={openContractInfo}
             setSelectedContract={setSelectedContract}
             setProposalHashList={setProposalHashList}
@@ -298,9 +234,6 @@ function WebInterface() {
           />
         </>
       )}
-
-      {/* <div>{useContractHash}</div> */}
-      {/* <div>{JSON.stringify(availableContracts)}</div> */}
     </>
   );
 }

@@ -11,7 +11,7 @@ function ReportOverview(props) {
     const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
     axios
-      .post(`${url}/getLogContent2`, logfileHash, {
+      .post(`${url}/getLogContent`, logfileHash, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -22,7 +22,7 @@ function ReportOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
 
     axios
-      .post(`${url}/useContract2`, jsonHash, {
+      .post(`${url}/useContract`, jsonHash, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -61,7 +61,7 @@ function ReportOverview(props) {
     const jsonId = JSON.stringify(props.selectedReport.id);
 
     axios
-      .post(`${url}/acceptCounteroffer2`, jsonId, {
+      .post(`${url}/acceptCounteroffer`, jsonId, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -77,7 +77,7 @@ function ReportOverview(props) {
     const jsonId = JSON.stringify(props.selectedReport.id);
 
     axios
-      .post(`${url}/declineCounteroffer2`, jsonId, {
+      .post(`${url}/declineCounteroffer`, jsonId, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -93,7 +93,7 @@ function ReportOverview(props) {
     const jsonId = JSON.stringify(props.selectedReport.id);
 
     axios
-      .post(`${url}/resolveDispute2`, jsonId, {
+      .post(`${url}/resolveDispute`, jsonId, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -107,7 +107,6 @@ function ReportOverview(props) {
 
   // function useContract() {
   //   const jsonHash = JSON.stringify(props.selectedReport.contractHash);
-
   //   axios
   //     .post(`${url}/useContract2`, jsonHash, {
   //       headers: {

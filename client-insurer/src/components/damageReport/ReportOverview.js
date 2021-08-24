@@ -11,11 +11,10 @@ function ReportOverview(props) {
 
   const getLogfileContentAndHash = () => {
     const logfileHash = JSON.stringify(props.selectedReport.logfileHash);
-    // console.log(logfileHash);
     const jsonHash = JSON.stringify(props.selectedReport.contractHash);
 
     axios
-      .post(`${url}/getLogFileContent2`, logfileHash, {
+      .post(`${url}/getLogFileContent`, logfileHash, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -26,11 +25,12 @@ function ReportOverview(props) {
       .catch((error) => console.error(`Error: ${error}`));
 
     axios
-      .post(`${url}/useContract2`, jsonHash, {
+      .post(`${url}/useContract`, jsonHash, {
         headers: {
           "Content-Type": "application/json",
         },
       })
+      //TODO: check this
       .then((res) => {
         // console.log(res);
       })
@@ -39,7 +39,6 @@ function ReportOverview(props) {
     axios
       .get(`${url}/getExchangeRate`)
       .then((res) => {
-        // console.log(res);
         setExchangeRate(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -50,16 +49,14 @@ function ReportOverview(props) {
       id: props.selectedReport.id,
       amount: props.selectedReport.amount,
     });
-    // console.log(idAndAmount);
 
     axios
-      .post(`${url}/acceptDamage2`, idAndAmount, {
+      .post(`${url}/acceptDamage`, idAndAmount, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -71,44 +68,18 @@ function ReportOverview(props) {
       reason: declineReason,
       amount: counterofferAmount,
     });
-    // console.log(idAmountAndReason);
 
     axios
-      .post(`${url}/declineDamage2`, idAmountAndReason, {
+      .post(`${url}/declineDamage`, idAmountAndReason, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        // console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
-
-  // const declineDamage = (e) => {
-  //   const idAmountAndReason = JSON.stringify({
-  //     id: props.selectedReport.id,
-  //     reason: declineReason,
-  //     amount: 0,
-  //   });
-  //   console.log(idAmountAndReason);
-  // };
-
-  // const useContract = () => {
-  //   const jsonHash = JSON.stringify(props.selectedReport.contractHash);
-
-  //   axios
-  //     .post(`${url}/useContract2`, jsonHash, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((error) => console.error(`Error: ${error}`));
-  // };
 
   function handleCounterofferAmount(e) {
     setCounterofferAmount(e.target.value);
@@ -215,7 +186,7 @@ function ReportOverview(props) {
         <div style={{ float: "right" }}>
           {parseInt(props.selectedReport.counteroffer) !== 0 ? (
             <div>
-              The claim has been paid with the counteroffer:{" "}.
+              The claim has been paid with the counteroffer: .
               {props.selectedReport.counteroffer}
             </div>
           ) : (

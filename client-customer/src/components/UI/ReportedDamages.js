@@ -73,36 +73,12 @@ function ReportedDamages(props) {
     setNrOfUnderInvestigation(countUnderInvestigation);
   };
 
-  // const defineShownReports = () => {
-  //   let reports = [];
-  //   props.newDamageReports.map((report, i) => {
-  //     if (props.newDamageReports[i].status === reportSelect) {
-  //       setShownReports(...reports, props.newDamageReports[i]);
-  //     }
-  //   });
-  //   if (reportSelect === 6) {
-  //     setShownReports(props.newDamageReports);
-  //   } else {
-  //     setShownReports([]);
-  //   }
-  // };
-
   useEffect(() => {
     getDamagesCategory();
     console.log(reportSelect);
     console.log(nrOfPaid);
     defineList(reportSelect);
-    // console.log(shownReports);
   }, [props.newDamageReports]);
-
-  // useEffect(() => {
-  //   defineList(reportSelect);
-  // }, []);
-
-  // useEffect(() => {
-  //   defineShownReports();
-  //   console.log(shownReports);
-  // }, [reportSelect]);
 
   return (
     <div className="reported-damages">
@@ -134,13 +110,11 @@ function ReportedDamages(props) {
         </select>
         <br />
         <br />
-        {/* TODO: Change the following, so no "0" is shown in frontend */}
         {Array.isArray(props.availableContracts) &&
         props.availableContracts.length ? (
           <ReportList
             openReportOverview={props.openReportOverview}
             availableContracts={props.availableContracts}
-            // showDamageReport={props.showDamageReport}
             showDamageIsSelected={props.showDamageIsSelected}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             newDamageReports={props.newDamageReports}

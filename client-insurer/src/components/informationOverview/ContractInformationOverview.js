@@ -117,7 +117,6 @@ function ContractInformationOverview(props) {
         },
       })
       .then((response) => {
-        // console.log(response);
         setContractInformation(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -127,11 +126,7 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getValidUntil`)
       .then((response) => {
-        // console.log(response.data);
         const validDate = response.data;
-        // console.log(
-        //   moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
-        // );
         setContractValidUntil(
           moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
         );
@@ -141,9 +136,8 @@ function ContractInformationOverview(props) {
 
   const getPremium = () => {
     axios
-      .get(`${url}/getPremium2`)
+      .get(`${url}/getPremium`)
       .then((response) => {
-        // console.log(parseInt(response.data));
         setCurrentPremiumEuro(parseInt(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -153,7 +147,6 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getPremiumInEther`)
       .then((response) => {
-        // console.log(parseInt(response.data));
         setCurrentPremiumEther(parseFloat(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -163,7 +156,6 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getValidBool`)
       .then((response) => {
-        // console.log(response.data);
         if (response.data === "True") {
           setIsContractValid(true);
         }
@@ -181,7 +173,6 @@ function ContractInformationOverview(props) {
         },
       })
       .then((response) => {
-        // console.log(response.data);
         setCurrentSecurity(parseFloat(response.data));
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -194,8 +185,6 @@ function ContractInformationOverview(props) {
     getValidUntil();
     getIsContractValid();
     getSecurity();
-    // console.log(showUpdateResponse);
-    // console.log(updateResponse);
   }, []);
 
   return (
@@ -642,13 +631,10 @@ function ContractInformationOverview(props) {
           "No Update proposed."
         )}
       </div>
-      <div>
-        Security: {currentSecurity.toFixed(4)}{" "}
-        {/* <button onClick={paySecurity}>Pay Security</button> */}
-      </div>
+      <div>Security: {currentSecurity.toFixed(4)} </div>
       <div>
         Premium: {currentPremiumEther.toFixed(4)} Ether ({currentPremiumEuro}{" "}
-        euro) {/* <button onClick={payPremium}>Pay Premium</button> */}
+        euro)
       </div>
       <div>Contract valid until: {contractValidUntil}</div>
       {!isContractValid && (
@@ -661,14 +647,6 @@ function ContractInformationOverview(props) {
           Premium must be paid until due date by the Customer!
         </div>
       )}
-      {/* {isContractValid && (
-        <button
-          style={{ margin: "20px", padding: "15px" }}
-          onClick={props.clickReportDamage}
-        >
-          Report Damage
-        </button>
-      )} */}
     </div>
   );
 }

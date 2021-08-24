@@ -131,7 +131,7 @@ function ContractOverview(props) {
 
   const getPremium = () => {
     axios
-      .get(`${url}/getPremium2`)
+      .get(`${url}/getPremium`)
       .then((response) => {
         console.log(parseInt(response.data));
         setCurrentPremiumEuro(parseInt(response.data));
@@ -164,7 +164,6 @@ function ContractOverview(props) {
   useEffect(() => {
     const getContractInformation = () => {
       const jsonHashString = JSON.stringify(props.selectedContract.jsonHash);
-      // console.log(jsonHashString);
 
       axios
         .post(`${url}/getContractInformation`, jsonHashString, {
@@ -173,7 +172,6 @@ function ContractOverview(props) {
           },
         })
         .then((response) => {
-          // console.log(response);
           setContractInformation(response.data);
         })
         .catch((error) => console.error(`Error: ${error}`));
@@ -195,7 +193,6 @@ function ContractOverview(props) {
           },
         })
         .then((response) => {
-          // console.log(response.data);
           //FIXME: all ethereum amounts must be in float
           setCurrentSecurity(parseFloat(response.data));
         })
@@ -204,23 +201,18 @@ function ContractOverview(props) {
     getSecurity();
   }, [resetCounter]);
 
-  // function changeOverview() {
-  //   props.changeOverview();
-  // }
-
   function paySecurity() {
     if (isContractValid) {
       alert("The security was paid already.");
       return;
     }
     axios
-      .post(`${url}/paySecurity2`, currentSecurity, {
+      .post(`${url}/paySecurity`, currentSecurity, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        // console.log(response.data);
         resetList();
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -232,13 +224,12 @@ function ContractOverview(props) {
       return;
     }
     axios
-      .post(`${url}/payPremium2`, currentPremiumEther, {
+      .post(`${url}/payPremium`, currentPremiumEther, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        // console.log(response.data);
         resetList();
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -252,7 +243,7 @@ function ContractOverview(props) {
     const json_content = JSON.stringify(contractInformation, null, 0);
     console.log(json_content);
     axios
-      .post(`${url}/proposeToUpdateContract2`, json_content, {
+      .post(`${url}/proposeToUpdateContract`, json_content, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -266,11 +257,6 @@ function ContractOverview(props) {
         console.log(error);
       });
   };
-
-  // function showContractInformation() {
-  //   console.log(JSON.stringify(contractInformation, null, 2));
-  //   console.log(typeof contractInformation);
-  // }
 
   //TODO:Show also contract address here!
   return (

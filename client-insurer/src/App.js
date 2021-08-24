@@ -1,7 +1,6 @@
 import "./App.css";
 import WebInterface from "./components/UI/WebInterface";
 
-
 function App() {
   return (
     <div className="App">

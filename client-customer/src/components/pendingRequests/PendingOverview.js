@@ -104,7 +104,7 @@ function PendingOverview(props) {
       const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
       console.log(jsonHash);
       axios
-        .post(`${url}/createContract3`, jsonHash, {
+        .post(`${url}/createContract`, jsonHash, {
           headers: {
             "Content-Type": "application/json",
           },

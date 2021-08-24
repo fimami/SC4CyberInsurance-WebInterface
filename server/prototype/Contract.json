@@ -38,15 +38,15 @@
 	},
 	"company_security": {
 		"risk_assessment_metrics": [{
-				"name": "SECONOMY",
-				"result": "low/medium/high"
+				"name": "Volume of transfer",
+				"result": "medium"
 			},
 			{
 				"name": "Known vulnerabilities",
 				"result": "medium"
 			},
 			{
-				"name": "Level of cybersecurity education",
+				"name": "cybersecurity education",
 				"result": "low"
 			}
 		],

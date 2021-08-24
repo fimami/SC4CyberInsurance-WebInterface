@@ -1,15 +1,9 @@
 import ReportItem from "./ReportItem";
 
 function ReportList(props) {
-  // const [useReportMessage, setUseReportMessage] = useState("");
-
   if (!props.newDamageReports.length) {
     return <div>No Damage Claims</div>;
   }
-
-  // function getInformationByHash() {
-
-  // }
 
   return (
     <div style={{ margin: "10px" }}>
@@ -27,9 +21,6 @@ function ReportList(props) {
             counteroffer={props.selectedList[i].counteroffer}
             setShowDamageIsSelected={props.setShowDamageIsSelected}
             showDamageIsSelected={props.showDamageIsSelected}
-            // companyName={props.availableContracts[0].companyName}
-            // jsonHash={props.availableContracts[0].jsonHash}
-            // useReportMessage={useReportMessage}
             openReportOverview={props.openReportOverview}
             setSelectedReport={props.setSelectedReport}
           />

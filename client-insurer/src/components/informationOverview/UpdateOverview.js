@@ -95,14 +95,12 @@ function UpdateOverview(props) {
     ],
   });
 
-  // const [updateMessage, setUpdateMessage] = useState("");
-
   const url = "http://127.0.0.1:5000";
 
   const calculatePremium = () => {
     const json_content = JSON.stringify(updateContent);
     axios
-      .post(`${url}/calculatePremium2`, json_content, {
+      .post(`${url}/calculatePremium`, json_content, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -121,13 +119,12 @@ function UpdateOverview(props) {
     console.log(jsonHash);
 
     axios
-      .post(`${url}/checkProposal2`, jsonHash, {
+      .post(`${url}/checkProposal`, jsonHash, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        // console.log(response.data);
         const fetchedData = response.data;
         if (typeof fetchedData === "object" && fetchedData !== null) {
           setUpdateContent(response.data);
@@ -140,7 +137,6 @@ function UpdateOverview(props) {
     axios
       .get(`${url}/agreeToUpdateContract`)
       .then((response) => {
-        // console.log(response);
         alert(response.data);
         props.setAvailableContracts([]);
       })
@@ -151,7 +147,6 @@ function UpdateOverview(props) {
     axios
       .get(`${url}/declineToUpdateContract`)
       .then((response) => {
-        // console.log(response.data);
         alert(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -502,7 +497,6 @@ function UpdateOverview(props) {
           </div>
         ))}
       </div>
-      {/* {updateMessage} */}
       <span>
         <button
           onClick={agreeToUpdateContract}

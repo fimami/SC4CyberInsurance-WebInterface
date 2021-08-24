@@ -14,72 +14,66 @@ function ReportedDamages(props) {
 
   const handleChange = (event) => {
     let selector = parseInt(event.target.value);
-    console.log(selector);
-    defineList(selector);
-  };
-
-  const defineList = (value) => {
-    let list = [];
-    for (let i = 0; i < props.newDamageReports.length; i++) {
-      console.log("through");
-      if (props.newDamageReports[i].status === value || value === 6) {
-        list.push(props.newDamageReports[i]);
-        console.log("Yes");
-      }
-    }
-    console.log(list);
-    setSelectedList(list);
-    setReportSelect(value);
-  };
-
-  const getDamagesCategory = () => {
-    let countNew = 0;
-    let countPaid = 0;
-    let countDispute = 0;
-    let countCancelled = 0;
-    let countResolved = 0;
-    let countUnderInvestigation = 0;
-    if (
-      Array.isArray(props.newDamageReports) &&
-      props.newDamageReports.length
-    ) {
-      props.newDamageReports.map((report, i) => {
-        if (props.newDamageReports[i].status === 0) {
-          countNew++;
-        }
-        if (props.newDamageReports[i].status === 1) {
-          countPaid++;
-        }
-        if (props.newDamageReports[i].status === 2) {
-          countUnderInvestigation++;
-        }
-        if (props.newDamageReports[i].status === 4) {
-          countResolved++;
-        }
-        if (props.newDamageReports[i].status === 3) {
-          countDispute++;
-        }
-        if (props.newDamageReports[i].status === 5) {
-          countCancelled++;
-        }
-        return true;
-      });
-    }
-    setNrOfNew(countNew);
-    setNrOfPaid(countPaid);
-    setNrOfDispute(countDispute);
-    setNrOfCancelled(countCancelled);
-    setNrOfResolved(countResolved);
-    setNrOfUnderInvestigation(countUnderInvestigation);
+    setReportSelect(selector);
   };
 
   useEffect(() => {
+    const getDamagesCategory = () => {
+      let countNew = 0;
+      let countPaid = 0;
+      let countDispute = 0;
+      let countCancelled = 0;
+      let countResolved = 0;
+      let countUnderInvestigation = 0;
+      if (
+        Array.isArray(props.newDamageReports) &&
+        props.newDamageReports.length
+      ) {
+        props.newDamageReports.map((report, i) => {
+          if (props.newDamageReports[i].status === 0) {
+            countNew++;
+          }
+          if (props.newDamageReports[i].status === 1) {
+            countPaid++;
+          }
+          if (props.newDamageReports[i].status === 2) {
+            countUnderInvestigation++;
+          }
+          if (props.newDamageReports[i].status === 4) {
+            countResolved++;
+          }
+          if (props.newDamageReports[i].status === 3) {
+            countDispute++;
+          }
+          if (props.newDamageReports[i].status === 5) {
+            countCancelled++;
+          }
+          return true;
+        });
+      }
+      setNrOfNew(countNew);
+      setNrOfPaid(countPaid);
+      setNrOfDispute(countDispute);
+      setNrOfCancelled(countCancelled);
+      setNrOfResolved(countResolved);
+      setNrOfUnderInvestigation(countUnderInvestigation);
+    };
     getDamagesCategory();
-    console.log(reportSelect);
-    console.log(nrOfPaid);
-    defineList(reportSelect);
-    // console.log(shownReports);
-  }, [props.newDamageReports]);
+
+    const reloadList = () => {
+      let list = [];
+      for (let i = 0; i < props.newDamageReports.length; i++) {
+        if (
+          props.newDamageReports[i].status === reportSelect ||
+          reportSelect === 6
+        ) {
+          list.push(props.newDamageReports[i]);
+        }
+      }
+      setSelectedList(list);
+    };
+    reloadList();
+  }, [props.newDamageReports, reportSelect]);
 
   return (
     <div className="reported-damages">
@@ -111,18 +105,20 @@ function ReportedDamages(props) {
         <br />
         <br />
         {Array.isArray(props.availableContracts) &&
-          props.availableContracts.length && (
-            <ReportList
-              openReportOverview={props.openReportOverview}
-              availableContracts={props.availableContracts}
-              // showDamageReport={props.showDamageReport}
-              // showDamageIsSelected={props.showDamageIsSelected}
-              // setShowDamageIsSelected={props.setShowDamageIsSelected}
-              newDamageReports={props.newDamageReports}
-              setSelectedReport={props.setSelectedReport}
-              selectedList={selectedList}
-            />
-          )}
+        props.availableContracts.length ? (
+          <ReportList
+            openReportOverview={props.openReportOverview}
+            availableContracts={props.availableContracts}
+            showDamageIsSelected={props.showDamageIsSelected}
+            setShowDamageIsSelected={props.setShowDamageIsSelected}
+            newDamageReports={props.newDamageReports}
+            setSelectedReport={props.setSelectedReport}
+            proposalHashList={props.proposalHashList}
+            selectedList={selectedList}
+          />
+        ) : (
+          <div>No claims available.</div>
+        )}
       </Card>
     </div>
   );

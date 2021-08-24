@@ -1,25 +1,6 @@
 function ReportItem(props) {
-  // const [logfileContent, setLogfileContent] = useState("");
-
-  // const getLogfileContent = () => {
-  //   const logfileHash = JSON.stringify(props.logfileHash);
-
-  //   const url = "http://127.0.0.1:5001";
-
-  //   axios
-  //     .post(`${url}/getLogfileContent`, logfileHash, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setLogfileContent(response.data);
-  //     })
-  //     .catch((error) => console.error(`Error: ${error}`));
-  // };
   function openReportSelectHash() {
     props.openReportOverview();
-    // getLogfileContent();
     props.setSelectedReport({
       contractHash: props.contractHash,
       damageStatus: props.damageStatus,
@@ -30,7 +11,6 @@ function ReportItem(props) {
       id: props.damageId,
       declineReason: props.declineReason,
       counteroffer: props.counteroffer,
-      // logfileContent: logfileContent,
     });
   }
 

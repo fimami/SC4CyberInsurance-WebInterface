@@ -367,20 +367,13 @@ function UpdateForm(props) {
               disabled={true}
             />
             <br />
-            {/* <button type="button" onClick={(e) => deleteContact(e, i)}>
-              Delete Contact
-            </button> */}
             <br />
           </div>
         )
       )}
-      {/* <button type="button" onClick={addContact}>
-        Add Contact
-      </button> */}
       <br />
       <label>Start Date: </label>
       <br />
-      {/* TODO: the form should already show the date as placeholder */}
       <input
         onChange={handleContractConstraintsChange}
         type="date"

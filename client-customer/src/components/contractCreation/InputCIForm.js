@@ -4,9 +4,9 @@ import { useState } from "react";
 function InputCIForm() {
   const [contractInformation, setContractInformation] = useState({
     business_information: {
-      companyName: "TestAG",
+      companyName: "Macrosoft",
       type: "AG",
-      sector: "Electronic Store",
+      sector: "Computer Software",
       address: {
         streetAddress: "Examplestr 1",
         city: "Zurich",
@@ -20,7 +20,7 @@ function InputCIForm() {
         },
         {
           type: "mail",
-          number: "abc@testAG.com",
+          number: "it@macrosoft.com",
         },
       ],
     },
@@ -42,17 +42,14 @@ function InputCIForm() {
     company_security: {
       risk_assessment_metrics: [
         {
-          name: "SECONOMY",
-          result: "low",
-        },
-        {
           name: "Known vulnerabilities",
           result: "medium",
         },
         {
-          name: "Level of cybersecurity education",
+          name: "cybersecurity education",
           result: "low",
         },
+        { name: "Volume of transfer", result: "high" },
       ],
       attacks_history: [
         {
@@ -114,7 +111,7 @@ function InputCIForm() {
       ],
     },
     company_infrastructure: {
-      number_connected_devices: 50,
+      number_connected_devices: 100,
       number_systems: 2,
       technologies: [
         {
@@ -142,10 +139,6 @@ function InputCIForm() {
             coverage_ratio: 100,
             deductible: 1000,
             max_indemnification: 300000,
-          },
-          {
-            name: "delivery failure",
-            coverage_ratio: 10,
           },
           {
             name: "third person damage",
@@ -192,7 +185,7 @@ function InputCIForm() {
         ],
       },
       {
-        name: "social engineering",
+        name: "Ransomware",
         coverage: [
           {
             name: "business interruption",
@@ -228,9 +221,6 @@ function InputCIForm() {
       },
     ],
   });
-
-  // const [premiumResponse, setPremiumResponse] = useState("");
-  // const [showPremium, setShowPremium] = useState(false);
 
   const [showCreated, setShowCreated] = useState(false);
   const [createdResponse, setCreatedResponse] = useState("");
@@ -757,11 +747,11 @@ function InputCIForm() {
                 name="name"
                 onChange={(e) => handleMetricChange(e, i)}
               >
-                <option value="SEConomy">SEConomy (economic impact)</option>
+                <option value="Volume of transfer">Volume of transfer</option>
                 <option value="Known vulnerabilities">
                   Known vulnerabilities
                 </option>
-                <option value="Level of cybersecurity education">
+                <option value="cybersecurity education">
                   Level of cybersecurity education
                 </option>
               </select>
@@ -1259,10 +1249,6 @@ function InputCIForm() {
       <button style={{ marginRight: "5rem" }} type="button" onClick={submit}>
         Send Contract Request
       </button>
-      {/* <div style={{ margin: "2px" }}>{showPremium && premiumResponse}</div>
-      <button type="button" onClick={calculatePremium}>
-        Calculate Premium
-      </button> */}
     </div>
   );
 }

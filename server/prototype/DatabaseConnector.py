@@ -141,14 +141,6 @@ def get_all_contracts_in_db2(conn):
     c.execute("SELECT DISTINCT customer_name, json_hash FROM CoverageInformation")
     allContracts = c.fetchall()
     json_companyAndHash = json.dumps(allContracts)
-    # print(type(json_companyAndHash))
-    # print(json_companyAndHash)
-    # json_loaded_content = json.loads(json_companyAndHash)
-    # print(type(json_loaded_content))
-    # print(json_loaded_content)
-    # print(json_loaded_content[0][1])
-    # print(json_companyAndHash)
-    # print(json_loaded_content)
     return allContracts
 
 def get_all_hashs_in_db(conn):

@@ -12,7 +12,7 @@ function ActionWindow(props) {
     props.setShowContractInfo(!props.showContractInfo);
   }
 
-  //close Form button on Report Form;
+  //close Form button on Report Form
   function closeReportForm() {
     props.setShowReportForm(false);
     props.setShowContractInfo(!props.showContractInfo);
@@ -30,7 +30,6 @@ function ActionWindow(props) {
         }}
       >
         <h2>Action Window (Address: {props.accAddr})</h2>
-        {/* <span>Address: {props.accAddr}</span> */}
         {!props.isFormOpen && props.showFormButton && (
           <button onClick={props.openForm}>Open Contract Form</button>
         )}
@@ -46,11 +45,7 @@ function ActionWindow(props) {
           !props.showUpdateContent && (
             <div>
               <ContractOverview
-                // existingContractInfo={props.existingContractInfo}
-                // setExistingContractInfo={props.setExistingContractInfo}
-                // changeOverview={props.changeOverview}
                 availableContracts={props.availableContracts}
-                // useContractHash={props.useContractHash}
                 setShowReportForm={props.setShowReportForm}
                 clickReportDamage={clickReportDamage}
                 closeInfoOrReport={props.closeInfoOrReport}

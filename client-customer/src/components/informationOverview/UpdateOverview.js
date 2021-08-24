@@ -106,7 +106,7 @@ function UpdateOverview(props) {
     console.log(jsonHash);
 
     axios
-      .post(`${url}/checkProposal2`, jsonHash, {
+      .post(`${url}/checkProposal`, jsonHash, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -121,7 +121,7 @@ function UpdateOverview(props) {
   const calculatePremium = () => {
     const json_content = JSON.stringify(updateContent);
     axios
-      .post(`${url}/calculatePremium2`, json_content, {
+      .post(`${url}/calculatePremium`, json_content, {
         headers: {
           "Content-Type": "application/json",
         },
