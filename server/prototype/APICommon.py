@@ -31,15 +31,15 @@ def defineAccount():
         address = transform_error_message(e)
     return str(address)
 
-#################################################
-#FIXME: Always the first ganache account is the msg.sender
-@app.route('/getMessageSender')
-def getMessageSender():
-    try:
-        sender = str(getSc().functions.getMsgSender().call())
-    except Exception as e:
-        sender = transform_error_message(e)
-    return sender
+# #################################################
+# #FIXME: Always the first ganache account is the msg.sender
+# @app.route('/getMessageSender')
+# def getMessageSender():
+#     try:
+#         sender = str(getSc().functions.getMsgSender().call())
+#     except Exception as e:
+#         sender = transform_error_message(e)
+#     return sender
 
 ####################################
 @app.route('/getPendingContracts')
@@ -285,16 +285,16 @@ def declineToUpdateContract():
         message = transform_error_message(e)
     return message
 
-def resolveStatus(status):
-    switcher = {
-        "New" : 0,
-        "Paid" : 1,
-        "UnderInvestigation" : 2, #After the damage was declined by insurer, with a counteroffer or not
-        "Dispute" : 3, #After the counteroffer was declined by the customer
-        "Resolved" : 4, #After the claim was negotiated completely, after atleast one counteroffer
-        "Canceled" : 5 #After the customer canceled/withdrew his claim. 
-    }
-    return switcher.get(status, -1)
+# def resolveStatus(status):
+#     switcher = {
+#         "New" : 0,
+#         "Paid" : 1,
+#         "UnderInvestigation" : 2, #After the damage was declined by insurer, with a counteroffer or not
+#         "Dispute" : 3, #After the counteroffer was declined by the customer
+#         "Resolved" : 4, #After the claim was negotiated completely, after atleast one counteroffer
+#         "Canceled" : 5 #After the customer canceled/withdrew his claim. 
+#     }
+#     return switcher.get(status, -1)
 
 # def getDamages(hash, status, statusAsInt):
 #     damages_dict = getDamagesDict()
