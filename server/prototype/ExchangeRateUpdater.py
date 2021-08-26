@@ -20,6 +20,8 @@ while(True):
         print ("Old: " + str(old_exchange_rate) + " New: " + str(new_exchange_rate))
         if new_exchange_rate >= old_exchange_rate * 1.01 :
             sc.functions.updateExchangeRate().transact({'from': userAddr,'value': 1000})
+        if new_exchange_rate <= old_exchange_rate * 0.99 :
+            sc.functions.updateExchangeRate().transact({'from': userAddr,'value': 1000})
     time.sleep(10)
 
     
