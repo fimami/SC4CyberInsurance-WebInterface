@@ -160,6 +160,7 @@ def declineDamage():
         damageId = jsonData['id']
         reason = str(jsonData['reason'])
         amount = int(jsonData['amount'])
+        print(amount)
         if amount == 0:
             getSc().functions.declineDamage(damageId, reason, amount).transact({'from': getUserAddress(), 'value': w3.toWei(0.0, "ether")})
             message = 'Damage was successfully declined without sending a counteroffer.'
@@ -168,11 +169,16 @@ def declineDamage():
             ether = float(amount / exchange_rate)
             weiInSC = getSc().functions.balanceOfSC().call()
             ethInSC = weiInSC / 1000000000000000000
-            ethToTransfer = ether - ethInSC
+            if (ethInSC - ether) >= 0:
+                ethToTransfer = 0
+            if (ethInSC - ether) < 0:
+                ethToTransfer = ether - ethInSC
+            print(ethToTransfer)
             getSc().functions.declineDamage(damageId, reason, amount).transact({'from': getUserAddress(), 'value': w3.toWei(ethToTransfer, "ether")})
             message = 'Damage was successfully declined and a counteroffer of ' + str(amount) + ' was offered.'
     except Exception as e:
         message = transform_error_message(e)
+        print(message)
     return message
 
 # @app.route('/getLogFileContent/<logFileHash>')
