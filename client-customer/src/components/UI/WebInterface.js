@@ -119,7 +119,7 @@ function WebInterface() {
   }
 
   function openForm() {
-    if (availableContracts.length) {
+    if (availableContracts.length && Array.isArray(availableContracts)) {
       alert("There can be one contract at max. Please contact the insurer.");
       return;
     }

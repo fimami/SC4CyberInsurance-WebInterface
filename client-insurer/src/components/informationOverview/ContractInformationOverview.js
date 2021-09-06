@@ -106,6 +106,20 @@ function ContractInformationOverview(props) {
 
   const url = "http://127.0.0.1:5000";
 
+  const annulContract = (e) => {
+    const jsonHash = JSON.stringify(props.selectedContract.jsonHash);
+    axios
+      .post(`${url}/annulTheContract`, jsonHash, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        alert(res.data);
+      })
+      .catch((err) => console.error(`Error: ${err}`));
+  };
+
   const getContractInformation = () => {
     const jsonHash = JSON.stringify(props.selectedContract.jsonHash);
     console.log(jsonHash);
@@ -647,6 +661,14 @@ function ContractInformationOverview(props) {
           Premium must be paid until due date by the Customer!
         </div>
       )}
+      <br />
+      <button
+        onClick={annulContract}
+        style={{ margin: "5px", padding: "5px", backgroundColor: "darkorange" }}
+      >
+        <div>Annul Contract</div>
+        <div>(Only available when customer did not pay premium)</div>
+      </button>
     </div>
   );
 }

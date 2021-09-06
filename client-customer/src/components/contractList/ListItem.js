@@ -46,7 +46,7 @@ function ListItem(props) {
           <div>Company Name: {props.companyName}</div>
           <br />
           <br />
-          <div style={{ color: "red" }}>Updated Contract</div>
+          <div style={{ color: "red" }}>Update Request</div>
         </button>
       )}
       {!props.proposalHashList.includes(props.jsonHash) && (
