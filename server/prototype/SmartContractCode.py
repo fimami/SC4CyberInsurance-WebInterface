@@ -25,6 +25,8 @@ contract_content = """
             bool new_proposal_available = false;
             address address_of_accepting_party;
             uint exchange_rate;
+            uint has_been_updated = 0;
+            bool _isActive = true;
         
             constructor(address payable company_address) public {{
               insurer_address = msg.sender;
@@ -34,45 +36,57 @@ contract_content = """
               exchange_rate = 2700;
             }}
 
+            modifier checkActive {{
+                require (
+                    _isActive == true,
+                    "The contract is not active anymore."
+                );
+                _;
+            }}
+
+            function checkIfUpdated() checkActive public view returns (uint) {{
+                return has_been_updated;
+            }}
+
             //checks the msg.sender of the call()
             //function getMsgSender() public view returns (address) {{
             //    return msg.sender;
             //}}
 
-            function balanceOfSC() public view returns (uint) {{
+            function balanceOfSC() checkActive public view returns (uint) {{
                 return address(this).balance;
             }}
 
-            function getInitialPremium() public view returns (uint) {{
+            function getInitialPremium() checkActive public view returns (uint) {{
                 return initial_premium;
             }}
             
-            function getValidUntil() public view returns (uint) {{
+            function getValidUntil() checkActive public view returns (uint) {{
                return valid_until;
             }}
 
-            function getValidBool() public view returns (bool) {{
+            function getValidBool() checkActive public view returns (bool) {{
                 return valid;
             }}
                         
-            function getExchangeRate() public view returns (uint) {{
+            function getExchangeRate() checkActive public view returns (uint) {{
                 return exchange_rate;
             }}
             
-            function getPremium() public view returns (uint) {{
+            function getPremium() checkActive public view returns (uint) {{
                 return premium;
             }}
             
-            function isNewProposalAvailable() public view returns (bool) {{
+            function isNewProposalAvailable() checkActive public view returns (bool) {{
                 return new_proposal_available;
             }}
             
-            function getHashOfProposal() public view returns (string memory) {{
+            function getHashOfProposal() checkActive public view returns (string memory) {{
                 return proposed_new_json_hash;
             }}
             
             //not used:
-            //function getDamageWithID (uint damage_id) public view returns (Reported_Damage memory){{
+            //function getDamageWithID (uint damage_id) checkActive public view returns (Reported_Damage memory){{
             //   require(
             //      customer_address == msg.sender || insurer_address == msg.sender,
             //      "Only the registered customer or the insurer can get the damage infos."
@@ -80,9 +94,10 @@ contract_content = """
             //   return reported_damages[damage_id];
             //}}
             
-            function getAllReportedDamages () public view returns (Reported_Damage[100] memory){{
+            function getAllReportedDamages () checkActive public view returns (Reported_Damage[100] memory){{
                //The msg.sender here is always fixed (first ganache account); conditional statement not needed
                //An option would be to take the sender address as a parameter
+               //Problem with that approach: Gas limit will be exceeded
                //require(
                //   customer_address == msg.sender || insurer_address == msg.sender,
                //   "Only the registered customer or the insurer can get the damage infos."
@@ -125,7 +140,7 @@ contract_content = """
                 uint counter_offer;
             }}
         
-            function paySecurity() public payable {{
+            function paySecurity() checkActive public payable {{
                 require(
                     customer_address == msg.sender,
                     "Only the registered customer can pay the security."
@@ -144,7 +159,7 @@ contract_content = """
                 msg.sender.transfer(msg.value - security_in_wei);
             }}
         
-            function payPremium() public payable returns (uint){{
+            function payPremium() checkActive public payable returns (uint){{
                 require(
                     customer_address == msg.sender,
                     "Only the registered customer can pay the premium."
@@ -187,7 +202,7 @@ contract_content = """
                  exchange_rate = uint(parseInt(result));
             }}
         
-            function updateExchangeRate() public payable {{
+            function updateExchangeRate() checkActive public payable {{
                 uint price = provable_getPrice("URL");
                 require( price <= msg.value,
                     "Provable query was NOT sent, please add some ETH to cover for the query fee."
@@ -204,7 +219,7 @@ contract_content = """
                                 uint amount_of_damage, 
                                 uint damage_id, 
                                 string memory type_of_attack,
-                                string memory logfile_hash) public{{
+                                string memory logfile_hash) checkActive public{{
                 require(
                     customer_address == msg.sender,
                     "Only the registered customer can report a damage."
@@ -231,7 +246,7 @@ contract_content = """
                 //}}
             }}
             
-            function cancelDamage(uint damage_id) public {{
+            function cancelDamage(uint damage_id) checkActive public {{
                 require(
                   customer_address == msg.sender,
                   "Only the registered customer can cancel a reported damage."
@@ -265,15 +280,16 @@ contract_content = """
                reported_damages[damage_id].status = StatusDamage.Paid;
             }}
         
-            function approveNonAutomaticPayment (uint damage_id) public {{
-               require(
-                  customer_address == msg.sender,
-                  "Only the registered customer can approve the non automatic payment."
-               );
-               reported_damages[damage_id].status = StatusDamage.Paid;
-            }}
+            //not used:
+            //function approveNonAutomaticPayment (uint damage_id) public {{
+            //   require(
+            //      customer_address == msg.sender,
+            //      "Only the registered customer can approve the non automatic payment."
+            //   );
+            //   reported_damages[damage_id].status = StatusDamage.Paid;
+            //}}
             
-            function acceptDamage(uint damage_id) public payable{{
+            function acceptDamage(uint damage_id) checkActive public payable{{
                 require(
                   insurer_address == msg.sender,
                   "Only the insurer can accept a reported damage."
@@ -286,7 +302,7 @@ contract_content = """
                 automaticPayOut(damage_id, false);
             }}
             
-            function declineDamage(uint damage_id, string memory reason, uint counter_offer) public payable{{
+            function declineDamage(uint damage_id, string memory reason, uint counter_offer) checkActive public payable{{
                 require(
                   insurer_address == msg.sender,
                   "Only the insurer can decline a reported damage."
@@ -314,7 +330,7 @@ contract_content = """
                reported_damages[damage_id].counter_offer = counter_offer;
             }}
             
-            function acceptCounterOffer(uint damage_id) public {{
+            function acceptCounterOffer(uint damage_id) checkActive public {{
                 require(
                   customer_address == msg.sender,
                   "Only the registered customer can accept a counteroffer."
@@ -326,7 +342,7 @@ contract_content = """
                automaticPayOut(damage_id, true);
             }}
             
-            function declineCounterOffer(uint damage_id) public {{
+            function declineCounterOffer(uint damage_id) checkActive public {{
                 require(
                   customer_address == msg.sender,
                   "Only the registered customer can decline a counteroffer."
@@ -338,7 +354,7 @@ contract_content = """
                reported_damages[damage_id].status = StatusDamage.Dispute;
             }}
             
-            function resolveDispute(uint damage_id) public {{
+            function resolveDispute(uint damage_id) checkActive public {{
                 require(
                   customer_address == msg.sender,
                   "Only the registered customer can resolve a dispute."
@@ -350,7 +366,7 @@ contract_content = """
                reported_damages[damage_id].status = StatusDamage.Resolved;
             }}
         
-            function proposeToUpdateContract (uint new_premium, string memory new_json_hash) public{{
+            function proposeToUpdateContract (uint new_premium, string memory new_json_hash) checkActive public{{
                require(
                     !new_proposal_available,
                     "Already a proposal available."
@@ -369,7 +385,7 @@ contract_content = """
                new_proposal_available = true;
             }}
         
-            function agreeToUpdateContract () public{{
+            function agreeToUpdateContract () checkActive public{{
                    require(
                       address_of_accepting_party == msg.sender,
                       "Only the other party who did not make the proposal can accept the proposal to update the contract."
@@ -381,9 +397,10 @@ contract_content = """
                    premium = proposed_new_premium;
                    json_hash = proposed_new_json_hash;
                    new_proposal_available = false;
+                   has_been_updated = has_been_updated + 1;
             }}
             
-            function declineToUpdateContract () public{{
+            function declineToUpdateContract () checkActive public{{
                    require(
                       address_of_accepting_party == msg.sender,
                       "Only the other party who did not make the proposal can decline the proposal to update the contract."
@@ -395,40 +412,46 @@ contract_content = """
                    new_proposal_available = false;
             }}
         
-            function annulTheContract () public{{
-               require(
+            function annulTheContract () checkActive public returns (string memory) {{
+                require(
                   insurer_address == msg.sender,
                   "Only the insurer can annul the contract."
-               );
-               require(
-                // define the time of not paying,
+                );
+                require(
+                // TODO:define the time of not paying,
                 // when it is possible for the insurer to annul the contract
                 // for example after 2 weeks of not paying
                   valid_until < block.timestamp + 1,
                   "The insurer can not annul the contract, because the customer payed its premium."
-               );
-               valid = false;
-               //delete contract here?
+                );
+                require(
+                    valid == true,
+                    "The customer has to pay the security first."
+                );
+                uint SCbalance = balanceOfSC();
+                msg.sender.transfer(SCbalance);
+                _isActive = false;
+                return ("The contract has been annulled.");
             }}
             
-            function getWeiFromContract (uint amountOfWei) public {{
-                require(
-                    insurer_address == msg.sender,
-                    "Only the insurer can take the currency from the contract."
-                );
-               require(
-                    address(this).balance >= amountOfWei,
-                    "Not enough Ether available in the contract."
-               );
-               msg.sender.transfer(amountOfWei);
-            }}
+            //function getWeiFromContract (uint amountOfWei) private {{
+            //    require(
+            //        insurer_address == msg.sender,
+            //        "Only the insurer can take the currency from the contract."
+            //    );
+            //   require(
+            //        address(this).balance >= amountOfWei,
+            //        "Not enough Ether available in the contract."
+            //   );
+            //   msg.sender.transfer(amountOfWei);
+            //}}
             
-            function payWeiToContract () public payable{{
-                require(
-                    insurer_address == msg.sender,
-                    "Only the insurer can pay currency to the contract."
-                );
-            }}
+            //function payWeiToContract () checkActive public payable{{
+            //    require(
+            //        insurer_address == msg.sender,
+            //        "Only the insurer can pay currency to the contract."
+            //    );
+            //}}
         }}
 
                  """

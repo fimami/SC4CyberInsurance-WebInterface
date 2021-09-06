@@ -1,8 +1,9 @@
 import json
 
 def calculate_risk_level(company_security, company_infrastructure):
-    """Additional metrics can be easily added"""
     risk_metrics = company_security['risk_assessment_metrics']
+
+    """Additional metrics can be added here, including the impact on cybersecurity assessment:"""
     knownVuln = 0
     volTransf = 0
     cybersecEd = 0
@@ -28,7 +29,11 @@ def calculate_risk_level(company_security, company_infrastructure):
                 cybersecEd = 0.25
             elif x['result'] == "high":
                 cybersecEd = -0.25
+
+    """Level of cybersecurity according to metrics:"""
     metrics_level = 1 + (knownVuln+cybersecEd+volTransf)
+
+    """Estimates the technology security, updated technologies increase the cybersecurity"""
     updatedTech = 0
     notUpdatedTech = 0
     for x in company_infrastructure['technologies']:
@@ -49,7 +54,9 @@ def calculate_premium_before_adjustement(company_conditions,
                       contract_coverage,
                       risk_level,):
     """Calculate the premium by considering the risk level, the coverage
-    and the yearly sales"""
+    and the yearly sales.
+    Base rate can be adjusted.
+    """
     yearly_revenue = company_conditions['yearly_revenue']
     yearly_revenue_through_technology = company_conditions['revenue'] * yearly_revenue
     amount_of_coverages = len(contract_coverage)

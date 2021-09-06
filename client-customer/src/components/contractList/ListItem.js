@@ -46,7 +46,7 @@ function ListItem(props) {
           <div>Company Name: {props.companyName}</div>
           <br />
           <br />
-          <div style={{ color: "red" }}>Updated Form</div>
+          <div style={{ color: "red" }}>Updated Contract</div>
         </button>
       )}
       {!props.proposalHashList.includes(props.jsonHash) && (
@@ -60,6 +60,9 @@ function ListItem(props) {
         >
           <div>Company Name: {props.companyName}</div>
           <br />
+          {parseInt(props.updated) >= 1 && (
+            <div style={{ fontStyle: "italic" }}>Updated: {props.updated}*</div>
+          )}
           <br />
           <div>Selected Contract</div>
         </button>

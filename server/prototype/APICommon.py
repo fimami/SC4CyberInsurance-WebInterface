@@ -32,7 +32,7 @@ def defineAccount():
     return str(address)
 
 # #################################################
-# #FIXME: Always the first ganache account is the msg.sender
+# Always the first ganache account is the msg.sender
 # @app.route('/getMessageSender')
 # def getMessageSender():
 #     try:
@@ -41,7 +41,7 @@ def defineAccount():
 #         sender = transform_error_message(e)
 #     return sender
 
-####################################
+#returns pending contracts with information about status, hash of json, and premium
 @app.route('/getPendingContracts')
 def getPendingContracts():
     try:
@@ -56,7 +56,7 @@ def getPendingContracts():
         request_list_json = "Error appeared during processing: \n" + str(e)
     return request_list_json
 
-#####################################
+#returns the contract information of a specific pending contract
 @app.route('/getPendingContractInformation', methods=['POST'])
 def getPendingContractInformation():
     try:
@@ -69,7 +69,7 @@ def getPendingContractInformation():
         print("message: " + message)
     return message
 
-####################################
+#returns contract information of a specific deployed contract
 @app.route('/getContractInformation', methods=['POST'])
 def getContractInformation():
     try:
@@ -119,7 +119,6 @@ def transform_error_message(error_message):
 #         message = message + " You are identified as an insurer."
 #     else:
 #         message = message + " You are identified as a customer."
-
 #     return message
 
 # @app.route('/calculatePremium/<jsonFile>')
@@ -165,7 +164,7 @@ def calculatePremium2():
 #         message = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
 #     return message
 
-####################################
+#returns a list of contract objects stored in the respective database
 @app.route('/getAvailableContracts')
 def getAvailableContracts():
     try:
@@ -173,9 +172,12 @@ def getAvailableContracts():
         print(tuples)
         print(type(tuples))
         contract_list = []
+        has_been_updated = 0
         for tuple in tuples:
             contract_address = get_contract_address_with_hash(getConnection(), tuple[1])
-            contract_list.append({'companyName':str(tuple[0]), 'jsonHash':str(tuple[1]), 'contractAddress':str(contract_address)})
+            if getSc() != 0:
+                has_been_updated = getSc().functions.checkIfUpdated().call()
+            contract_list.append({'companyName':str(tuple[0]), 'jsonHash':str(tuple[1]), 'contractAddress':str(contract_address), 'updated':has_been_updated})
         contract_json = json.dumps(contract_list)
     except Exception as e:
         contract_json = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
@@ -500,7 +502,7 @@ def getSecurity():
 #     setProposalDict(proposal_dict)
 #     return message
 
-####################################
+#used by customer:
 @app.route('/checkForNewProposal')
 def checkForNewProposal():
     try:

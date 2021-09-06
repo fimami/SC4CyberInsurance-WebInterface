@@ -33,6 +33,7 @@ def createContract():
         infoInsurer = requests.post(url='http://localhost:5000/getPendingContractInformation', data=rawdata).content.decode('UTF-8')
         if (infoCustomer == infoInsurer):
             response = requests.post(url='http://localhost:5000/deployContract', data=infoCustomer).content.decode('UTF-8')
+            print(response)
             contract_address = requests.get('http://localhost:5000/getContractAddress/' + pendingHash).content.decode('UTF-8')
             contract_abi = requests.get('http://localhost:5000/getContractABI/' + pendingHash).content.decode('UTF-8')
 

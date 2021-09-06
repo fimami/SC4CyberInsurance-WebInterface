@@ -41,9 +41,11 @@ def deployContract():
         scCreator = SmartContractCreator()
         print(str(getUserAddress()) + " " + str(customerAddress))
         sc = scCreator.createAndDeploySmartContract(contract_information, getUserAddress(), customerAddress)
+        print(sc)
         message = "Smart Contract has been deployed at the address: " + sc.address + "."
     except Exception as e:
         message = "Error appeared during: " + str(e)
+        print(message)
     return message
 
 ##############################################TODO: CHECK THIS
@@ -202,6 +204,19 @@ def getLogFileContent():
     except Exception as e:
         logfilecontent = transform_error_message(e)
     return logfilecontent
+
+###############################################
+#before that call useContract is also executed
+@app.route('/annulTheContract', methods=['POST'])
+def annulTheContract():
+    try:
+        jsonHash = request.get_json()
+        setSc(get_smart_contract_accessor(getConnection(), jsonHash))
+        setHash(jsonHash)
+        message = getSc().functions.annulTheContract().transact({'from': getUserAddress()})
+    except Exception as e:
+        message = "Error appeared: " + transform_error_message(e)
+    return message
 
 if __name__=='__main__':
     app.run(port=5000, debug=True)

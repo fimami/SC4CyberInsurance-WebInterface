@@ -46,7 +46,7 @@ function LoginScreen(props) {
       <label>Enter your private key:</label>
       <br />
       <br />
-      <input style={{ width: "500px" }} type="text" onChange={handleChange} />
+      <input style={{ width: "500px" }} type="password" onChange={handleChange} />
       <br />
       <br />
       <button onClick={defineAccount}>Set Address</button>

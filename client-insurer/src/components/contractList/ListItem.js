@@ -60,6 +60,9 @@ function ListItem(props) {
       >
         <div>Company Name: {props.companyName}</div>
         <br />
+        {parseInt(props.updated) >= 1 && (
+          <div style={{ fontStyle: "italic" }}>Updated: {props.updated}*</div>
+        )}
         <br />
         <div>{proposalDict.message}</div>
 
