@@ -121,13 +121,13 @@ def transform_error_message(error_message):
 #         message = message + " You are identified as a customer."
 #     return message
 
-# @app.route('/calculatePremium/<jsonFile>')
-# def calculatePremium(jsonFile):
-#     # read the json content
-#     json_content = read_file(jsonFile)
+@app.route('/calculatePremium/<jsonFile>')
+def calculatePremium(jsonFile):
+    # read the json content
+    json_content = read_file(jsonFile)
 
-#     premium = calculate_premium(json_content)
-#     return "The premium with the inserted json file would be: " + str(premium) + " swiss francs per period."
+    premium = calculate_premium(json_content)
+    return "The premium with the inserted json file would be: " + str(premium) + " swiss francs per period."
 
 ####################################
 @app.route('/calculatePremium', methods=['POST'])

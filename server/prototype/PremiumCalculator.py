@@ -43,8 +43,8 @@ def calculate_risk_level(company_security, company_infrastructure):
             notUpdatedTech = notUpdatedTech + 1
     
     risk_level = 3 * len(company_security['attacks_history']) + metrics_level \
-                 + company_infrastructure['number_connected_devices']/25 \
-                 + 0.5 * updatedTech + notUpdatedTech + 0.5 * len(company_infrastructure['critical_services']) \
+                 + company_infrastructure['number_connected_devices']/50 \
+                 + 0.25 * updatedTech + 0.75 * notUpdatedTech + 0.25 * len(company_infrastructure['critical_services']) \
                  - (len(company_security['security_software']) + len(company_security['security_training']))
     """Calculate the risk level through the contract conditions"""
     return risk_level
@@ -59,8 +59,21 @@ def calculate_premium_before_adjustement(company_conditions,
     """
     yearly_revenue = company_conditions['yearly_revenue']
     yearly_revenue_through_technology = company_conditions['revenue'] * yearly_revenue
-    amount_of_coverages = len(contract_coverage)
-    premium = 580 + amount_of_coverages * (yearly_revenue_through_technology / 15000) * risk_level
+    # amount_of_coverages = len(contract_coverage)
+    coverage_specifications = 0
+    for y in contract_coverage:
+        for x in y['coverage']:
+            """The coverage ratio defines the percentage of coverage per damage type.
+            The maximal indemnification is substracted by the deductible.
+            This formula simulates the impact of defining multiple coverages."""
+            print(x)
+            coverage_ratio = x['coverage_ratio'] / 100
+            max_indemnification = x['max_indemnification'] / 10000
+            deductible = x['deductible'] / 100
+            premium_for_coverage = (coverage_ratio / 100) * (max_indemnification - deductible)
+            coverage_specifications += premium_for_coverage
+    
+    premium = 580 + coverage_specifications * (yearly_revenue_through_technology / 15000) * risk_level
     print(premium)
 
     return premium

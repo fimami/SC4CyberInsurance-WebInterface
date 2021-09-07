@@ -1198,6 +1198,8 @@ function InputCIForm() {
                 }
                 name="coverage_ratio"
                 type="number"
+                min="0"
+                max="100"
               />
               <br />
               <label>Deductible for damage type: </label>

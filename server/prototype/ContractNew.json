@@ -141,20 +141,14 @@
 					"deductible": 1000,
 					"max_indemnification": 300000
 				},
-				{
-					"name": "delivery failure",
-					"coverage_ratio": 10
-				},
+				
 				{
 					"name": "third person damage",
 					"coverage_ratio": 50,
 					"deductible": 1000,
 					"max_indemnification": 300000
 				},
-				{
-					"name": "data protection/privacy law violation",
-					"coverage_ratio": "NaN"
-				},
+				
 				{
 					"name": "cyber extortion",
 					"coverage_ratio": 100,
@@ -165,10 +159,7 @@
 		},
 		{
 			"name": "data breach",
-			"coverage": [{
-					"name": "business interuption",
-					"coverage_ratio": "NaN"
-				},
+			"coverage": [
 				{
 					"name": "delivery failure",
 					"coverage_ratio": 50,

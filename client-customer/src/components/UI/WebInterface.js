@@ -75,12 +75,17 @@ function WebInterface() {
         .then((res) => {
           console.log(res);
           if (Array.isArray(res.data)) {
-            res.data.map((report, i) => {
+            res.data.forEach((report, i) => {
               if (!proposalHashList.includes(res.data[i].contractHash)) {
                 reportlist.push(res.data[i]);
               }
-              return true;
             });
+            // res.data.map((report, i) => {
+            //   if (!proposalHashList.includes(res.data[i].contractHash)) {
+            //     reportlist.push(res.data[i]);
+            //   }
+            //   return true;
+            // });
           }
           setNewDamageReports(reportlist);
         })
