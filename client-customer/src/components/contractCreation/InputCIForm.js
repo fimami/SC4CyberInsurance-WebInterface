@@ -25,8 +25,8 @@ function InputCIForm() {
       ],
     },
     contract_constraints: {
-      startDate: "01.01.2021",
-      endDate: "31.12.2023",
+      startDate: "2021-01-01",
+      endDate: "2023-12-31",
       paymentFrequencyPerYear: 2,
       cancellation: {
         allowed: true,
@@ -54,28 +54,28 @@ function InputCIForm() {
       attacks_history: [
         {
           type: "DDoS",
-          date: "15/01/2019",
+          date: "2019-01-15",
           time_to_recovery: "4 hours",
           details: "None",
           mitigated: true,
         },
         {
           type: "DDoS",
-          date: "15/01/2019",
+          date: "2019-01-15",
           time_to_recovery: "15 hours",
           details: "Mirai Botnet",
           mitigated: false,
         },
         {
           type: "Ransomware",
-          date: "09/01/2020",
+          date: "2020-01-09",
           time_to_recovery: "26 days",
           details: "WannaCry",
           mitigated: false,
         },
         {
           type: "Malware",
-          date: "12/07/2020",
+          date: "2020-07-12",
           time_to_recovery: "2 days",
           details: "Family XYZ",
           mitigated: true,
@@ -99,13 +99,13 @@ function InputCIForm() {
         {
           name: "ABCD security certificate",
           type: "pentest",
-          date: "15/02/2020",
+          date: "2020-02-15",
           provider: "ICI",
         },
         {
           name: "ZYX security certificate",
           type: "education of employees",
-          date: "26/04/2020",
+          date: "2020-04-26",
           provider: "ICI",
         },
       ],

@@ -13,8 +13,8 @@ class ContractInformation:
         business_information = loaded_json_content['business_information']
         self.customer_name = business_information['companyName']
         constraints = loaded_json_content['contract_constraints']
-        self.start_date = convertDateStringToTimestamp(constraints['startDate'])
-        self.end_date = convertDateStringToTimestamp(constraints['endDate'])
+        self.start_date = convertDateStringToTimestamp2(constraints['startDate'])
+        self.end_date = convertDateStringToTimestamp2(constraints['endDate'])
         self.payment_frequency = self.get_payment_frequency_as_a_timestamp(constraints['paymentFrequencyPerYear'])
         self.cancellation_penalty = constraints['cancellation']['penaltyInPercent']
         self.premium = premium

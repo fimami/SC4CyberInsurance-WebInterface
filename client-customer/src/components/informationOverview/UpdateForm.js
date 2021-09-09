@@ -810,6 +810,11 @@ function UpdateForm(props) {
               name="updates"
               type="checkbox"
             />
+            <span>
+              {props.contractInformation.company_infrastructure.technologies[
+                i
+              ].updates.toString()}
+            </span>
             <br />
             <button type="button" onClick={(e) => deleteTechnologies(e, i)}>
               Delete Technology
