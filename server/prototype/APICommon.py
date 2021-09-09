@@ -17,7 +17,6 @@ w3 = Web3(Web3.HTTPProvider('http://localhost:7545'))
 
 #sc = get_smart_contract_accessor(getConnection(), hash)
 
-#################################################
 @app.route('/defineAccount', methods=['POST'])
 def defineAccount():
     try:
@@ -30,16 +29,6 @@ def defineAccount():
     except Exception as e:
         address = transform_error_message(e)
     return str(address)
-
-# #################################################
-# Always the first ganache account is the msg.sender
-# @app.route('/getMessageSender')
-# def getMessageSender():
-#     try:
-#         sender = str(getSc().functions.getMsgSender().call())
-#     except Exception as e:
-#         sender = transform_error_message(e)
-#     return sender
 
 #returns pending contracts with information about status, hash of json, and premium
 @app.route('/getPendingContracts')
@@ -80,18 +69,6 @@ def getContractInformation():
         print("message: " + message)
     return message
 
-
-# @app.route('/useContract/<jsonHash>')
-# def useContract(jsonHash):
-#     try:
-#         setSc(get_smart_contract_accessor(getConnection(), jsonHash))
-#         setHash(jsonHash)
-#         message = "The contract with hash " + jsonHash + " was selected to be accessed."
-#     except Exception as e:
-#         message = "There is no contract available with the given hash: " + jsonHash
-#     return message
-
-####################################
 @app.route('/useContract', methods=['POST'])
 def useContract():
     try:
@@ -111,25 +88,6 @@ def transform_error_message(error_message):
         message = str(error_message)
     return message
 
-# @app.route('/identify/<address>')
-# def identify(address):
-#     setUserAddress(address)
-#     message = "The address is assigned to: " + str(address) + "."
-#     if(address == insurer):
-#         message = message + " You are identified as an insurer."
-#     else:
-#         message = message + " You are identified as a customer."
-#     return message
-
-@app.route('/calculatePremium/<jsonFile>')
-def calculatePremium(jsonFile):
-    # read the json content
-    json_content = read_file(jsonFile)
-
-    premium = calculate_premium(json_content)
-    return "The premium with the inserted json file would be: " + str(premium) + " swiss francs per period."
-
-####################################
 @app.route('/calculatePremium', methods=['POST'])
 def calculatePremium2():
     data = request.get_json()
@@ -138,37 +96,11 @@ def calculatePremium2():
     premium = round(premium_pre)
     return str(premium)
 
-# @app.route('/getCoverage')
-# @app.route('/getCoverage/<jsonHash>')
-# def getCoverage(jsonHash):
-#     try:
-#         tuples = get_coverages_of_contract_with_hash(getConnection(), jsonHash)
-#         message = "The contract contains the following coverage: "
-#         for tuple in tuples:
-#             message = message + """Customer : {}, Cost : {}, Attack : {}, CoverageRatio : {}, OwnRisk : {}, MaxIndemnification : {}
-#                     """.format(str(tuple[0]), str(tuple[1]), str(tuple[2]), str(tuple[3]), str(tuple[4]), str(tuple[5]))
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-# @app.route('/getAvailableContracts')
-# def getAvailableContracts():
-#     try:
-#         tuples = get_all_contracts_in_db(getConnection())
-#         print(type(tuples))
-#         print(tuples)
-#         message = "The following contracts are available: "
-#         for tuple in tuples:
-#             message = message + """\nCustomer : {},\n Hash : {}\n\n""".format(str(tuple[0]), str(tuple[1]))
-#     except Exception as e:
-#         message = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
-#     return message
-
 #returns a list of contract objects stored in the respective database
 @app.route('/getAvailableContracts')
 def getAvailableContracts():
     try:
-        tuples = get_all_contracts_in_db2(getConnection())
+        tuples = get_all_contracts_in_db(getConnection())
         print(tuples)
         print(type(tuples))
         contract_list = []
@@ -184,56 +116,12 @@ def getAvailableContracts():
         print(contract_json)
     return contract_json
 
-
-####################################
-# @app.route('/getAvailableContracts3')
-# def getAvailableContracts3():
-#     try:
-#         tuples = get_all_contracts_in_db2(getConnection())
-#         keys = ("companyName", "jsonHash")
-#         contract_list = get_list_of_dict(keys, tuples)
-#         for item in contract_list:
-#             contract_address = get_contract_address_with_hash(getConnection(), item['jsonHash'])
-#             item.update({'contractAddress':str(contract_address)})
-#         contract_dict = json.dumps(contract_list)
-#     except Exception as e:
-#         contract_dict = "An error appeared while getting the contracts: " + str(e) + ". Probably no contracts are available."
-#         print(contract_dict)
-#     return contract_dict
-
 def validate_new_conditions(newJsonContent, oldJsonContent):
     #do not need to compare hash and premium
     new_contract_information = ContractInformation(newJsonContent, "do not compare", "do not compare")
     old_contract_information = ContractInformation(oldJsonContent, "do not compare", "do not compare")
     return new_contract_information == old_contract_information
 
-# @app.route('/proposeToUpdateContract/<newJsonFile>')
-# def proposeToUpdateContract(newJsonFile):
-#     try:
-#         currentHash = getHash()
-#         # read the json content
-#         json_content = read_file(newJsonFile)
-#         current_json_content = get_json_content_with_hash(getConnection(), currentHash)
-#         if validate_new_conditions(json_content, current_json_content):
-#             premium = int(calculate_premium(json_content))
-#             json_hash = get_hash_of_string(json_content)
-
-#             contract_information = get_contract_information_with_hash(getConnection(), currentHash)
-#             address = contract_information[1]
-#             abi = contract_information[2]
-#             getSc().functions.proposeToUpdateContract(premium, json_hash).transact({'from': getUserAddress()})
-#             #insert the new data in the database
-#             insert_contract_information(getConnection(), json_hash, address, abi)
-#             insert_json_file_content(getConnection(), json_content, json_hash)
-#             message = 'Contract was proposed to be updated. The new premium would be ' + str(premium) \
-#                   + ' swiss francs.'
-#         else:
-#             message = 'Error: Contract constraints are fixed and can not be changed.'
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-####################################
 @app.route('/proposeToUpdateContract', methods=['POST'])
 def proposeToUpdateContract():
     try:
@@ -298,43 +186,6 @@ def declineToUpdateContract():
 #     }
 #     return switcher.get(status, -1)
 
-# def getDamages(hash, status, statusAsInt):
-#     damages_dict = getDamagesDict()
-#     damages_dict.clear()
-#     sc = get_smart_contract_accessor(getConnection(), hash[0])
-#     damages = sc.functions.getAllReportedDamagesWithStatus(statusAsInt).call()
-#     message = ""
-#     for damage in damages:
-#         dateAsTimestamp = damage[0]
-#         if dateAsTimestamp != 0:
-#             logfile_hash = damage[5]
-#             damages_dict.update({logfile_hash:hash})
-#             date = convertTimestampToDateString(dateAsTimestamp)
-#             message = message + "\nHash of Contract: " + hash[0] \
-#                       + "\nDamage: \nDate: " + date + " \nAmount: " + str(damage[1]) \
-#                       + " \nStatus: " + status + " \nID: " + str(damage[3]) \
-#                       + " \nAttackType: " + damage[4] + " \nLogfileHash: " + logfile_hash \
-#                       + " \nDeclineReason: " + damage[6] + " \nCounterOffer: " + str(damage[7]) \
-#                       + "\n\n"
-#     setDamagesDict(damages_dict)
-#     return message
-
-# @app.route('/getAllDamages/<status>')
-# def getAllDamages(status):
-#     try:
-#         statusAsInt = resolveStatus(status)
-#         if(statusAsInt == -1):
-#             message = "Error: Status " + status + " does not exist."
-#         else:
-#             message = ""
-#             hashs = get_all_hashs_in_db(getConnection())
-#             for hash in hashs:
-#                 message = message + getDamages(hash, status, statusAsInt)
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-###################################################
 @app.route('/getAllDamages')
 def getAllDamages():
     try: 
@@ -361,90 +212,26 @@ def getAllDamages():
         message = transform_error_message(e)
     return message
 
-#######################################################
-#####works: 1 eth == 10^18 wei
-# @app.route('/getBalanceOfContract')
-# def getBalanceOfContract():
-#     try:
-#         message = str(getSc().functions.balanceOfSC().call())
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-# @app.route('/getDamagesOfCurrentContract/<status>')
-# def getDamagesOfCurrentContract(status):
-#     try:
-#         statusAsInt = resolveStatus(status)
-#         print(statusAsInt)
-#         if(statusAsInt == -1):
-#             message = "Error: Status " + status + " does not exist."
-#             print(message)
-#         else:
-#             message = getDamages(getHash(), status, statusAsInt)
-#             print("else " + message)
-#     except Exception as e:
-#         message = transform_error_message(e)
-#         print(message)
-#     return message
-
-
-#########################################
-# @app.route('/getLogfileContent', methods=['POST'])
-# def getLogfileContent():
-#     try:
-#         logfile_hash = request.get_json()
-#         logfile_content = str(get_log_data(getConnection(), logfile_hash))
-#     except Exception as e:
-#         logfile_content = transform_error_message(e)
-#     return logfile_content
-
-#########################################
-# @app.route('/getHash')
-# def getUsedHash():
-#     try:
-#         message = str(getHash())
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-# @app.route('/getPremium')
-# def getPremium():
-#     try:
-#         message = "Premium: " + str(getSc().functions.getPremium().call())
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-####################################
 @app.route('/getPremium')
 def getPremium():
     try:
-        message = str(getSc().functions.getPremium().call())
+        premium = getSc().functions.getPremium().call()
+        premiumObj = {'premium': premium}
     except Exception as e:
-        message = transform_error_message(e)
-    return message
+        premiumObj = transform_error_message(e)
+    return premiumObj
 
-####################################
 @app.route('/getPremiumInEther')
 def getPremiumInEther():
     try:
         euro = getSc().functions.getPremium().call()
         exchange_rate = getSc().functions.getExchangeRate().call()
-        premiumEther = str(euro / exchange_rate)
+        premiumEther = euro / exchange_rate
+        premiumEtherObj = {'premiumEther': premiumEther}
     except Exception as e:
-        premiumEther = transform_error_message(e)
-    return premiumEther
+        premiumEtherObj = transform_error_message(e)
+    return premiumEtherObj
 
-# @app.route('/getExchangeRate')
-# def getExchangeRateCall():
-#     try:
-#         exchange_rate = getSc().functions.getExchangeRate().call()
-#         jsonExchange = json.dumps(exchange_rate)
-#     except Exception as e:
-#         jsonExchange = transform_error_message(e)
-#     return jsonExchange
-
-####################################
 @app.route('/getValidUntil')
 def getValidUntil():
     try:
@@ -453,7 +240,6 @@ def getValidUntil():
         validUntil = transform_error_message(e)
     return validUntil
 
-####################################
 @app.route('/getValidBool')
 def getValidBool():
     try:
@@ -462,7 +248,6 @@ def getValidBool():
         validBool = transform_error_message(e)
     return validBool
 
-####################################
 @app.route('/getSecurity', methods=['POST'])
 def getSecurity():
     try:
@@ -478,29 +263,6 @@ def getSecurity():
     except Exception as e:
         security = transform_error_message(e)
     return security
-
-# @app.route('/isNewProposalAvailable')
-# def isNewProposalAvailable():
-#     try:
-#         proposal_dict = getProposalDict()
-#         proposal_dict.clear()
-#         message = ""
-#         hashs = get_all_hashs_in_db(getConnection())
-#         for hash in hashs:
-#             try:
-#                 sc = get_smart_contract_accessor(getConnection(), hash[0])
-#                 if sc.functions.isNewProposalAvailable().call():
-#                     new_hash = sc.functions.getHashOfProposal().call()
-#                     proposal_dict.update({new_hash:hash[0]})
-#                     message = message + "For the contract with hash " + hash[0] + " is a new proposal available.\n" \
-#                                     "The hash of the new file is " +  new_hash + ".\n"
-
-#             except:
-#                 print("No accessor available.")
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     setProposalDict(proposal_dict)
-#     return message
 
 #used by customer:
 @app.route('/checkForNewProposal')
@@ -524,8 +286,7 @@ def checkForNewProposal():
         proposal_list_json = transform_error_message(e)
     return proposal_list_json
 
-#######instead of isNewProposalAvailable()
-##################################################
+#used by insurer
 @app.route('/getNewProposalByHash', methods=['POST'])
 def getNewProposalByHash():
     try:
@@ -551,13 +312,6 @@ def getNewProposalByHash():
 def getContentOfProposal(hash):
     return get_json_content_with_hash(getConnection(), hash)
 
-#########################################
-# @app.route('/getContentOfProposal2', methods=['POST'])
-# def getContentOfProposal2():
-#     jsonHash = request.get_json()
-#     return get_json_content_with_hash(getConnection(), jsonHash)
-
-###############################################
 @app.route('/checkProposal', methods=['POST'])
 def checkProposal():
     port = 5001
@@ -565,27 +319,3 @@ def checkProposal():
     content = content = requests.get('http://localhost:' + str(port) +
                            '/getContentOfProposal/' + jsonHash).content.decode('UTF-8')
     return content
-
-# @app.route('/checkProposal/<hash>', defaults={'fileName':''})
-# @app.route('/checkProposal/<hash>/<fileName>')
-# def checkProposal(hash, fileName):
-#     port = 5000
-#     if getUserAddress() == insurer:
-#         port = 5001
-#     content = requests.get('http://localhost:' + str(port) +
-#                            '/getContentOfProposal/' + hash).content.decode('UTF-8')
-#     insert_json_file_content(getConnection(), content, hash)
-#     message = "New content is written to the database."
-#     if fileName != '':
-#         write_file(fileName, content)
-#         message = message + " And into file " + fileName + "."
-#     current_hash = getProposalDict().get(hash)
-
-#     ####the following two are already triggered with useContract2() in the frontend
-#     setHash(current_hash)
-#     setSc(get_smart_contract_accessor(getConnection(), current_hash))
-
-#     return message
-
-
-

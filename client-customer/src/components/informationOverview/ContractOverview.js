@@ -117,11 +117,8 @@ function ContractOverview(props) {
     axios
       .get(`${url}/getValidUntil`)
       .then((response) => {
-        console.log(response.data);
         const validDate = response.data;
-        console.log(
-          moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
-        );
+
         setContractValidUntil(
           moment.unix(validDate).utc().format("DD.MM.YYYY").toString()
         );
@@ -133,8 +130,7 @@ function ContractOverview(props) {
     axios
       .get(`${url}/getPremium`)
       .then((response) => {
-        console.log(parseInt(response.data));
-        setCurrentPremiumEuro(parseInt(response.data));
+        setCurrentPremiumEuro(response.data.premium);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -143,8 +139,7 @@ function ContractOverview(props) {
     axios
       .get(`${url}/getPremiumInEther`)
       .then((response) => {
-        console.log(parseFloat(response.data));
-        setCurrentPremiumEther(parseFloat(response.data));
+        setCurrentPremiumEther(response.data.premiumEther);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -153,7 +148,6 @@ function ContractOverview(props) {
     axios
       .get(`${url}/getValidBool`)
       .then((response) => {
-        console.log(response.data);
         if (response.data === "True") {
           setIsContractValid(true);
         }
@@ -231,6 +225,9 @@ function ContractOverview(props) {
       })
       .then((response) => {
         resetList();
+        if (response.data === "End date of contract reached.") {
+          alert(response.data);
+        }
       })
       .catch((error) => console.error(`Error: ${error}`));
   }
@@ -241,7 +238,6 @@ function ContractOverview(props) {
       return;
     }
     const json_content = JSON.stringify(contractInformation, null, 0);
-    console.log(json_content);
     axios
       .post(`${url}/proposeToUpdateContract`, json_content, {
         headers: {
@@ -249,7 +245,6 @@ function ContractOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         setShowUpdateResponse(true);
         setUpdateResponse(res.data);
       })
@@ -305,11 +300,20 @@ function ContractOverview(props) {
           Security has to be paid next!
         </div>
       )}
-      {isContractValid && (
-        <div style={{ margin: "10px", color: "red" }}>
-          Premium must be paid until due date!
-        </div>
-      )}
+      {isContractValid &&
+        contractInformation.contract_constraints.endDate !==
+          contractValidUntil && (
+          <div style={{ margin: "10px", color: "red" }}>
+            Premium must be paid until due date!
+          </div>
+        )}
+      {isContractValid &&
+        contractInformation.contract_constraints.endDate ===
+          contractValidUntil && (
+          <div style={{ margin: "10px", color: "red" }}>
+            End date of contract reached!
+          </div>
+        )}
       {isContractValid && (
         <button
           style={{ margin: "20px", padding: "15px" }}

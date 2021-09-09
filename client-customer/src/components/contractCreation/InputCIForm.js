@@ -506,7 +506,6 @@ function InputCIForm() {
 
   const submit = (e) => {
     const json_content = JSON.stringify(contractInformation);
-    console.log(json_content);
     axios
       .post("http://127.0.0.1:5001/createPendingContract", json_content, {
         headers: {
@@ -514,7 +513,6 @@ function InputCIForm() {
         },
       })
       .then((res) => {
-        console.log(res);
         setCreatedResponse(res.data);
         setShowCreated(true);
       })
@@ -649,6 +647,9 @@ function InputCIForm() {
         value={contractInformation.contract_constraints.startDate}
         name="startDate"
       />
+      <span>
+        {contractInformation.contract_constraints.startDate.toString()}
+      </span>
       <br />
       {/* TODO: the form should already show the date as placeholder */}
 
@@ -660,6 +661,7 @@ function InputCIForm() {
         value={contractInformation.contract_constraints.endDate}
         name="endDate"
       />
+      <span>{contractInformation.contract_constraints.endDate.toString()}</span>
       <br />
       <label>Payment Freq. per Year: </label>
       <br />
@@ -829,6 +831,11 @@ function InputCIForm() {
             name="date"
             type="date"
           />
+          <span>
+            {contractInformation.company_security.attacks_history[
+              i
+            ].date.toString()}
+          </span>
           <br />
           <label>Time to recovery: </label>
           <br />
@@ -945,6 +952,11 @@ function InputCIForm() {
               name="date"
               type="date"
             />
+            <span>
+              {contractInformation.company_security.security_training[
+                i
+              ].date.toString()}
+            </span>
             <br />
             <label>Security Training Provider: </label>
             <br />

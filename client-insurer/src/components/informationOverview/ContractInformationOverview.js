@@ -103,6 +103,7 @@ function ContractInformationOverview(props) {
   const [contractValidUntil, setContractValidUntil] = useState("");
   const [isContractValid, setIsContractValid] = useState(false);
   const [currentSecurity, setCurrentSecurity] = useState(0);
+  const [differences, setDifferences] = useState({});
 
   const url = "http://127.0.0.1:5000";
 
@@ -122,7 +123,6 @@ function ContractInformationOverview(props) {
 
   const getContractInformation = () => {
     const jsonHash = JSON.stringify(props.selectedContract.jsonHash);
-    console.log(jsonHash);
 
     axios
       .post(`${url}/getContractInformation`, jsonHash, {
@@ -152,7 +152,7 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getPremium`)
       .then((response) => {
-        setCurrentPremiumEuro(parseInt(response.data));
+        setCurrentPremiumEuro(response.data.premium);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -161,7 +161,7 @@ function ContractInformationOverview(props) {
     axios
       .get(`${url}/getPremiumInEther`)
       .then((response) => {
-        setCurrentPremiumEther(parseFloat(response.data));
+        setCurrentPremiumEther(response.data.premiumEther);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -226,6 +226,7 @@ function ContractInformationOverview(props) {
         <div style={{ color: "red" }}>New premium: {updatePremium}</div>
         <br />
         <div className={styles.info}>
+          <h2>Original Contract</h2>
           <div style={{ fontSize: "20px", textDecoration: "underline" }}>
             Business Information
           </div>
@@ -635,10 +636,13 @@ function ContractInformationOverview(props) {
         </div>
         {props.selectedUpdateHash && props.selectedUpdateHash !== 0 ? (
           <div className={styles.update}>
+            <h2>Update Request</h2>
             <UpdateOverview
               selectedUpdateHash={props.selectedUpdateHash}
               setAvailableContracts={props.setAvailableContracts}
               setUpdatePremium={setUpdatePremium}
+              contractInformation={contractInformation}
+              setDifferences={setDifferences}
             />
           </div>
         ) : (
@@ -656,11 +660,20 @@ function ContractInformationOverview(props) {
           Security has to be paid next by the Customer!
         </div>
       )}
-      {isContractValid && (
-        <div style={{ margin: "10px", color: "red" }}>
-          Premium must be paid until due date by the Customer!
-        </div>
-      )}
+      {isContractValid &&
+        contractInformation.contract_constraints.endDate !==
+          contractValidUntil && (
+          <div style={{ margin: "10px", color: "red" }}>
+            Premium must be paid until due date!
+          </div>
+        )}
+      {isContractValid &&
+        contractInformation.contract_constraints.endDate ===
+          contractValidUntil && (
+          <div style={{ margin: "10px", color: "red" }}>
+            End date of contract reached!
+          </div>
+        )}
       <br />
       <button
         onClick={annulContract}
@@ -669,6 +682,10 @@ function ContractInformationOverview(props) {
         <div>Annul Contract</div>
         <div>(Only available when customer did not pay premium)</div>
       </button>
+      <div style={{ float: "right" }}>
+        <h2>Differences:</h2>
+        <div>{Object.keys(differences).toString()}</div>
+      </div>
     </div>
   );
 }

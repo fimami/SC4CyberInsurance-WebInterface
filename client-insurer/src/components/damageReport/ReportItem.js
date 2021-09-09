@@ -48,6 +48,9 @@ function ReportItem(props) {
         <div>ID: {props.damageId}</div>
         <div>Status: {getStatus()}</div>
       </button>
+      {props.selectedReport.id == props.damageId && (
+        <div style={{ fontSize: "10px" }}>This damage was selected.</div>
+      )}
       <br />
       <br />
     </>

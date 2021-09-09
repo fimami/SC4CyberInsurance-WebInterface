@@ -4,26 +4,6 @@ from APICommon import *
 setConnection(open_connection(False))
 create_contract_databases_if_not_exist(getConnection())
 
-# @app.route('/createContract/<jsonFile>')
-# def createContract(jsonFile):
-#     response = requests.get('http://localhost:5000/deployContract/' + jsonFile).content.decode('UTF-8')
-#     json_content = read_file(jsonFile)
-#     # print(type(json_content))
-#     json_hash = get_hash_of_string(json_content)
-
-#     #get the data from the insurer
-#     contract_address = requests.get('http://localhost:5000/getContractAddress/' + json_hash).content.decode('UTF-8')
-#     contract_abi = requests.get('http://localhost:5000/getContractABI/' + json_hash).content.decode('UTF-8')
-#     #insert the data in the database
-#     insert_contract_information(getConnection(), json_hash, contract_address, contract_abi)
-#     insert_json_file_content(getConnection(), json_content, json_hash)
-#     #assign the newly created smart contract as currently used one
-#     sc = get_smart_contract_accessor(getConnection(), json_hash)
-#     setSc(sc)
-#     setHash(json_hash)
-#     return response
-
-####################################
 @app.route('/createContract', methods=['POST'])
 def createContract():
     try:
@@ -52,7 +32,6 @@ def createContract():
         response2 = ""
     return response + " " + response2
 
-#########################################TODO: CHECK THIS
 @app.route('/createPendingContract', methods=['POST'])
 def createPendingContract():
     try:
@@ -68,7 +47,6 @@ def createPendingContract():
         response = str(e)
     return response
 
-#########################################################
 @app.route('/updatePendingContract', methods=['POST'])
 def updatePendingContract():
     try:
@@ -85,7 +63,6 @@ def updatePendingContract():
         response = "Error appeared during: " + str(e)
     return response
 
-#########################################################
 @app.route('/deletePendingContract/<jsonHash>')
 def deletePendingContract2(jsonHash):
     try:
@@ -99,29 +76,6 @@ def deletePendingContract2(jsonHash):
 def getCustomerAddress():
     return getUserAddress()
 
-############################################
-# @app.route('/updateFileHash/<old_hash>/<new_hash>')
-# def updateFileHash(old_hash, new_hash):
-#     try:
-#         update_file_hash(getConnection(), old_hash, new_hash)
-#         message = "The File hash was updated successfully."
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-# @app.route('/paySecurity/<ether>')
-# def paySecurity(ether):
-#     if getSc() == 0:
-#         message = 'Error: Have to chose a contract first by calling useContract function.'
-#     else:
-#         try:
-#             getSc().functions.paySecurity().transact({'from': getUserAddress(),'value': w3.toWei(ether, "ether")})
-#             message = 'Security was paid.'
-#         except Exception as e:
-#             message = transform_error_message(e)
-#     return message
-
-####################################
 @app.route('/paySecurity', methods=['POST'])
 def paySecurity():
     if getSc() == 0:
@@ -135,50 +89,29 @@ def paySecurity():
             message = transform_error_message(e)
     return message
 
-# @app.route('/payPremium/<ether>')
-# def payPremium(ether):
-#     if getSc() == 0:
-#         message = 'Error: Have to chose a contract first by calling useContract function.'
-#     else:
-#         try:
-#             getSc().functions.payPremium().transact({'from': getUserAddress(),'value': w3.toWei(ether, "ether")})
-#             valid_until = convertTimestampToDateString(getSc().functions.getValidUntil().call())
-#             message = 'Premium was paid. Contract is now valid until ' + valid_until
-#         except Exception as e:
-#             message = transform_error_message(e)
-#     return message
-
-####################################
 @app.route('/payPremium', methods=['POST'])
 def payPremium():
     if getSc() == 0:
         message = 'Error: Have to chose a contract first by calling useContract function.'
     else:
         try:
-            premiumAmount = request.get_json()
+            print(str(getSc()))
+            print(str(getHash()))
+            """The following fixes occurring rounding errors"""
+            premiumAmount = request.get_json() + 0.0000000000000001
+            print(premiumAmount)
             getSc().functions.payPremium().transact({'from': getUserAddress(),'value': w3.toWei(premiumAmount, "ether")})
+            print("yes")
             valid_until = convertTimestampToDateString(getSc().functions.getValidUntil().call())
+            print(valid_until)
             message = 'Premium was paid. Contract is now valid until ' + valid_until
+            print("message" + message)
         except Exception as e:
             message = transform_error_message(e)
+            print("message" + str(message))
+            message = "End date of contract reached."
     return message
 
-# @app.route('/reportDamage/<date>/<amount>/<id>/<typeOfAttack>/<logFile>')
-# def reportDamage(date, amount, id, typeOfAttack, logFile):
-#     try:
-#         #insert log data in db
-#         contentOfLogFile = read_file(logFile)
-#         hashOfLogFile = get_hash_of_string(contentOfLogFile)
-#         insert_log_data(getConnection(), hashOfLogFile, contentOfLogFile)
-
-#         dateAsTimestamp = convertDateStringToTimestamp(date)
-#         getSc().functions.reportDamage(dateAsTimestamp, int(amount), int(id), typeOfAttack, hashOfLogFile).transact({'from': getUserAddress()})
-#         message = 'Damage was successfully reported.'
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-#########################################
 @app.route('/reportDamage', methods=['POST'])
 def reportDamage():
     try:
@@ -208,8 +141,6 @@ def getLogContentForInsurer(hashOfLog):
         message = transform_error_message(e)
     return message
 
-#TODO: check if used --->
-##########################################
 @app.route('/getLogContent', methods=['POST'])
 def getLogContent():
     try:
@@ -219,17 +150,6 @@ def getLogContent():
         message = transform_error_message(e)
     return message
 
-
-# @app.route('/acceptCounterOffer/<id>')
-# def acceptCounterOffer(id):
-#     try:
-#         getSc().functions.acceptCounterOffer(int(id)).transact({'from': getUserAddress()})
-#         message = 'Counter offer was successfully accepted.'
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-##########################################
 @app.route('/acceptCounteroffer', methods=['POST'])
 def acceptCounteroffer():
     try:
@@ -240,16 +160,6 @@ def acceptCounteroffer():
         message = transform_error_message(e)
     return message
 
-# @app.route('/declineCounterOffer/<id>')
-# def declineCounterOffer(id):
-#     try:
-#         getSc().functions.declineCounterOffer(int(id)).transact({'from': getUserAddress()})
-#         message = 'Counter offer was declined.'
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-################################################
 @app.route('/declineCounteroffer', methods=['POST'])
 def declineCounteroffer():
     try:
@@ -260,16 +170,6 @@ def declineCounteroffer():
         message = transform_error_message(e)
     return message
 
-# @app.route('/resolveDispute/<id>')
-# def resolveDispute(id):
-#     try:
-#         getSc().functions.resolveDispute(int(id)).transact({'from': getUserAddress()})
-#         message = 'Dispute was resolved.'
-#     except Exception as e:
-#         message = transform_error_message(e)
-#     return message
-
-################################################
 @app.route('/resolveDispute', methods=['POST'])
 def resolveDispute():
     try:
@@ -280,7 +180,6 @@ def resolveDispute():
         message = transform_error_message(e)
     return message
 
-########################################
 @app.route('/deleteUpdateContract/<new_hash>')
 def deleteUpdateContract(new_hash):
     try:
@@ -290,7 +189,6 @@ def deleteUpdateContract(new_hash):
         message = transform_error_message(e)
     return message
 
-#######################################
 @app.route('/deleteOldContract/<old_hash>')
 def deleteOldContract(old_hash):
     try:
@@ -300,7 +198,6 @@ def deleteOldContract(old_hash):
         message = transform_error_message(e)
     return message
 
-########################################
 @app.route('/cancelDamage', methods=['POST'])
 def cancelDamage():
     try:

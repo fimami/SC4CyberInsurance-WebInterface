@@ -62,7 +62,10 @@ function ActionWindow(props) {
             />
           )}
         {!props.showContractInfo && props.showReportForm && (
-          <ReportForm closeReportForm={closeReportForm} />
+          <ReportForm
+            closeReportForm={closeReportForm}
+            selectedContract={props.selectedContract}
+          />
         )}
         {props.showDamageReport &&
           Array.isArray(props.availableContracts) &&

@@ -380,10 +380,12 @@ function UpdateForm(props) {
         value={props.contractInformation.contract_constraints.startDate}
         name="startDate"
         disabled={true}
-      />
+      />{" "}
+      <span>
+        {props.contractInformation.contract_constraints.startDate.toString()}
+      </span>
       <br />
       {/* TODO: the form should already show the date as placeholder */}
-
       <label>End Date: </label>
       <br />
       <input
@@ -393,6 +395,9 @@ function UpdateForm(props) {
         name="endDate"
         disabled={true}
       />
+      <span>
+        {props.contractInformation.contract_constraints.endDate.toString()}
+      </span>
       <br />
       <label>Payment Freq. per Year: </label>
       <br />
@@ -575,6 +580,11 @@ function UpdateForm(props) {
               name="date"
               type="date"
             />
+            <span>
+              {props.contractInformation.company_security.attacks_history[
+                i
+              ].date.toString()}
+            </span>
             <br />
             <label>Time to recovery: </label>
             <br />
@@ -699,6 +709,11 @@ function UpdateForm(props) {
               name="date"
               type="date"
             />
+            <span>
+              {props.contractInformation.company_security.security_training[
+                i
+              ].date.toString()}
+            </span>
             <br />
             <label>Security Training Provider: </label>
             <br />

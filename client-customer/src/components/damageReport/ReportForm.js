@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ReportForm(props) {
   const [damageReport, setDamageReport] = useState({
@@ -11,6 +11,20 @@ function ReportForm(props) {
   const [isLogFile, setIsLogFile] = useState(false);
 
   const [damageReportResponse, setDamageReportResponse] = useState("");
+
+  const [coverage, setCoverage] = useState([
+    {
+      name: "",
+      coverage: [
+        {
+          name: "",
+          coverage_ratio: 0,
+          deductible: 0,
+          max_indemnification: 0,
+        },
+      ],
+    },
+  ]);
 
   const handleDateChange = (e) => {
     let temp = { ...damageReport };
@@ -49,7 +63,6 @@ function ReportForm(props) {
       return;
     }
     const json_content = JSON.stringify(damageReport);
-    console.log(json_content);
     axios
       .post("http://127.0.0.1:5001/reportDamage", json_content, {
         headers: {
@@ -62,13 +75,28 @@ function ReportForm(props) {
       .catch((error) => console.error(`Error: ${error}`));
   };
 
+  useEffect(() => {
+    let jsonHash = JSON.stringify(props.selectedContract.jsonHash);
+    axios
+      .post("http://127.0.0.1:5001/getContractInformation", jsonHash, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data.contract_coverage);
+        setCoverage(res.data.contract_coverage);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  }, []);
+
   return (
     <>
       <button onClick={props.closeReportForm}>Close Report Form</button>
       <br />
       <br />
       <br />
-      <div>
+      <div style={{ float: "left" }}>
         <label id="date">Date of incident: </label>
         <br />
         <input
@@ -134,6 +162,47 @@ function ReportForm(props) {
         <button style={{ padding: "10px" }} onClick={reportDamage}>
           Send Damage Report
         </button>
+      </div>
+      <div style={{ float: "right" }}>
+        {coverage.map((c1, i) => (
+          <div
+            key={i}
+            style={{
+              borderStyle: "solid",
+              padding: "5px",
+              marginBottom: "30px",
+              marginTop: "20px",
+              borderColor: "blue",
+            }}
+          >
+            <label>Attack Type to cover: </label>
+            <span>{coverage[i].name}</span>
+
+            <br />
+            <br />
+            {c1.coverage.map((c2, j) => (
+              <div key={(i, j)}>
+                <label>Covered Damage Type Name: </label>
+                <span>{coverage[i].coverage[j].name}</span>
+
+                <br />
+                <label>Coverage Ratio for damage type: </label>
+                <span>{coverage[i].coverage[j].coverage_ratio}</span>
+
+                <br />
+                <label>Deductible for damage type: </label>
+                <span>{coverage[i].coverage[j].deductible}</span>
+
+                <br />
+                <label>Max. Indemnification for damage type: </label>
+                <span>{coverage[i].coverage[j].max_indemnification}</span>
+
+                <br />
+                <br />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </>
   );

@@ -34,13 +34,6 @@ def setUserAddress(value):
     global user_address
     user_address = value
 
-def getDamagesDict():
-    return damages_dict
-
-def setDamagesDict(value):
-    global damages_dict
-    damages_dict = value
-
 def getProposalDict():
     return proposal_dict
 

@@ -23,6 +23,7 @@ function ReportList(props) {
             showDamageIsSelected={props.showDamageIsSelected}
             openReportOverview={props.openReportOverview}
             setSelectedReport={props.setSelectedReport}
+            selectedReport={props.selectedReport}
           />
         </div>
       ))}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { diff } from "deep-object-diff";
 import { useEffect, useState } from "react";
 
 function UpdateOverview(props) {
@@ -95,6 +96,8 @@ function UpdateOverview(props) {
     ],
   });
 
+  
+
   const url = "http://127.0.0.1:5000";
 
   const calculatePremium = () => {
@@ -106,7 +109,6 @@ function UpdateOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         props.setUpdatePremium(res.data);
       })
       .catch((error) => {
@@ -116,7 +118,6 @@ function UpdateOverview(props) {
 
   const checkProposal = () => {
     const jsonHash = JSON.stringify(props.selectedUpdateHash);
-    console.log(jsonHash);
 
     axios
       .post(`${url}/checkProposal`, jsonHash, {
@@ -158,6 +159,8 @@ function UpdateOverview(props) {
 
   useEffect(() => {
     calculatePremium();
+    console.log(diff(props.contractInformation, updateContent));
+    props.setDifferences(diff(props.contractInformation, updateContent));
   }, [updateContent]);
 
   return (

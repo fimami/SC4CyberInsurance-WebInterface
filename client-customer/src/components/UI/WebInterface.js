@@ -49,7 +49,6 @@ function WebInterface() {
     axios
       .get(`${url}/getAvailableContracts`)
       .then((response) => {
-        console.log(response);
         if (response.data.length) {
           setAvailableContracts(response.data);
         }
@@ -61,7 +60,6 @@ function WebInterface() {
     axios
       .get(`${url}/getPendingContracts`)
       .then((res) => {
-        console.log(res);
         setPendingContracts(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -73,7 +71,6 @@ function WebInterface() {
       axios
         .get(`${url}/getAllDamages`)
         .then((res) => {
-          console.log(res);
           if (Array.isArray(res.data)) {
             res.data.forEach((report, i) => {
               if (!proposalHashList.includes(res.data[i].contractHash)) {
@@ -99,7 +96,6 @@ function WebInterface() {
     axios
       .get(`${url}/checkForNewProposal`)
       .then((res) => {
-        console.log(res.data);
         setProposalHashList(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));

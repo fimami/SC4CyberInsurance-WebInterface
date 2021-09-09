@@ -14,20 +14,16 @@ function ReportedDamages(props) {
 
   const handleChange = (event) => {
     let selector = parseInt(event.target.value);
-    console.log(selector);
     defineList(selector);
   };
 
   const defineList = (value) => {
     let list = [];
     for (let i = 0; i < props.newDamageReports.length; i++) {
-      console.log("through");
       if (props.newDamageReports[i].status === value || value === 6) {
         list.push(props.newDamageReports[i]);
-        console.log("Yes");
       }
     }
-    console.log(list);
     setSelectedList(list);
     setReportSelect(value);
   };
@@ -75,8 +71,6 @@ function ReportedDamages(props) {
 
   useEffect(() => {
     getDamagesCategory();
-    console.log(reportSelect);
-    console.log(nrOfPaid);
     defineList(reportSelect);
   }, [props.newDamageReports]);
 

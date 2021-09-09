@@ -169,6 +169,8 @@ contract_content = """
                 if(valid_until + payment_frequency >= end_date){{
                     uint security_in_wei = convertEuroToWei(initial_premium) / 100 * cancellation_penalty; 
                     premium_in_wei = premium_in_wei - security_in_wei;
+                    //uint SCbalance = balanceOfSC();
+                    //insurer_address.transfer(SCbalance);
                 }}
                 require(
                     msg.value >= premium_in_wei,
@@ -188,14 +190,14 @@ contract_content = """
                 return valid_until;
             }}
         
-            function convertEuroToWei (uint numberOfEuros) private returns (uint) {{
+            function convertEuroToWei (uint numberOfEuros) checkActive private returns (uint) {{
                 return (numberOfEuros * 1000000000000000000 / exchange_rate);
             }}
             
             function __callback(
                 bytes32 myid,
                 string memory result
-            ) public override {{
+            ) checkActive public override {{
                 //emit NewTemp(result);
                 require(msg.sender == provable_cbAddress(),
                 "Wrong sender of callback.");
@@ -211,7 +213,7 @@ contract_content = """
                 msg.sender.transfer(msg.value - price);
             }}   
         
-            function increaseTimeOfValidity () private {{
+            function increaseTimeOfValidity () checkActive private {{
                 valid_until = valid_until + payment_frequency;
             }}
                 
@@ -259,7 +261,7 @@ contract_content = """
                reported_damages[damage_id].status = StatusDamage.Canceled;
             }}
         
-            function automaticPayOut (uint damage_id, bool is_counter_offer) private {{      
+            function automaticPayOut (uint damage_id, bool is_counter_offer) checkActive private {{      
                StatusDamage current_status = reported_damages[damage_id].status;          
                require(
                   current_status != StatusDamage.Paid && current_status != StatusDamage.Canceled && current_status != StatusDamage.Resolved,

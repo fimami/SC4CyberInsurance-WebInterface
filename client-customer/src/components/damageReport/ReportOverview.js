@@ -28,14 +28,12 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
       })
       .catch((error) => console.error(`Error: ${error}`));
 
     axios
       .get(`${url}/getExchangeRate`)
       .then((res) => {
-        console.log(res);
         setExchangeRate(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -51,7 +49,6 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -67,7 +64,6 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -83,7 +79,6 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -99,7 +94,6 @@ function ReportOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         alert(res.data);
       })
       .catch((error) => console.error(`Error: ${error}`));

@@ -115,6 +115,7 @@ function ReportedDamages(props) {
             setSelectedReport={props.setSelectedReport}
             proposalHashList={props.proposalHashList}
             selectedList={selectedList}
+            selectedReport={props.selectedReport}
           />
         ) : (
           <div>No claims available.</div>

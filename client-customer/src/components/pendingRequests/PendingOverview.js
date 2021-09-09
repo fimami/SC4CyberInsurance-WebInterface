@@ -102,7 +102,6 @@ function PendingOverview(props) {
   const createContract = (e) => {
     if (props.selectedPendingContract.status === "Accepted") {
       const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-      console.log(jsonHash);
       axios
         .post(`${url}/createContract`, jsonHash, {
           headers: {
@@ -110,7 +109,6 @@ function PendingOverview(props) {
           },
         })
         .then((res) => {
-          console.log(res);
           setCreatedMessage(res.data);
         })
         .catch((error) => {
@@ -127,7 +125,6 @@ function PendingOverview(props) {
   useEffect(() => {
     const getPendingContractInformation = () => {
       const jsonHash = JSON.stringify(props.selectedPendingContract.jsonHash);
-      console.log(jsonHash);
 
       axios
         .post(`${url}/getPendingContractInformation`, jsonHash, {
@@ -136,7 +133,6 @@ function PendingOverview(props) {
           },
         })
         .then((res) => {
-          console.log(res);
           setPendingInformation(res.data);
         })
         .catch((error) => console.error(`Error: ${error}`));

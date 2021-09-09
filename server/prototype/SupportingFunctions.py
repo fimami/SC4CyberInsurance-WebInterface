@@ -14,7 +14,6 @@ def get_hash_of_string(content):
     content_hash.update(content.encode('utf-8'))
     return content_hash.hexdigest()
 
-##############################
 def get_hash_for_id(content):
     report_id = int(hashlib.sha1(content.encode('utf-8')).hexdigest(), 16) % (10 ** 8)
     return report_id
@@ -33,7 +32,6 @@ def write_file(new_file_name, content):
 def convertDateStringToTimestamp(date):
     return int(datetime.strptime(date, "%d.%m.%Y").timestamp())
 
-###########################
 def convertDateStringToTimestamp2(date):
     return int(datetime.strptime(date, "%Y-%m-%d").timestamp())
 

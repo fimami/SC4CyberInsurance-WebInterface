@@ -57,7 +57,6 @@ def create_contract_databases_if_not_exist(conn):
                 """)
     conn.commit()
     
-########################
 def insert_pending_json_file_content(conn, json_content_as_string, json_hash, status, premium):
     c = conn.cursor()
     c.execute("INSERT INTO PendingContracts VALUES (:hash, :content, :status, :premium)",
@@ -108,14 +107,12 @@ def insert_contract_information(conn, json_hash, contract_address, contract_abi)
               {'hash': json_hash, 'address': contract_address, 'abi': contract_abi})
     conn.commit()
 
-#####################################
 def get_all_requests_in_db(conn):
     c = conn.cursor()
     c.execute("SELECT DISTINCT json_hash, json_content, status_pending, premium_pending FROM PendingContracts")
     allPendingContracts = c.fetchall()
     return allPendingContracts
 
-######################################
 def get_request_content_with_hash(conn, hash):
     c = conn.cursor()
     c.execute("SELECT json_content FROM PendingContracts WHERE json_hash= :hash", {'hash': hash})
@@ -133,14 +130,6 @@ def get_all_contracts_in_db(conn):
     c = conn.cursor()
     c.execute("SELECT DISTINCT customer_name, json_hash FROM CoverageInformation")
     allContracts = c.fetchall()
-    return allContracts
-
-###################################
-def get_all_contracts_in_db2(conn):
-    c = conn.cursor()
-    c.execute("SELECT DISTINCT customer_name, json_hash FROM CoverageInformation")
-    allContracts = c.fetchall()
-    json_companyAndHash = json.dumps(allContracts)
     return allContracts
 
 def get_all_hashs_in_db(conn):
@@ -211,7 +200,6 @@ def update_file_hash(conn, old_hash, new_hash):
               {'newHash': new_hash, 'oldHash': old_hash})
     conn.commit()
 
-######################################################
 def update_pending_contract(conn, jsonHash, status, premium):
     c = conn.cursor()
     c.execute("UPDATE PendingContracts SET status_pending = :status, premium_pending = :premium WHERE json_hash = :jsonHash",
@@ -225,14 +213,12 @@ def remove_contract_from_db_with_hash(conn, file_hash):
     c.execute("DELETE FROM DeployInformation WHERE json_hash = :hash",{'hash': file_hash})
     conn.commit()
 
-################################################
 def remove_old_content_after_update(conn, old_hash):
     c = conn.cursor()
     c.execute("DELETE FROM JsonContent WHERE json_hash = :hash",{'hash': old_hash})
     c.execute("DELETE FROM CoverageInformation WHERE json_hash = :hash",{'hash': old_hash})
     conn.commit()
 
-################################################
 def delete_pending_json_with_hash(conn, hash):
     c = conn.cursor()
     c.execute("DELETE FROM PendingContracts WHERE json_hash = :hash",{'hash': hash})

@@ -7,6 +7,20 @@ function ReportOverview(props) {
   const [declineReason, setDeclineReason] = useState("");
   const [exchangeRate, setExchangeRate] = useState(0);
 
+  const [coverage, setCoverage] = useState([
+    {
+      name: "",
+      coverage: [
+        {
+          name: "",
+          coverage_ratio: 0,
+          deductible: 0,
+          max_indemnification: 0,
+        },
+      ],
+    },
+  ]);
+
   const url = "http://127.0.0.1:5000";
 
   const getLogfileContentAndHash = () => {
@@ -40,6 +54,17 @@ function ReportOverview(props) {
       .get(`${url}/getExchangeRate`)
       .then((res) => {
         setExchangeRate(res.data);
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+
+    axios
+      .post(`${url}/getContractInformation`, jsonHash, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setCoverage(res.data.contract_coverage);
       })
       .catch((error) => console.error(`Error: ${error}`));
   };
@@ -186,12 +211,12 @@ function ReportOverview(props) {
         <div style={{ float: "right" }}>
           {parseInt(props.selectedReport.counteroffer) !== 0 ? (
             <div>
-              The claim has been paid with the counteroffer: .
+              The claim has been paid with the counteroffer:
               {props.selectedReport.counteroffer}
             </div>
           ) : (
             <div>
-              The claim has been paid with {props.selectedReport.amount}.
+              The claim has been paid with: {props.selectedReport.amount}
             </div>
           )}
         </div>
@@ -271,6 +296,52 @@ function ReportOverview(props) {
         </div>
       )}
       <br />
+      <br />
+      {(getStatus() === "Pending" ||
+        getStatus() === "Dispute" ||
+        getStatus() === "Under Investigation") && (
+        <div style={{ float: "right" }}>
+          {coverage.map((c1, i) => (
+            <div
+              key={i}
+              style={{
+                borderStyle: "solid",
+                padding: "5px",
+                marginBottom: "30px",
+                marginTop: "20px",
+                borderColor: "blue",
+              }}
+            >
+              <label>Attack Type to cover: </label>
+              <span>{coverage[i].name}</span>
+
+              <br />
+              <br />
+              {c1.coverage.map((c2, j) => (
+                <div key={(i, j)}>
+                  <label>Covered Damage Type Name: </label>
+                  <span>{coverage[i].coverage[j].name}</span>
+
+                  <br />
+                  <label>Coverage Ratio for damage type: </label>
+                  <span>{coverage[i].coverage[j].coverage_ratio}</span>
+
+                  <br />
+                  <label>Deductible for damage type: </label>
+                  <span>{coverage[i].coverage[j].deductible}</span>
+
+                  <br />
+                  <label>Max. Indemnification for damage type: </label>
+                  <span>{coverage[i].coverage[j].max_indemnification}</span>
+
+                  <br />
+                  <br />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

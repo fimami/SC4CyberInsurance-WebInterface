@@ -103,7 +103,6 @@ function UpdateOverview(props) {
 
   const checkProposal = () => {
     const jsonHash = JSON.stringify(props.selectedContract.jsonHash);
-    console.log(jsonHash);
 
     axios
       .post(`${url}/checkProposal`, jsonHash, {
@@ -112,7 +111,6 @@ function UpdateOverview(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setUpdateContent(response.data);
       })
       .catch((error) => console.error(`Error: ${error}`));
@@ -127,7 +125,6 @@ function UpdateOverview(props) {
         },
       })
       .then((res) => {
-        console.log(res);
         setUpdatePremium(res.data);
       })
       .catch((error) => {

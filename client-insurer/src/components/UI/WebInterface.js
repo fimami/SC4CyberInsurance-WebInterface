@@ -125,6 +125,7 @@ function WebInterface() {
             newDamageReports={newDamageReports}
             openReportOverview={openReportOverview}
             setSelectedReport={setSelectedReport}
+            selectedReport={selectedReport}
           />
           <ActionWindow
             availableContracts={availableContracts}
